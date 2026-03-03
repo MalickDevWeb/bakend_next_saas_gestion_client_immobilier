@@ -6,8 +6,10 @@ Ce document contient des captures textuelles de la structure reelle du projet.
 
 ```text
 .
+├── .dockerignore
 ├── .env
 ├── .gitignore
+├── Dockerfile
 ├── README.md
 ├── app
 │   ├── api
@@ -18,6 +20,7 @@ Ce document contient des captures textuelles de la structure reelle du projet.
 │   ├── CAPTURES_DOSSIERS_ET_SOUS_DOSSIERS.md
 │   ├── CHARTE_DOCUMENTATION_OBLIGATOIRE.md
 │   ├── CONCEPTS_BACKEND_POO_SOLID.md
+│   ├── DEPLOIEMENT_RENDER_DOCKER.md
 │   ├── DOCUMENTATION_FICHIER_PAR_FICHIER.md
 │   ├── GUIDE_DOSSIER_PAR_DOSSIER.md
 │   ├── GUIDE_MAITRE_ARCHITECTURE_REUTILISABLE.md
@@ -35,6 +38,9 @@ Ce document contient des captures textuelles de la structure reelle du projet.
 │   ├── schema.prisma
 │   ├── seed.mjs
 │   └── seeders
+├── render.yaml
+├── scripts
+│   └── demarrer-render.sh
 ├── src
 │   ├── application
 │   ├── coeur
@@ -47,7 +53,7 @@ Ce document contient des captures textuelles de la structure reelle du projet.
 │   └── tests
 └── tsconfig.json
 
-18 directories, 23 files
+19 directories, 28 files
 ```
 
 ## Capture 02 - Vue detaillee de src (niveau 4)
@@ -319,8 +325,10 @@ src
 
 ```text
 .
+├── .dockerignore
 ├── .env
 ├── .gitignore
+├── Dockerfile
 ├── README.md
 ├── app
 │   ├── api
@@ -344,6 +352,7 @@ src
 │   ├── CAPTURES_DOSSIERS_ET_SOUS_DOSSIERS.md
 │   ├── CHARTE_DOCUMENTATION_OBLIGATOIRE.md
 │   ├── CONCEPTS_BACKEND_POO_SOLID.md
+│   ├── DEPLOIEMENT_RENDER_DOCKER.md
 │   ├── DOCUMENTATION_FICHIER_PAR_FICHIER.md
 │   ├── GUIDE_DOSSIER_PAR_DOSSIER.md
 │   ├── GUIDE_MAITRE_ARCHITECTURE_REUTILISABLE.md
@@ -365,6 +374,9 @@ src
 │       ├── SeederAbstrait.mjs
 │       ├── SeederConfigurationSysteme.mjs
 │       └── donneesConfigurationSysteme.mjs
+├── render.yaml
+├── scripts
+│   └── demarrer-render.sh
 ├── src
 │   ├── application
 │   │   ├── dtos
@@ -625,7 +637,7 @@ src
 │       └── README.ts
 └── tsconfig.json
 
-54 directories, 252 files
+55 directories, 257 files
 ```
 
 ## Capture 04 - Flux HTTP -> Middleware -> Metier -> Reponse
@@ -658,7 +670,19 @@ flowchart LR
   E --> F["create/update default ou ignore custom"]
 ```
 
-## Capture 06 - Flux gestion erreurs
+## Capture 06 - Flux deploy Render
+
+```mermaid
+flowchart LR
+  A["Git push"] --> B["Render Build Dockerfile"]
+  B --> C["Container start"]
+  C --> D["scripts/demarrer-render.sh"]
+  D --> E["prisma db push"]
+  E --> F["next start"]
+  F --> G["/api/sante health check"]
+```
+
+## Capture 07 - Flux gestion erreurs
 
 ```mermaid
 flowchart LR
@@ -667,7 +691,7 @@ flowchart LR
   C --> D["Statut HTTP + message centralise"]
 ```
 
-## Capture 07 - Carte des couches
+## Capture 08 - Carte des couches
 
 ```mermaid
 flowchart TB

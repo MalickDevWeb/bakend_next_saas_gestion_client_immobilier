@@ -10,8 +10,10 @@ Ce document liste **chaque fichier du projet** (hors `node_modules`, `.next`, `.
 
 | Fichier | Couche | Role (explication simple) | Quand le modifier | Mode reproduction |
 |---|---|---|---|---|
+| `.dockerignore` | Deploiement Docker | Exclut les fichiers inutiles/secrets du contexte Docker. | Quand nouveaux fichiers doivent etre ignores au build. | Creer un `.dockerignore` strict. |
 | `.env` | Configuration locale | Contient les secrets et variables (ex: base de donnees). | Quand un secret ou une URL change. | Creer un `.env` local non versionne. |
 | `.gitignore` | Configuration Git | Dit a Git quels fichiers ignorer. | Quand tu ajoutes des fichiers generes a ignorer. | Copier le `.gitignore` de base du template. |
+| `Dockerfile` | Deploiement Docker | Definit l image de production Render. | Quand strategie build/runtime change. | Creer Dockerfile multi-stage (deps/build/prod). |
 | `README.md` | Documentation racine | Point d entree du projet. | Quand commandes ou architecture changent. | Toujours creer un README minimal des le debut. |
 | `app/api/documentation/route.ts` | HTTP (adapter) | Porte d entree HTTP: lit requete et renvoie JSON. | Quand un endpoint evolue. | Creer un dossier `app/api/<route>/route.ts`. |
 | `app/api/sante/route.ts` | HTTP (adapter) | Porte d entree HTTP: lit requete et renvoie JSON. | Quand un endpoint evolue. | Creer un dossier `app/api/<route>/route.ts`. |
@@ -25,6 +27,7 @@ Ce document liste **chaque fichier du projet** (hors `node_modules`, `.next`, `.
 | `docs/CAPTURES_DOSSIERS_ET_SOUS_DOSSIERS.md` | Documentation | Manuels et references du projet. | Des qu un fichier ou concept evolue. | Conserver docs versionnees dans `/docs`. |
 | `docs/CHARTE_DOCUMENTATION_OBLIGATOIRE.md` | Documentation | Manuels et references du projet. | Des qu un fichier ou concept evolue. | Conserver docs versionnees dans `/docs`. |
 | `docs/CONCEPTS_BACKEND_POO_SOLID.md` | Documentation | Manuels et references du projet. | Des qu un fichier ou concept evolue. | Conserver docs versionnees dans `/docs`. |
+| `docs/DEPLOIEMENT_RENDER_DOCKER.md` | Documentation | Manuels et references du projet. | Des qu un fichier ou concept evolue. | Conserver docs versionnees dans `/docs`. |
 | `docs/DOCUMENTATION_FICHIER_PAR_FICHIER.md` | Documentation | Manuels et references du projet. | Des qu un fichier ou concept evolue. | Conserver docs versionnees dans `/docs`. |
 | `docs/GUIDE_DOSSIER_PAR_DOSSIER.md` | Documentation | Manuels et references du projet. | Des qu un fichier ou concept evolue. | Conserver docs versionnees dans `/docs`. |
 | `docs/GUIDE_MAITRE_ARCHITECTURE_REUTILISABLE.md` | Documentation | Manuels et references du projet. | Des qu un fichier ou concept evolue. | Conserver docs versionnees dans `/docs`. |
@@ -44,6 +47,8 @@ Ce document liste **chaque fichier du projet** (hors `node_modules`, `.next`, `.
 | `prisma/seeders/SeederAbstrait.mjs` | Seeders Prisma | Classe parent de seeders avec methode `executer()`. | Quand contrat commun des seeders evolue. | Creer une classe abstraite partagée. |
 | `prisma/seeders/SeederConfigurationSysteme.mjs` | Seeders Prisma | Seeder idempotent de `configuration_systeme` (create/update default/ignore custom). | Quand logique de seed configuration change. | Creer un seeder par table/concept metier. |
 | `prisma/seeders/donneesConfigurationSysteme.mjs` | Seeders Prisma | Jeu de donnees de base pour la configuration systeme. | Quand valeurs par defaut changent. | Separer les donnees seed dans un fichier dedie. |
+| `render.yaml` | Deploiement Render | Configuration Blueprint Render du service web. | Quand parametres Render changent. | Declarer service web Docker + env vars + health check. |
+| `scripts/demarrer-render.sh` | Deploiement Render | Script de boot conteneur (prisma push + next start). | Quand sequence de demarrage change. | Centraliser boot runtime dans un script shell executable. |
 | `src/application/dtos/DtoAdmin.ts` | Application DTO | Objet de transport des donnees entre couches. | Quand l entree/sortie d un cas d usage change. | Creer `DtoXxx.ts` correspondant a chaque besoin. |
 | `src/application/dtos/DtoBrandingAdmin.ts` | Application DTO | Objet de transport des donnees entre couches. | Quand l entree/sortie d un cas d usage change. | Creer `DtoXxx.ts` correspondant a chaque besoin. |
 | `src/application/dtos/DtoCaution.ts` | Application DTO | Objet de transport des donnees entre couches. | Quand l entree/sortie d un cas d usage change. | Creer `DtoXxx.ts` correspondant a chaque besoin. |

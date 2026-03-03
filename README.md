@@ -28,6 +28,8 @@ npm run dev
   - [`docs/SEEDERS_GUIDE_COMPLET.md`](docs/SEEDERS_GUIDE_COMPLET.md)
 - Modele de table configuration:
   - [`docs/MODELE_CONFIGURATION_SYSTEME.md`](docs/MODELE_CONFIGURATION_SYSTEME.md)
+- Guide deploiement Render:
+  - [`docs/DEPLOIEMENT_RENDER_DOCKER.md`](docs/DEPLOIEMENT_RENDER_DOCKER.md)
 - Captures textuelles (arborescences + schemas de flux):
   - [`docs/CAPTURES_DOSSIERS_ET_SOUS_DOSSIERS.md`](docs/CAPTURES_DOSSIERS_ET_SOUS_DOSSIERS.md)
 - Reference exhaustive fichier par fichier:

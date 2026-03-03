@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: next-backend-kya
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/sante
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: MAINTENANCE_ACTIVE
+        value: "false"
+      - key: APPLIQUER_PRISMA_PUSH
+        value: "true"

@@ -46,6 +46,12 @@ export const DOCUMENTS_SITE: TypeDocumentSite[] = [
     resume: 'Structure recommandee de la table de configuration en base.',
   },
   {
+    slug: 'deploiement-render',
+    titre: 'Deploiement Render Docker',
+    fichier: 'DEPLOIEMENT_RENDER_DOCKER.md',
+    resume: 'Guide complet pour deployer le backend sur Render.',
+  },
+  {
     slug: 'captures',
     titre: 'Captures arborescences et flux',
     fichier: 'CAPTURES_DOSSIERS_ET_SOUS_DOSSIERS.md',
