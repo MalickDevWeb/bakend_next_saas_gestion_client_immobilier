@@ -1,44 +1,86 @@
 .page {
+  --fond-principal: #eff4ff;
+  --fond-carte: #ffffff;
+  --bordure: #cdd8f5;
+  --titre: #102154;
+  --texte: #30427c;
+  --accent: #2b3ecf;
+  position: relative;
+  overflow: hidden;
   min-height: 100vh;
-  padding: 24px;
-  background: linear-gradient(180deg, #f8fbff 0%, #f2f6ff 100%);
-  color: #0f1f45;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
-    'Apple Color Emoji', 'Segoe UI Emoji';
+  padding: clamp(14px, 2.4vw, 28px);
+  background:
+    radial-gradient(circle at 14% 8%, #fff4d8 0%, transparent 32%),
+    radial-gradient(circle at 82% 14%, #ddf4ff 0%, transparent 36%),
+    linear-gradient(180deg, #f7fbff 0%, var(--fond-principal) 100%);
+  color: var(--titre);
+  font-family: var(--police-texte), 'Segoe UI', sans-serif;
 }
 
 .entete {
-  max-width: 1200px;
+  position: relative;
+  z-index: 1;
+  max-width: 1220px;
   margin: 0 auto 16px auto;
-  padding: 22px;
-  border-radius: 16px;
-  border: 1px solid #d7dff0;
-  background: #ffffff;
+  padding: clamp(16px, 2.3vw, 26px);
+  border-radius: 20px;
+  border: 1px solid var(--bordure);
+  background: var(--fond-carte);
+  box-shadow:
+    0 20px 42px rgba(16, 33, 84, 0.11),
+    0 8px 18px rgba(16, 33, 84, 0.08);
 }
 
 .surTitre {
   margin: 0 0 8px 0;
-  letter-spacing: 0.16em;
-  font-size: 12px;
+  letter-spacing: 0.2em;
+  font-size: 11px;
   font-weight: 700;
-  color: #3658b4;
+  color: #3750b7;
+  text-transform: uppercase;
 }
 
 .entete h1 {
-  margin: 0 0 8px 0;
-  font-size: clamp(24px, 4vw, 36px);
+  margin: 0 0 10px 0;
+  font-family: var(--police-titre), 'Segoe UI', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.05;
 }
 
 .entete p {
   margin: 0 0 8px 0;
-  color: #27427c;
+  color: var(--texte);
+  font-size: 17px;
+}
+
+.meta {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
 
 .chemin {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
-    'Courier New', monospace;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #c8d8ff;
+  background: #f3f8ff;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   font-size: 12px;
-  color: #40588f;
+  color: #4460a6;
+}
+
+.puce {
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #d8e2ff;
+  background: #ffffff;
+  color: #40548f;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .actions {
@@ -55,47 +97,55 @@
   justify-content: center;
   text-decoration: none;
   font-weight: 700;
-  border-radius: 10px;
-  padding: 9px 14px;
+  border-radius: 12px;
+  padding: 10px 14px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .boutonPrimaire {
-  background: #1538a2;
+  background: linear-gradient(135deg, #273fd2 0%, #4f2fd0 100%);
   color: #ffffff;
-  border: 1px solid #1538a2;
+  border: 1px solid #273fd2;
+  box-shadow: 0 10px 18px rgba(44, 62, 204, 0.22);
 }
 
 .boutonSecondaire {
   background: #ffffff;
-  color: #1538a2;
-  border: 1px solid #a9bef0;
+  color: #253ea9;
+  border: 1px solid #b4c4f4;
+}
+
+.boutonPrimaire:hover,
+.boutonSecondaire:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(18, 35, 90, 0.14);
 }
 
 .contenu {
-  max-width: 1200px;
+  position: relative;
+  z-index: 1;
+  max-width: 1220px;
   margin: 0 auto;
-  padding: 18px;
-  border-radius: 16px;
-  border: 1px solid #d7dff0;
+  padding: clamp(14px, 2vw, 20px);
+  border-radius: 20px;
+  border: 1px solid var(--bordure);
   background: #ffffff;
+  box-shadow:
+    0 20px 42px rgba(16, 33, 84, 0.08),
+    0 8px 18px rgba(16, 33, 84, 0.06);
 }
 
 .contenu pre {
   margin: 0;
   white-space: pre-wrap;
   word-break: break-word;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
-    'Courier New', monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   font-size: 13px;
-  line-height: 1.55;
-  color: #0f1f45;
+  line-height: 1.62;
+  color: #11235a;
 }
 
 @media (max-width: 700px) {
-  .page {
-    padding: 12px;
-  }
-
   .entete,
   .contenu {
     padding: 14px;

@@ -73,6 +73,8 @@ Le script de demarrage:
 
 - `GET /api/sante`
 - `GET /api/documentation`
+- `GET /` (redirige vers `/docs`)
+- `GET /swagger` (alias Swagger UI)
 - `GET /documentation`
 - `GET /docs`
 
@@ -81,4 +83,3 @@ Le script de demarrage:
 - La base est Neon PostgreSQL (pas json-server)
 - Aucune colonne JSON n'est utilisee pour `ConfigurationSysteme`
 - Pour production stricte, prefere migrations (`prisma migrate deploy`) au lieu de `db push`
-

@@ -40,6 +40,8 @@ export default async function PageDocument({ params }: TypeProps) {
   }
 
   const contenu = await chargerContenuDocument(document.fichier)
+  const nombreLignes = contenu.split('\n').length
+  const tailleKo = Math.max(1, Math.round(Buffer.byteLength(contenu, 'utf8') / 1024))
 
   return (
     <main className={styles.page}>
@@ -47,7 +49,11 @@ export default async function PageDocument({ params }: TypeProps) {
         <p className={styles.surTitre}>DOCUMENTATION DETAILLEE</p>
         <h1>{document.titre}</h1>
         <p>{document.resume}</p>
-        <p className={styles.chemin}>Source: docs/{document.fichier}</p>
+        <div className={styles.meta}>
+          <p className={styles.chemin}>Source: docs/{document.fichier}</p>
+          <p className={styles.puce}>{nombreLignes} lignes</p>
+          <p className={styles.puce}>{tailleKo} Ko</p>
+        </div>
         <div className={styles.actions}>
           <Link href="/docs" className={styles.boutonSecondaire}>Retour portail docs</Link>
           <Link href="/documentation" className={styles.boutonPrimaire}>Swagger API</Link>

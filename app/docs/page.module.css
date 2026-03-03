@@ -1,48 +1,123 @@
 .page {
+  --fond-principal: #eff4ff;
+  --fond-carte: #ffffff;
+  --fond-carte-secondaire: #f6f9ff;
+  --bordure: #cdd8f5;
+  --titre: #0f1f53;
+  --texte: #2e3f75;
+  --accent: #2b3ecf;
+  --accent-2: #0da0cf;
+  position: relative;
+  overflow: hidden;
   min-height: 100vh;
-  padding: 32px;
+  padding: clamp(16px, 3vw, 36px);
   background:
-    radial-gradient(circle at 15% 15%, #fef7e6 0%, transparent 35%),
-    radial-gradient(circle at 85% 20%, #e7f6ff 0%, transparent 40%),
-    #f7fafc;
-  color: #0f1f45;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
-    'Apple Color Emoji', 'Segoe UI Emoji';
+    radial-gradient(circle at 12% 10%, #fff4d8 0%, transparent 34%),
+    radial-gradient(circle at 84% 16%, #dff5ff 0%, transparent 36%),
+    linear-gradient(180deg, #f7fbff 0%, var(--fond-principal) 100%);
+  color: var(--titre);
+  font-family: var(--police-texte), 'Segoe UI', sans-serif;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 999px;
+  right: -220px;
+  top: -240px;
+  background: radial-gradient(circle, rgba(43, 62, 207, 0.2) 0%, rgba(43, 62, 207, 0) 68%);
+  pointer-events: none;
+}
+
+.page::after {
+  content: '';
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 999px;
+  left: -240px;
+  bottom: -260px;
+  background: radial-gradient(circle, rgba(13, 160, 207, 0.2) 0%, rgba(13, 160, 207, 0) 70%);
+  pointer-events: none;
 }
 
 .hero {
-  max-width: 1100px;
+  position: relative;
+  z-index: 1;
+  max-width: 1220px;
   margin: 0 auto 24px auto;
-  padding: 28px;
-  border-radius: 20px;
-  border: 1px solid #d8e0ef;
-  background: linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%);
-  box-shadow: 0 10px 30px rgba(8, 31, 88, 0.08);
+  padding: clamp(18px, 2.4vw, 30px);
+  border-radius: 26px;
+  border: 1px solid var(--bordure);
+  background:
+    linear-gradient(130deg, rgba(255, 255, 255, 0.98) 0%, rgba(243, 248, 255, 0.98) 100%);
+  box-shadow:
+    0 26px 60px rgba(18, 35, 90, 0.12),
+    0 8px 22px rgba(18, 35, 90, 0.08);
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 16px;
+  animation: entrer 0.45s ease;
 }
 
 .surTitre {
   margin: 0 0 8px 0;
-  letter-spacing: 0.18em;
-  font-size: 12px;
+  letter-spacing: 0.2em;
+  font-size: 11px;
   font-weight: 700;
-  color: #3a5bbf;
+  color: #344ab9;
+  text-transform: uppercase;
 }
 
 .hero h1 {
-  margin: 0 0 12px 0;
-  font-size: clamp(28px, 5vw, 44px);
-  line-height: 1.1;
+  margin: 0 0 10px 0;
+  font-family: var(--police-titre), 'Segoe UI', sans-serif;
+  font-size: clamp(30px, 4.8vw, 58px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
 }
 
 .hero p {
-  margin: 0 0 10px 0;
-  color: #1f356f;
+  margin: 0 0 12px 0;
+  max-width: 66ch;
+  color: var(--texte);
+  font-size: clamp(17px, 2vw, 20px);
+}
+
+.stats {
+  margin: 14px 0 2px 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stat {
+  border-radius: 13px;
+  border: 1px solid #d4def7;
+  background: var(--fond-carte-secondaire);
+  padding: 10px 12px;
+}
+
+.statValeur {
+  margin: 0;
+  font-family: var(--police-titre), 'Segoe UI', sans-serif;
+  font-size: clamp(18px, 2.4vw, 30px);
+  color: #0d1d4f;
+  font-weight: 800;
+}
+
+.statLabel {
+  margin: 2px 0 0 0;
+  color: #53649a;
+  font-size: 13px;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   margin-top: 16px;
 }
 
@@ -54,78 +129,189 @@
   justify-content: center;
   text-decoration: none;
   font-weight: 700;
-  border-radius: 10px;
-  transition: transform 120ms ease;
+  border-radius: 12px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.2s ease;
 }
 
 .boutonPrimaire {
-  padding: 10px 16px;
-  background: #1639a5;
+  padding: 11px 16px;
+  background: linear-gradient(135deg, #263ed3 0%, #4f2fd0 100%);
   color: #ffffff;
-  border: 1px solid #1639a5;
+  border: 1px solid #263ed3;
+  box-shadow: 0 10px 18px rgba(44, 62, 204, 0.22);
 }
 
 .boutonSecondaire {
-  padding: 10px 16px;
+  padding: 11px 16px;
   background: #ffffff;
-  color: #1639a5;
-  border: 1px solid #acc0f2;
+  color: #253ea9;
+  border: 1px solid #b4c4f4;
 }
 
 .boutonPrimaire:hover,
 .boutonSecondaire:hover,
 .lienCarte:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(18, 35, 90, 0.14);
+}
+
+.heroAside {
+  border-radius: 16px;
+  border: 1px solid #d7e0f9;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f9ff 100%);
+  padding: 16px;
+}
+
+.heroAside h2 {
+  margin: 0 0 8px 0;
+  font-family: var(--police-titre), 'Segoe UI', sans-serif;
+  font-size: 20px;
+}
+
+.parcours {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.etape {
+  border: 1px solid #d9e3ff;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px 10px 10px 12px;
+}
+
+.etapeTitre {
+  margin: 0 0 6px 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: #152f93;
+}
+
+.etapeLien {
+  display: inline-flex;
+  text-decoration: none;
+  color: #253ea9;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.etapeLien:hover {
+  text-decoration: underline;
 }
 
 .section {
-  max-width: 1100px;
+  position: relative;
+  z-index: 1;
+  max-width: 1220px;
   margin: 0 auto 20px auto;
-  padding: 24px;
-  border-radius: 16px;
-  border: 1px solid #d8e0ef;
+  padding: clamp(18px, 2.1vw, 24px);
+  border-radius: 20px;
+  border: 1px solid var(--bordure);
   background: #ffffff;
+  box-shadow:
+    0 18px 40px rgba(19, 37, 93, 0.08),
+    0 6px 16px rgba(19, 37, 93, 0.06);
+  animation: entrer 0.55s ease;
 }
 
-.section h2 {
-  margin: 0 0 14px 0;
-  font-size: clamp(20px, 3.5vw, 30px);
+.sectionHeader {
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  font-family: var(--police-titre), 'Segoe UI', sans-serif;
+  font-size: clamp(25px, 3.8vw, 40px);
+  letter-spacing: -0.015em;
+}
+
+.sectionHeader p {
+  margin: 0;
+  color: #4c5d95;
+  font-size: 15px;
+  max-width: 60ch;
 }
 
 .grille {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
 }
 
 .carte {
+  position: relative;
+  overflow: hidden;
   padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #d9e3ff;
-  background: #f9fbff;
+  border-radius: 16px;
+  border: 1px solid #d8e3ff;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  transition: transform 0.18s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.carte::after {
+  content: '';
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 999px;
+  right: -52px;
+  top: -52px;
+  background: radial-gradient(circle, rgba(77, 120, 255, 0.16) 0%, rgba(77, 120, 255, 0) 76%);
+  pointer-events: none;
+}
+
+.carte:hover {
+  transform: translateY(-4px);
+  border-color: #afc4ff;
+  box-shadow: 0 16px 24px rgba(17, 35, 92, 0.14);
+}
+
+.indiceCarte {
+  width: fit-content;
+  margin-bottom: 10px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #bfd0ff;
+  background: #f1f6ff;
+  color: #3552b7;
+  font-family: var(--police-titre), 'Segoe UI', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .carte h3 {
   margin: 0 0 8px 0;
+  font-family: var(--police-titre), 'Segoe UI', sans-serif;
+  font-size: clamp(21px, 2.2vw, 28px);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
 }
 
 .carte p {
   margin: 0 0 10px 0;
-  color: #304a87;
+  color: #33497f;
+  font-size: 16px;
 }
 
 .chemin {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
-    'Courier New', monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   font-size: 12px;
-  color: #3e5590;
+  color: #4460a6;
 }
 
 .lienCarte {
-  padding: 8px 12px;
+  padding: 9px 12px;
   background: #ffffff;
-  color: #1639a5;
-  border: 1px solid #bdd0ff;
+  color: #2642ad;
+  border: 1px solid #bfd2ff;
 }
 
 .capture {
@@ -133,23 +319,45 @@
   padding: 16px;
   max-height: 460px;
   overflow: auto;
-  border-radius: 10px;
-  border: 1px solid #d8e0ef;
-  background: #0f1f45;
-  color: #f3f7ff;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
-    'Courier New', monospace;
+  border-radius: 14px;
+  border: 1px solid #273d87;
+  background:
+    linear-gradient(180deg, rgba(25, 46, 112, 0.95) 0%, rgba(14, 31, 78, 0.95) 100%);
+  color: #ecf3ff;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   font-size: 12px;
-  line-height: 1.45;
+  line-height: 1.5;
+}
+
+.captureActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@keyframes entrer {
+  0% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @media (max-width: 700px) {
-  .page {
-    padding: 16px;
+  .stats {
+    grid-template-columns: 1fr;
   }
 
-  .hero,
-  .section {
-    padding: 16px;
+  .carte h3 {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
   }
 }
