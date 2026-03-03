@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ConfigurationSysteme {
+  id            String                   @id @default(cuid())
+  cle           String
+  valeurTexte   String?
+  valeurNombre  Float?
+  valeurBooleen Boolean?
+  typeValeur    TypeValeurConfiguration
+  portee        TypePorteeConfiguration  @default(GLOBAL)
+  adminId       String?
+  scopeCle      String                   @default("GLOBAL")
+  origine       TypeOrigineConfiguration @default(DEFAULT)
+  verrouille    Boolean                  @default(false)
+  creeLe        DateTime                 @default(now())
+  misAJourLe    DateTime                 @updatedAt
+
+  @@unique([cle, scopeCle])
+  @@index([portee, adminId])
+  @@map("configuration_systeme")
+}
+
+enum TypeValeurConfiguration {
+  STRING
+  NUMBER
+  BOOLEAN
+}
+
+enum TypePorteeConfiguration {
+  GLOBAL
+  ADMIN
+}
+
+enum TypeOrigineConfiguration {
+  DEFAULT
+  CUSTOM
+}
