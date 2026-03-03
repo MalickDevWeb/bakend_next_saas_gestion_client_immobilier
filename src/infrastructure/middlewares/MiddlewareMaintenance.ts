@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { InterfaceMiddlewareHttp } from '@/src/infrastructure/middlewares/InterfaceMiddlewareHttp'
+import { CODE_HTTP } from '@/src/messages'
 
 export class MiddlewareMaintenance implements InterfaceMiddlewareHttp {
   private readonly routesAutorisees = new Set(['/api/sante', '/api/documentation'])
@@ -19,7 +20,7 @@ export class MiddlewareMaintenance implements InterfaceMiddlewareHttp {
       {
         message: 'Maintenance active. Veuillez reessayer plus tard.',
       },
-      { status: 503 }
+      { status: CODE_HTTP.SERVICE_INDISPONIBLE }
     )
   }
 }

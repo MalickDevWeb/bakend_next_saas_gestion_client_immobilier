@@ -1,4 +1,4 @@
-import { ServiceSante } from '@/src/application/services/ServiceSante'
+import { ServiceSante } from '@/src/application/services/sante/ServiceSante'
 import { InterfaceValidateurEntree } from '@/src/coeur/interfaces/InterfaceValidateurEntree'
 
 export class ControleurSante {

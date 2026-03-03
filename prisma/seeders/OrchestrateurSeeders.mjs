@@ -1,9 +1,13 @@
 import { SeederConfigurationSysteme } from './SeederConfigurationSysteme.mjs'
+import { SeederSecuriteAuthentification } from './SeederSecuriteAuthentification.mjs'
 
 export class OrchestrateurSeeders {
   constructor(prisma) {
     this.prisma = prisma
-    this.seeders = [new SeederConfigurationSysteme(prisma)]
+    this.seeders = [
+      new SeederConfigurationSysteme(prisma),
+      new SeederSecuriteAuthentification(prisma),
+    ]
   }
 
   async executerTous() {

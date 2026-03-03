@@ -1,4 +1,4 @@
-import { EntiteUtilisateur } from '@/src/domaine/entites/EntiteUtilisateur'
+import { EntiteUtilisateur } from '@/src/domaine/entites/utilisateurs/EntiteUtilisateur'
 
 export interface InterfaceReferentielUtilisateur {
   sauvegarder(utilisateur: EntiteUtilisateur): Promise<EntiteUtilisateur>

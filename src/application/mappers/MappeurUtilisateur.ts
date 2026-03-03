@@ -1,5 +1,5 @@
-import { DtoReponseUtilisateur } from '@/src/application/dtos/DtoReponseUtilisateur'
-import { EntiteUtilisateur } from '@/src/domaine/entites/EntiteUtilisateur'
+import { DtoReponseUtilisateur } from '@/src/application/dtos/utilisateurs/DtoUtilisateurs'
+import { EntiteUtilisateur } from '@/src/domaine/entites/utilisateurs/EntiteUtilisateur'
 
 export class MappeurUtilisateur {
   public static versDtoReponse(entite: EntiteUtilisateur): DtoReponseUtilisateur {

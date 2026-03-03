@@ -1,6 +1,6 @@
-import { BuilderEntiteUtilisateur } from '@/src/domaine/builders/BuilderEntiteUtilisateur'
+import { BuilderEntiteUtilisateur } from '@/src/domaine/builders/utilisateurs/BuilderEntiteUtilisateur'
 import { EnumerationRoleUtilisateur } from '@/src/domaine/enumerations/EnumerationRoleUtilisateur'
-import { EntiteUtilisateur } from '@/src/domaine/entites/EntiteUtilisateur'
+import { EntiteUtilisateur } from '@/src/domaine/entites/utilisateurs/EntiteUtilisateur'
 
 export class FabriqueUtilisateur {
   public static creer(

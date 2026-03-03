@@ -27,6 +27,110 @@ model ConfigurationSysteme {
   @@map("configuration_systeme")
 }
 
+model Utilisateur {
+  id                     String                   @id @default(cuid())
+  nomUtilisateur         String                   @unique
+  email                  String                   @unique
+  motDePasseHache        String
+  role                   TypeRoleUtilisateur
+  statut                 TypeStatutUtilisateur    @default(ACTIF)
+  superAdminTotpActive   Boolean                  @default(false)
+  superAdminTotpSecret   String?
+  creeLe                 DateTime                 @default(now())
+  misAJourLe             DateTime                 @updatedAt
+  sessions               SessionAuthentification[]
+  tentatives             TentativeConnexion[]
+  audits                 JournalAudit[]
+  permissions            PermissionUtilisateur[]
+
+  @@index([role, statut])
+  @@map("utilisateurs")
+}
+
+model SessionAuthentification {
+  id                        String                  @id @default(cuid())
+  utilisateurId             String
+  jetonAccesJti             String                  @unique
+  jetonAccesExpireLe        DateTime
+  csrfToken                 String
+  adresseIp                 String?
+  agentUtilisateur          String?
+  secondeAuthValideeLe      DateTime?
+  expireLe                  DateTime
+  revoqueeLe                DateTime?
+  compromissionDetecteeLe   DateTime?
+  creeLe                    DateTime                @default(now())
+  misAJourLe                DateTime                @updatedAt
+  utilisateur               Utilisateur             @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  jetonsRefresh             JetonRefresh[]
+
+  @@index([utilisateurId, expireLe])
+  @@index([revoqueeLe, compromissionDetecteeLe])
+  @@map("sessions_authentification")
+}
+
+model JetonRefresh {
+  id              String         @id @default(cuid())
+  sessionId       String
+  hachageToken    String         @unique
+  expireLe        DateTime
+  utiliseLe       DateTime?
+  revoqueLe       DateTime?
+  remplaceParId   String?
+  creeLe          DateTime       @default(now())
+  session         SessionAuthentification @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  remplacePar     JetonRefresh?  @relation("rotation_jetons_refresh", fields: [remplaceParId], references: [id])
+  jetonsRemplaces JetonRefresh[] @relation("rotation_jetons_refresh")
+
+  @@index([sessionId, expireLe])
+  @@index([revoqueLe, utiliseLe])
+  @@map("jetons_refresh")
+}
+
+model TentativeConnexion {
+  id             String                  @id @default(cuid())
+  identifiant    String
+  adresseIp      String
+  succes         Boolean
+  type           TypeTentativeConnexion
+  creeLe         DateTime                @default(now())
+  utilisateurId  String?
+  utilisateur    Utilisateur?            @relation(fields: [utilisateurId], references: [id], onDelete: SetNull)
+
+  @@index([identifiant, adresseIp, type, creeLe])
+  @@map("tentatives_connexion")
+}
+
+model JournalAudit {
+  id              String       @id @default(cuid())
+  utilisateurId   String?
+  action          String
+  statut          String
+  details         String?
+  adresseIp       String?
+  agentUtilisateur String?
+  creeLe          DateTime     @default(now())
+  utilisateur     Utilisateur? @relation(fields: [utilisateurId], references: [id], onDelete: SetNull)
+
+  @@index([action, statut, creeLe])
+  @@index([utilisateurId, creeLe])
+  @@map("journaux_audit")
+}
+
+model PermissionUtilisateur {
+  id             String       @id @default(cuid())
+  utilisateurId  String
+  code           String
+  autorise       Boolean      @default(false)
+  creeLe         DateTime     @default(now())
+  misAJourLe     DateTime     @updatedAt
+  utilisateur    Utilisateur  @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+
+  @@unique([utilisateurId, code])
+  @@index([code, autorise])
+  @@map("permissions_utilisateur")
+}
+
 enum TypeValeurConfiguration {
   STRING
   NUMBER
@@ -41,4 +145,21 @@ enum TypePorteeConfiguration {
 enum TypeOrigineConfiguration {
   DEFAULT
   CUSTOM
+}
+
+enum TypeRoleUtilisateur {
+  SUPER_ADMIN
+  ADMIN
+}
+
+enum TypeStatutUtilisateur {
+  ACTIF
+  SUSPENDU
+  EN_ATTENTE
+}
+
+enum TypeTentativeConnexion {
+  LOGIN
+  SECOND_AUTH
+  REFRESH
 }

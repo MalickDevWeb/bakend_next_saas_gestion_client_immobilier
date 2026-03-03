@@ -8,6 +8,21 @@ Ce document liste **chaque fichier du projet** (hors `node_modules`, `.next`, `.
 
 > Astuce: utilise ce document comme checklist pour reconstruire la meme architecture sur un nouveau projet.
 
+## Addendum Authentification 100 Couches (mise a jour)
+
+Les fichiers auth suivants ont ete ajoutes/actives pour respecter le flux complet Repository + DAO + Domaine:
+
+- `src/domaine/interfaces/repository/InterfaceRepositoryAuthentification.ts`
+- `src/infrastructure/repositories/RepositoryAuthentificationAbstrait.ts`
+- `src/infrastructure/repositories/prisma/RepositoryAuthentificationPrisma.ts`
+- `src/infrastructure/repositories/memoire/RepositoryAuthentificationMemoire.ts`
+- `src/infrastructure/dao/memoire/DaoAuthentificationMemoire.ts`
+- `src/application/fabriques/FabriqueSessionAuthentification.ts`
+- `src/application/fabriques/FabriqueJetonRefresh.ts`
+- entites/builders/objets valeur auth dedies (session, refresh, tentative, utilisateur auth)
+
+Consulter `docs/AUTHENTIFICATION_100_COUCHES.md` pour le detail fichier par fichier de ce lot.
+
 | Fichier | Couche | Role (explication simple) | Quand le modifier | Mode reproduction |
 |---|---|---|---|---|
 | `.dockerignore` | Deploiement Docker | Exclut les fichiers inutiles/secrets du contexte Docker. | Quand nouveaux fichiers doivent etre ignores au build. | Creer un `.dockerignore` strict. |
@@ -80,7 +95,7 @@ Ce document liste **chaque fichier du projet** (hors `node_modules`, `.next`, `.
 | `src/application/exceptions/index.ts` | Application exceptions | Barrel export des exceptions applicatives. | Quand une exception applicative est ajoutee. | Centraliser les exports via `index.ts`. |
 | `src/application/fabriques/FabriqueUtilisateur.ts` | Application fabrique | Construit une entite valide via builder(s). | Quand la logique de creation metier change. | Creer `FabriqueXxx` pour centraliser la creation. |
 | `src/application/mappers/MappeurUtilisateur.ts` | Application mapper | Convertit entite vers DTO (et inverse si besoin). | Quand format API ou entite evolue. | Creer `MappeurXxx` statique. |
-| `src/application/services/ServiceSante.ts` | Application service | Orchestre les cas d usage (sans details HTTP). | Quand regles de traitement changent. | Creer `ServiceXxx` injecte par interfaces. |
+| `src/application/services/sante/ServiceSante.ts` | Application service | Orchestre les cas d usage (sans details HTTP). | Quand regles de traitement changent. | Creer `ServiceXxx` injecte par interfaces. |
 | `src/application/validateurs/ValidateurUtilisateur.ts` | Application validateur | Definit l intention de validation cote use-case. | Quand contraintes de saisie evoluent. | Creer une classe/contrat de validation metier. |
 | `src/coeur/configuration/ConfigurationApplication.ts` | Coeur configuration | Lit et expose la configuration globale de l app. | Quand de nouvelles variables globales sont requises. | Centraliser acces config dans une seule classe. |
 | `src/coeur/conteneur/ConteneurDependances.ts` | Coeur DI | Assemble et injecte toutes les dependances. | Quand tu ajoutes un nouveau service/controleur/adaptateur. | Toujours avoir un conteneur unique de cablage. |

@@ -41,7 +41,7 @@ Ce document explique chaque fichier du projet `next-backend`, son role et commen
 | Fichier | Role | Comment l'utiliser |
 |---|---|---|
 | `src/controleurs/ControleurSante.ts` | Controleur API Sante | Recoit l'entree brute, valide via interface, delegue au service. |
-| `src/application/services/ServiceSante.ts` | Logique metier Sante | Construit le payload de sante, teste BD via interface et applique mode verbeux. |
+| `src/application/services/sante/ServiceSante.ts` | Logique metier Sante | Construit le payload de sante, teste BD via interface et applique mode verbeux. |
 
 ### Flux d'execution actuel
 
@@ -182,4 +182,3 @@ npx tsc --noEmit
   - Query optionnelle: `?verbeux=true`
 - `GET /api/documentation`
 - `GET /documentation` (UI Swagger)
-

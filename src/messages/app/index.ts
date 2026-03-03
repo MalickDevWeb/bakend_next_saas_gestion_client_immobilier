@@ -1,4 +1,5 @@
 export * from './actions'
+export * from './code.http'
 export * from './confirmations'
 export * from './entities'
 export * from './errors'

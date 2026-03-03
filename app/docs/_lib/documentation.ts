@@ -34,6 +34,18 @@ export const DOCUMENTS_SITE: TypeDocumentSite[] = [
     resume: 'Ou mettre chaque chose, pourquoi, et quand modifier.',
   },
   {
+    slug: 'securite-authentification-90',
+    titre: 'Securite authentification 90',
+    fichier: 'SECURITE_AUTHENTIFICATION_90.md',
+    resume: '2FA TOTP, refresh rotation, CSRF, RBAC, audit, headers et CORS strict.',
+  },
+  {
+    slug: 'authentification-100-couches',
+    titre: 'Authentification 100 couches',
+    fichier: 'AUTHENTIFICATION_100_COUCHES.md',
+    resume: 'Repository + DAO + domaine auth complet avec driver prisma ou memoire.',
+  },
+  {
     slug: 'seeders',
     titre: 'Guide complet des seeders',
     fichier: 'SEEDERS_GUIDE_COMPLET.md',

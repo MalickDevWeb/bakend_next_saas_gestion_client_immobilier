@@ -47,6 +47,16 @@ Exemples:
 - `EntiteLocation`
 - `EntitePaiementMensuel`
 
+Regroupement par module (structure active):
+- `src/domaine/entites/authentification/*`
+- `src/domaine/entites/administration/*`
+- `src/domaine/entites/locations/*`
+- `src/domaine/entites/systeme/*`
+- `src/domaine/entites/utilisateurs/*`
+
+Compatibilite:
+- les anciens chemins `src/domaine/entites/EntiteXxx.ts` restent disponibles comme fichiers pont (`export * from ...`) pour eviter de casser le code existant pendant la transition.
+
 ### 3.2 ObjetDomaine (equivalent Java: equals/toString)
 
 Fichier: `src/domaine/entites/ObjetDomaine.ts`
@@ -78,6 +88,12 @@ Exemples:
 - `ObjetValeurCniSenegal`
 - `ObjetValeurMontant`
 
+Regroupement par module:
+- `src/domaine/objets_valeur/authentification/*`
+- `src/domaine/objets_valeur/administration/*`
+- `src/domaine/objets_valeur/locations/*`
+- `src/domaine/objets_valeur/commun/*`
+
 ### 3.4 Builder d'entite
 
 Dossier: `src/domaine/builders`
@@ -92,6 +108,13 @@ Role:
 Base commune:
 - `BuilderAbstrait<T>`
 
+Regroupement par module:
+- `src/domaine/builders/authentification/*`
+- `src/domaine/builders/administration/*`
+- `src/domaine/builders/locations/*`
+- `src/domaine/builders/systeme/*`
+- `src/domaine/builders/utilisateurs/*`
+
 ### 3.5 Types et enumerations
 
 Dossiers:
@@ -101,6 +124,16 @@ Dossiers:
 Role:
 - typer strictement les etats metier
 - eliminer les magic strings
+
+Regroupement par module:
+- `src/domaine/types/authentification/*`
+- `src/domaine/types/administration/*`
+- `src/domaine/types/locations/*`
+- `src/domaine/types/systeme/*`
+- `src/domaine/types/utilisateurs/*`
+
+Nettoyage:
+- plus de fichiers `Type*.ts` a la racine de `src/domaine/types` (sauf `index.ts`).
 
 ## 4. Concepts application
 
@@ -119,7 +152,9 @@ Le DTO transporte les donnees entre couches.
 Il protege l'API de la structure interne des entites.
 
 Convention:
-- `DtoXxx.ts` par entite/cas d'usage.
+- DTO regroupes par module (`authentification`, `utilisateurs`, `administration`, `locations`, `systeme`).
+- un fichier de module peut contenir plusieurs DTO proches.
+- plus de DTO racine legacy: tout est reference via `src/application/dtos/<module>/...`.
 
 ### 4.3 Mapper
 
@@ -163,6 +198,15 @@ Dossiers:
 Role:
 - isoler l'acces persistance
 - standardiser CRUD minimal par entite
+
+Regroupement par module:
+- `src/domaine/interfaces/dao/authentification|administration|locations|systeme|utilisateurs`
+- `src/infrastructure/dao/memoire/authentification|administration|locations|systeme|utilisateurs`
+- `src/infrastructure/dao/prisma/authentification`
+
+Nettoyage:
+- les anciens fichiers DAO a la racine de `dao/` ont ete retires.
+- les imports doivent pointer directement vers les chemins modules ou vers les `index.ts` de module.
 
 Pourquoi DAO ici:
 - rendre le backend pret a remplacer la source de donnees sans impacter le domaine
@@ -372,3 +416,5 @@ Route Next.js
 - DAO n'est pas obligatoire pour tous les cas techniques (ex: health check).
 - Le domaine ne doit pas connaitre Next.js ni Prisma.
 - Les validations metier critiques doivent vivre dans objets valeur/builders/services, pas uniquement dans la route.
+- En mode strict, les entites portent elles-memes les objets valeur (pas seulement les builders).
+  - exemple applique: `src/domaine/entites/EntiteAdmin.ts`

@@ -21,3 +21,4 @@ export const NAV = MESSAGES.NAV
 export const ENTITIES = MESSAGES.ENTITIES
 export const MENU = MESSAGES.MENU
 export const VALIDATION = MESSAGES.VALIDATION
+export { CODE_HTTP } from './app/code.http'

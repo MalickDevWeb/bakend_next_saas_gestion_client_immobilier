@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { ErreurHttp } from '@/src/coeur/erreurs/ErreurHttp'
-import { ERRORS, t } from '@/src/messages'
+import { CODE_HTTP, ERRORS, t } from '@/src/messages'
 import {
   InterfaceValidateurEntree,
   ParametresRequeteSante,
@@ -22,7 +22,11 @@ export class ValidateurZod implements InterfaceValidateurEntree {
     const resultat = schemaRequeteSante.safeParse(entree)
 
     if (!resultat.success) {
-      throw new ErreurHttp(400, t(ERRORS.PARAMETRES_INVALIDES), resultat.error.flatten())
+      throw new ErreurHttp(
+        CODE_HTTP.MAUVAISE_REQUETE,
+        t(ERRORS.PARAMETRES_INVALIDES),
+        resultat.error.flatten()
+      )
     }
 
     return resultat.data
