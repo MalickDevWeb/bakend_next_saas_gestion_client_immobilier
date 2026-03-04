@@ -14,6 +14,7 @@ Ce document decrit la couche securite ajoutee au backend:
 
 Guide pedagogique complet (fichier par fichier + procedure de test complete):
 - `GUIDE_MODULE_AUTHENTIFICATION_DE_A_A_Z.md`
+- `GUIDE_MODULE_ADMIN_DE_A_A_Z.md` (fonctionnalites admin frontend/backend)
 
 ## 1. Endpoints implementes (avec Swagger)
 

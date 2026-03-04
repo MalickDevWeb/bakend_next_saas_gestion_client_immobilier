@@ -45,6 +45,25 @@ import { RepositoryAuthentificationPrisma } from '@/src/infrastructure/repositor
 import { RepositoryAuthentificationMemoire } from '@/src/infrastructure/repositories/memoire/RepositoryAuthentificationMemoire'
 import { FabriqueSessionAuthentification } from '@/src/application/fabriques/FabriqueSessionAuthentification'
 import { FabriqueJetonRefresh } from '@/src/application/fabriques/FabriqueJetonRefresh'
+import { ServiceAdministrationAdmin } from '@/src/application/services/administration/ServiceAdministrationAdmin'
+import { ControleurAdministrationAdmin } from '@/src/controleurs/ControleurAdministrationAdmin'
+import {
+  DaoPaiementAbonnementAdminMemoire,
+  DaoStatutAbonnementAdminMemoire,
+} from '@/src/infrastructure/dao/memoire/administration'
+import {
+  DaoClientMemoire,
+  DaoDocumentMemoire,
+  DaoPaiementCautionMemoire,
+  DaoTransactionPaiementMemoire,
+} from '@/src/infrastructure/dao/memoire/locations'
+import {
+  DaoExecutionImportMemoire,
+  DaoIpBloqueeMemoire,
+  DaoItemTravailMemoire,
+  DaoJournalAuditMemoire,
+  DaoNotificationMemoire,
+} from '@/src/infrastructure/dao/memoire/systeme'
 
 class ConteneurDependances {
   public configurationApplication = new ConfigurationApplication()
@@ -155,6 +174,34 @@ class ConteneurDependances {
   public controleurAuthContext = new ControleurAuthContext(
     this.serviceAuthentification,
     this.validateurAuthentification
+  )
+  public daoClientMemoire = new DaoClientMemoire()
+  public daoDocumentMemoire = new DaoDocumentMemoire()
+  public daoTransactionPaiementMemoire = new DaoTransactionPaiementMemoire()
+  public daoPaiementCautionMemoire = new DaoPaiementCautionMemoire()
+  public daoItemTravailMemoire = new DaoItemTravailMemoire()
+  public daoExecutionImportMemoire = new DaoExecutionImportMemoire()
+  public daoNotificationMemoire = new DaoNotificationMemoire()
+  public daoIpBloqueeMemoire = new DaoIpBloqueeMemoire()
+  public daoJournalAuditMemoire = new DaoJournalAuditMemoire()
+  public daoPaiementAbonnementAdminMemoire = new DaoPaiementAbonnementAdminMemoire()
+  public daoStatutAbonnementAdminMemoire = new DaoStatutAbonnementAdminMemoire()
+  public serviceAdministrationAdmin = new ServiceAdministrationAdmin(
+    this.serviceAuthentification,
+    this.daoClientMemoire,
+    this.daoDocumentMemoire,
+    this.daoTransactionPaiementMemoire,
+    this.daoPaiementCautionMemoire,
+    this.daoItemTravailMemoire,
+    this.daoExecutionImportMemoire,
+    this.daoNotificationMemoire,
+    this.daoIpBloqueeMemoire,
+    this.daoJournalAuditMemoire,
+    this.daoPaiementAbonnementAdminMemoire,
+    this.daoStatutAbonnementAdminMemoire
+  )
+  public controleurAdministrationAdmin = new ControleurAdministrationAdmin(
+    this.serviceAdministrationAdmin
   )
   public serviceSante = new ServiceSante(
     this.clientBaseDeDonnees,

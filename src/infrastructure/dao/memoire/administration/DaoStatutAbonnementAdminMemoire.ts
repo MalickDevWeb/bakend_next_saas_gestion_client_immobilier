@@ -13,7 +13,7 @@ export class DaoStatutAbonnementAdminMemoire implements InterfaceDaoStatutAbonne
   }
 
   public async sauvegarder(entite: EntiteStatutAbonnementAdmin): Promise<EntiteStatutAbonnementAdmin> {
-    const identifiant = (entite as { id?: string }).id
+    const identifiant = (entite as { adminId?: string }).adminId
     if (!identifiant) {
       throw new Error('Identifiant d\'entite manquant')
     }

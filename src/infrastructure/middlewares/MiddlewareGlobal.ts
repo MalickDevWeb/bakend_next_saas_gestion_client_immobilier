@@ -6,6 +6,25 @@ import { ServiceEntetesSecuriteHttp } from '@/src/infrastructure/securite/Servic
 import { ServiceProtectionCsrf } from '@/src/infrastructure/securite/ServiceProtectionCsrf'
 import { CODE_HTTP, ERRORS, t } from '@/src/messages'
 
+const PREFIXES_ROUTES_API = [
+  '/api',
+  '/authContext',
+  '/auth',
+  '/clients',
+  '/documents',
+  '/payments',
+  '/deposits',
+  '/work_items',
+  '/settings',
+  '/import_runs',
+  '/notifications',
+  '/undo-actions',
+  '/admin_payments',
+  '/audit_logs',
+  '/blocked_ips',
+  '/cloudinary',
+]
+
 export class MiddlewareGlobal {
   private readonly configurationSecurite: ConfigurationSecurite
   private readonly serviceCorsStrict: ServiceCorsStrict
@@ -26,10 +45,7 @@ export class MiddlewareGlobal {
     const chemin = requete.nextUrl.pathname
     const origine = requete.headers.get('origin') || ''
     const origineLocale = requete.nextUrl.origin
-    const estRouteApi =
-      chemin.startsWith('/api') ||
-      chemin.startsWith('/authContext') ||
-      chemin.startsWith('/auth')
+    const estRouteApi = PREFIXES_ROUTES_API.some((prefixe) => chemin.startsWith(prefixe))
 
     if (estRouteApi && requete.method === 'OPTIONS') {
       const reponsePreflight = this.serviceCorsStrict.traiterPreflight(requete)

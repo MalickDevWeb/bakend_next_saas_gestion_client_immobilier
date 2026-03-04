@@ -21,6 +21,11 @@ export class GenerateurSwagger {
             description: 'Login, session, refresh, logout, TOTP super-admin, seconde authentification.',
           },
           {
+            name: 'Administration Admin',
+            description:
+              'Fonctionnalites metier cote admin (clients, documents, paiements, parametres, notifications, imports, undo, audit).',
+          },
+          {
             name: 'Securite',
             description: 'Audit securite et controles RBAC serveur.',
           },
@@ -58,7 +63,7 @@ export class GenerateurSwagger {
           },
         },
       },
-      apis: ['./app/api/**/*.ts'],
+      apis: ['./app/api/**/*.ts', './src/documentation/**/*.ts'],
     })
   }
 }

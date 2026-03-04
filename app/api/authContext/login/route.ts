@@ -23,7 +23,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *             properties:
  *               identifiant:
  *                 type: string
- *                 description: Telephone ou email du compte (ex: 771234567, +221771234567, admin@kya.local)
+ *                 description: "Telephone ou email du compte (ex 771234567, +221771234567, admin@kya.local)"
  *               motDePasse:
  *                 type: string
  *                 format: password

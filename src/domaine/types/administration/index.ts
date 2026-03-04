@@ -1,4 +1,7 @@
 export * from './TypeMethodePaiementAbonnement'
 export * from './TypeModeAbonnementAdmin'
+export * from './TypeContexteAccesAdministrationAdmin'
+export * from './TypeMetadonneesActionAnnulationAdministrationAdmin'
+export * from './TypeRessourceAdministrationAdmin'
 export * from './TypeStatutAdmin'
 export * from './TypeStatutPaiementAbonnement'

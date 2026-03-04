@@ -8,6 +8,9 @@ Objectif de ce guide:
 
 Ce guide est volontairement detaille.
 
+Pour les fonctionnalites metier admin (clients, documents, paiements, settings, undo...),
+voir aussi: `GUIDE_MODULE_ADMIN_DE_A_A_Z.md`.
+
 ---
 
 ## 1. Idee simple (version enfant de 5 ans)

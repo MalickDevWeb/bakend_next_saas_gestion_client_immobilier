@@ -52,6 +52,13 @@ export const DOCUMENTS_SITE: TypeDocumentSite[] = [
     resume: 'Parcours complet, fichier par fichier, flux, tests Swagger et debug securite.',
   },
   {
+    slug: 'guide-module-admin',
+    titre: 'Guide module admin de A a Z',
+    fichier: 'GUIDE_MODULE_ADMIN_DE_A_A_Z.md',
+    resume:
+      'Fonctionnalites admin front/back, endpoints utilises, permissions, undo et procedure de test complete.',
+  },
+  {
     slug: 'seeders',
     titre: 'Guide complet des seeders',
     fichier: 'SEEDERS_GUIDE_COMPLET.md',
