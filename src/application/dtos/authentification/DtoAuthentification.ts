@@ -1,6 +1,6 @@
 export type DtoUtilisateurAuthentifie = {
   id: string
-  nomUtilisateur: string
+  telephone: string
   email: string
   role: string
   statut: string

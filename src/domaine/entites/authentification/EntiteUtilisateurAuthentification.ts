@@ -3,14 +3,14 @@ import { EntitePermissionUtilisateurAuth } from '@/src/domaine/entites/authentif
 import {
   ObjetValeurEmail,
   ObjetValeurIdentifiant,
-  ObjetValeurIdentifiantConnexion,
+  ObjetValeurTelephoneSenegal,
   ObjetValeurTexteNonVide,
 } from '@/src/domaine/objets_valeur'
 
 export class EntiteUtilisateurAuthentification extends ObjetDomaine {
   constructor(
     public readonly id: string,
-    public readonly nomUtilisateur: string,
+    public readonly telephone: string,
     public readonly email: string,
     public readonly motDePasseHache: string,
     public readonly role: string,
@@ -21,7 +21,7 @@ export class EntiteUtilisateurAuthentification extends ObjetDomaine {
   ) {
     super()
     new ObjetValeurIdentifiant(id)
-    new ObjetValeurIdentifiantConnexion(nomUtilisateur)
+    new ObjetValeurTelephoneSenegal(telephone)
     new ObjetValeurEmail(email)
     new ObjetValeurTexteNonVide(motDePasseHache, 'motDePasseHache', 500)
     new ObjetValeurTexteNonVide(role, 'role', 60)

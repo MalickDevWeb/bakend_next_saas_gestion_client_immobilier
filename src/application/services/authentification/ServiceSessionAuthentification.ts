@@ -44,7 +44,7 @@ export class ServiceSessionAuthentification {
       VALEURS_TYPE_TENTATIVE_CONNEXION_AUTHENTIFICATION.LOGIN
     )
 
-    const utilisateur = await this.repositoryAuthentification.rechercherUtilisateurParIdentifiantOuEmail(
+    const utilisateur = await this.repositoryAuthentification.rechercherUtilisateurParTelephoneOuEmail(
       identifiant
     )
 

@@ -23,7 +23,7 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
     const utilisateurExistant = await this.prisma.utilisateur.findFirst({
       where: {
         OR: [
-          { nomUtilisateur: donneesSuperAdmin.nomUtilisateur },
+          { telephone: donneesSuperAdmin.telephone },
           { email: donneesSuperAdmin.email },
         ],
       },
@@ -34,7 +34,7 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
     if (!utilisateurExistant) {
       const utilisateur = await this.prisma.utilisateur.create({
         data: {
-          nomUtilisateur: donneesSuperAdmin.nomUtilisateur,
+          telephone: donneesSuperAdmin.telephone,
           email: donneesSuperAdmin.email,
           motDePasseHache,
           role: 'SUPER_ADMIN',

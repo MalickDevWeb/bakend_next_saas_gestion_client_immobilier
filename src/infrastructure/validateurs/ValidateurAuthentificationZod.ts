@@ -8,11 +8,44 @@ import {
 import { t } from '@/src/messages'
 import { ERRORS } from '@/src/messages/app/errors'
 import { ExceptionAuthentificationValidation } from '@/src/application/exceptions'
+import { ObjetValeurTelephoneSenegal } from '@/src/domaine/objets_valeur'
 
-const schemaConnexion = z.object({
-  identifiant: z.string().trim().min(3).max(120),
-  motDePasse: z.string().min(8).max(256),
-})
+const schemaTelephoneConnexion = z
+  .string()
+  .trim()
+  .refine((valeur) => {
+    try {
+      new ObjetValeurTelephoneSenegal(valeur)
+      return true
+    } catch {
+      return false
+    }
+  })
+
+const schemaConnexion = z.union([
+  z.object({
+    identifiant: schemaTelephoneConnexion,
+    motDePasse: z.string().min(8).max(256),
+  }),
+  z
+    .object({
+      telephone: schemaTelephoneConnexion,
+      motDePasse: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({ identifiant: donnees.telephone, motDePasse: donnees.motDePasse })),
+  z
+    .object({
+      numero: schemaTelephoneConnexion,
+      motDePasse: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({ identifiant: donnees.numero, motDePasse: donnees.motDePasse })),
+  z
+    .object({
+      identifiant: schemaTelephoneConnexion,
+      password: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({ identifiant: donnees.identifiant, motDePasse: donnees.password })),
+])
 
 const schemaSecondeAuthentification = z.union([
   z
@@ -22,7 +55,7 @@ const schemaSecondeAuthentification = z.union([
     .transform((donnees) => ({ codeTotp: donnees.codeTotp })),
   z
     .object({
-      identifiant: z.string().trim().min(3).max(120),
+      identifiant: schemaTelephoneConnexion,
       motDePasse: z.string().min(8).max(256),
     })
     .transform((donnees) => ({
@@ -31,7 +64,7 @@ const schemaSecondeAuthentification = z.union([
     })),
   z
     .object({
-      numero: z.string().trim().min(3).max(120),
+      numero: schemaTelephoneConnexion,
       motDePasse: z.string().min(8).max(256),
     })
     .transform((donnees) => ({
@@ -40,11 +73,11 @@ const schemaSecondeAuthentification = z.union([
     })),
   z
     .object({
-      username: z.string().trim().min(3).max(120),
+      identifiant: schemaTelephoneConnexion,
       password: z.string().min(8).max(256),
     })
     .transform((donnees) => ({
-      identifiant: donnees.username,
+      identifiant: donnees.identifiant,
       motDePasse: donnees.password,
     })),
   z

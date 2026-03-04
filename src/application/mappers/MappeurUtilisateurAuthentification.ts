@@ -20,7 +20,7 @@ export class MappeurUtilisateurAuthentification {
 
     return {
       id: utilisateur.id,
-      nomUtilisateur: utilisateur.nomUtilisateur,
+      telephone: utilisateur.telephone,
       email: utilisateur.email,
       role,
       statut: utilisateur.statut,

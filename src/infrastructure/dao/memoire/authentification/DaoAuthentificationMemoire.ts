@@ -50,14 +50,14 @@ export class DaoAuthentificationMemoire implements InterfaceDaoAuthentification 
     })
   }
 
-  public async rechercherUtilisateurParIdentifiantOuEmail(
+  public async rechercherUtilisateurParTelephoneOuEmail(
     identifiant: string
   ): Promise<DonneesUtilisateurAuthentification | null> {
     const identifiantNormalise = String(identifiant || '').trim().toLowerCase()
     for (const utilisateur of this.utilisateurs.values()) {
-      const nomUtilisateur = utilisateur.nomUtilisateur.toLowerCase()
+      const telephone = utilisateur.telephone.toLowerCase()
       const email = utilisateur.email.toLowerCase()
-      if (nomUtilisateur === identifiantNormalise || email === identifiantNormalise) {
+      if (telephone === identifiantNormalise || email === identifiantNormalise) {
         return this.clonerUtilisateur(utilisateur)
       }
     }

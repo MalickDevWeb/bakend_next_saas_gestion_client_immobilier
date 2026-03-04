@@ -16,10 +16,10 @@ export class ServiceTotp implements InterfaceServiceTotp {
 
   public genererOtpAuthUrl(
     nomApplication: string,
-    nomUtilisateur: string,
+    identifiantCompte: string,
     secret: string
   ): string {
-    return authenticator.keyuri(nomUtilisateur, nomApplication, secret)
+    return authenticator.keyuri(identifiantCompte, nomApplication, secret)
   }
 
   public verifierCode(code: string, secret: string): boolean {

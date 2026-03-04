@@ -55,6 +55,8 @@ Objectif:
 - session et jetons revocables,
 - traces securite exploitables,
 - permissions serveur persistantes.
+- `Utilisateur.telephone` est unique et indexe pour les recherches d authentification.
+- `Utilisateur.email` reste unique.
 
 ## 3. Flux securite
 
@@ -79,7 +81,7 @@ Objectif:
 
 1. Initialisation: secret temporaire + `otpauth://`.
 2. Activation: verification code 6 chiffres.
-3. Seconde auth: verification TOTP ou verification par les memes identifiants que le login (`identifiant/numero + motDePasse`).
+3. Seconde auth: verification TOTP ou verification par les memes identifiants que le login (`telephone/identifiant + motDePasse`).
 4. TTL 2FA court (configurable, default 60s).
 
 ## 4. CSRF + CORS + headers
@@ -132,7 +134,7 @@ AUTH_COOKIE_SAME_SITE=strict
 CORS_ORIGINES_AUTORISEES=https://ton-frontend.com,https://admin.ton-frontend.com
 ALERTE_SECURITE_WEBHOOK_URL=
 AUTH_PERSISTENCE_DRIVER=prisma
-SEED_SUPER_ADMIN_UTILISATEUR=superadmin
+SEED_SUPER_ADMIN_TELEPHONE=771234567
 SEED_SUPER_ADMIN_EMAIL=superadmin@kya.local
 SEED_SUPER_ADMIN_MOT_DE_PASSE=SuperAdmin@123456
 ```

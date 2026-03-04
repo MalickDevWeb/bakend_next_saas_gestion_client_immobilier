@@ -16,12 +16,13 @@ import { TypeTentativeConnexionAuthentification } from '@/src/domaine/types/auth
 export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
   constructor(private readonly prisma: PrismaClient) {}
 
-  public async rechercherUtilisateurParIdentifiantOuEmail(
+  public async rechercherUtilisateurParTelephoneOuEmail(
     identifiant: string
   ): Promise<DonneesUtilisateurAuthentification | null> {
+    const identifiantNormalise = String(identifiant || '').trim()
     const utilisateur = await this.prisma.utilisateur.findFirst({
       where: {
-        OR: [{ nomUtilisateur: identifiant }, { email: identifiant }],
+        OR: [{ telephone: identifiantNormalise }, { email: identifiantNormalise }],
       },
       include: {
         permissions: {
@@ -317,7 +318,7 @@ export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
 
   private mapperUtilisateur(utilisateur: {
     id: string
-    nomUtilisateur: string
+    telephone: string
     email: string
     motDePasseHache: string
     role: string
@@ -328,7 +329,7 @@ export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
   }): DonneesUtilisateurAuthentification {
     return {
       id: utilisateur.id,
-      nomUtilisateur: utilisateur.nomUtilisateur,
+      telephone: utilisateur.telephone,
       email: utilisateur.email,
       motDePasseHache: utilisateur.motDePasseHache,
       role: utilisateur.role,
@@ -355,7 +356,7 @@ export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
     compromissionDetecteeLe: Date | null
     utilisateur: {
       id: string
-      nomUtilisateur: string
+      telephone: string
       email: string
       motDePasseHache: string
       role: string
@@ -401,7 +402,7 @@ export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
       compromissionDetecteeLe: Date | null
       utilisateur: {
         id: string
-        nomUtilisateur: string
+        telephone: string
         email: string
         motDePasseHache: string
         role: string

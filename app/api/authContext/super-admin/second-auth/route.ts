@@ -39,7 +39,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *                 properties:
  *                   identifiant:
  *                     type: string
- *                     description: Meme identifiant que le login (nom utilisateur, email ou numero)
+ *                     description: Meme identifiant que le login (telephone)
  *                   motDePasse:
  *                     type: string
  *                     format: password
@@ -54,15 +54,6 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *                     type: string
  *                     format: password
  *                     description: Meme mot de passe que le login
- *               - type: object
- *                 required: [username, password]
- *                 properties:
- *                   username:
- *                     type: string
- *                   password:
- *                     type: string
- *                     format: password
- *                     description: Alias legacy frontend
  *               - type: object
  *                 required: [motDePasse]
  *                 properties:
@@ -87,10 +78,15 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *               value:
  *                 identifiant: "771234567"
  *                 motDePasse: "PaMaT1732771719013"
+ *             mode_numero:
+ *               summary: Verification par numero + motDePasse
+ *               value:
+ *                 numero: "771234567"
+ *                 motDePasse: "PaMaT1732771719013"
  *             mode_password_frontend:
  *               summary: Verification compatible frontend
  *               value:
- *                 password: "PaMaT1732771719013"
+ *                 motDePasse: "PaMaT1732771719013"
  *     responses:
  *       200:
  *         description: Seconde authentification validee

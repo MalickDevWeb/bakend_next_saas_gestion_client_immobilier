@@ -29,7 +29,7 @@ model ConfigurationSysteme {
 
 model Utilisateur {
   id                     String                   @id @default(cuid())
-  nomUtilisateur         String                   @unique
+  telephone              String                   @unique @map("nomUtilisateur")
   email                  String                   @unique
   motDePasseHache        String
   role                   TypeRoleUtilisateur
@@ -43,6 +43,7 @@ model Utilisateur {
   audits                 JournalAudit[]
   permissions            PermissionUtilisateur[]
 
+  @@index([telephone])
   @@index([role, statut])
   @@map("utilisateurs")
 }

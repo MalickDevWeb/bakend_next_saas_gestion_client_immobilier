@@ -7,7 +7,7 @@ export type DonneesPermissionUtilisateurAuth = {
 
 export type DonneesUtilisateurAuthentification = {
   id: string
-  nomUtilisateur: string
+  telephone: string
   email: string
   motDePasseHache: string
   role: string
@@ -100,7 +100,7 @@ export type DonneesAuditSecurite = {
 }
 
 export interface InterfaceDaoAuthentification {
-  rechercherUtilisateurParIdentifiantOuEmail(
+  rechercherUtilisateurParTelephoneOuEmail(
     identifiant: string
   ): Promise<DonneesUtilisateurAuthentification | null>
 

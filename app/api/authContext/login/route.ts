@@ -22,7 +22,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *             properties:
  *               identifiant:
  *                 type: string
- *                 description: Nom utilisateur, email ou numero de telephone
+ *                 description: Telephone du compte (7XXXXXXXX ou +2217XXXXXXXX)
  *               motDePasse:
  *                 type: string
  *                 format: password
@@ -30,13 +30,13 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *             format_recommande:
  *               summary: Format recommande
  *               value:
- *                 identifiant: pmtfrommd
+ *                 identifiant: "771234567"
  *                 motDePasse: PaMaT1732771719013
- *             format_legacy:
- *               summary: Le backend accepte aussi username/password (legacy)
+ *             format_telephone:
+ *               summary: Alias explicite telephone
  *               value:
- *                 username: pmtfrommd
- *                 password: PaMaT1732771719013
+ *                 telephone: "771234567"
+ *                 motDePasse: PaMaT1732771719013
  *     responses:
  *       200:
  *         description: Utilisateur authentifie, cookies de session emis
@@ -52,7 +52,7 @@ export const POST = executerAvecGestionErreurs(
   async (requete: NextRequest) => {
     const corps = (await requete.json().catch(() => ({}))) as Record<string, unknown>
     const identifiant =
-      String(corps.identifiant || corps.username || corps.email || '').trim()
+      String(corps.identifiant || corps.telephone || corps.numero || corps.email || '').trim()
     const motDePasse = String(corps.motDePasse || corps.password || '')
 
     const resultat = await conteneurDependances.controleurAuthContext.connexion(

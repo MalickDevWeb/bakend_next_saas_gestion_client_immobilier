@@ -4,13 +4,13 @@ import { EntitePermissionUtilisateurAuth } from '@/src/domaine/entites/authentif
 import { EntiteUtilisateurAuthentification } from '@/src/domaine/entites/authentification/EntiteUtilisateurAuthentification'
 import {
   ObjetValeurEmail,
-  ObjetValeurIdentifiantConnexion,
+  ObjetValeurTelephoneSenegal,
   ObjetValeurTexteNonVide,
 } from '@/src/domaine/objets_valeur'
 
 export class BuilderEntiteUtilisateurAuthentification extends BuilderAbstrait<EntiteUtilisateurAuthentification> {
   private id?: string
-  private nomUtilisateur?: string
+  private telephone?: string
   private email?: string
   private motDePasseHache?: string
   private role?: string
@@ -24,9 +24,13 @@ export class BuilderEntiteUtilisateurAuthentification extends BuilderAbstrait<En
     return this
   }
 
-  public avecNomUtilisateur(valeur: string): this {
-    this.nomUtilisateur = valeur
+  public avecTelephone(valeur: string): this {
+    this.telephone = valeur
     return this
+  }
+
+  public avecNomUtilisateur(valeur: string): this {
+    return this.avecTelephone(valeur)
   }
 
   public avecEmail(valeur: string): this {
@@ -74,7 +78,7 @@ export class BuilderEntiteUtilisateurAuthentification extends BuilderAbstrait<En
   public construire(): EntiteUtilisateurAuthentification {
     return new EntiteUtilisateurAuthentification(
       this.exigerIdentifiant(this.id, 'id'),
-      new ObjetValeurIdentifiantConnexion(this.exiger(this.nomUtilisateur, 'nomUtilisateur')).valeur,
+      new ObjetValeurTelephoneSenegal(this.exiger(this.telephone, 'telephone')).valeur,
       new ObjetValeurEmail(this.exiger(this.email, 'email')).valeur,
       new ObjetValeurTexteNonVide(this.exiger(this.motDePasseHache, 'motDePasseHache'), 'motDePasseHache', 500)
         .valeur,

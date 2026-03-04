@@ -28,10 +28,10 @@ export abstract class RepositoryAuthentificationAbstrait
 {
   constructor(protected readonly daoAuthentification: InterfaceDaoAuthentification) {}
 
-  public async rechercherUtilisateurParIdentifiantOuEmail(
+  public async rechercherUtilisateurParTelephoneOuEmail(
     identifiant: string
   ): Promise<EntiteUtilisateurAuthentification | null> {
-    const donnees = await this.daoAuthentification.rechercherUtilisateurParIdentifiantOuEmail(
+    const donnees = await this.daoAuthentification.rechercherUtilisateurParTelephoneOuEmail(
       identifiant
     )
     if (!donnees) return null
@@ -185,7 +185,7 @@ export abstract class RepositoryAuthentificationAbstrait
 
     return new BuilderEntiteUtilisateurAuthentification()
       .avecId(donnees.id)
-      .avecNomUtilisateur(donnees.nomUtilisateur)
+      .avecTelephone(donnees.telephone)
       .avecEmail(donnees.email)
       .avecMotDePasseHache(donnees.motDePasseHache)
       .avecRole(donnees.role)

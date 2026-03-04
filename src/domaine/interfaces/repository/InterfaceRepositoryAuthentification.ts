@@ -9,7 +9,7 @@ import { TypeTentativeConnexionAuthentification } from '@/src/domaine/types/auth
 import { TypeTotpSuperAdminAuthentification } from '@/src/domaine/types/authentification/TypeTotpSuperAdminAuthentification'
 
 export interface InterfaceRepositoryAuthentification {
-  rechercherUtilisateurParIdentifiantOuEmail(
+  rechercherUtilisateurParTelephoneOuEmail(
     identifiant: string
   ): Promise<EntiteUtilisateurAuthentification | null>
 

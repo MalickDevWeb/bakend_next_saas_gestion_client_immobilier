@@ -48,7 +48,7 @@ export class ServiceTotpSuperAdminAuthentification {
     // OTPAuth URL est utilisee par Google Authenticator / Authy / etc.
     const otpAuthUrl = this.serviceTotp.genererOtpAuthUrl(
       nomApplication,
-      contexte.utilisateur.nomUtilisateur,
+      contexte.utilisateur.telephone,
       secret
     )
 
@@ -134,10 +134,10 @@ export class ServiceTotpSuperAdminAuthentification {
       const identifiantSaisi = String(identifiant || '').trim()
       const identifiantRecherche =
         identifiantSaisi ||
-        contexteUtilisateur.utilisateur.nomUtilisateur ||
+        contexteUtilisateur.utilisateur.telephone ||
         contexteUtilisateur.utilisateur.email
 
-      const utilisateurCourant = await this.repositoryAuthentification.rechercherUtilisateurParIdentifiantOuEmail(
+      const utilisateurCourant = await this.repositoryAuthentification.rechercherUtilisateurParTelephoneOuEmail(
         identifiantRecherche
       )
 
