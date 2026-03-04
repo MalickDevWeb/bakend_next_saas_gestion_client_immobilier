@@ -17,16 +17,36 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               identifiant:
- *                 type: string
- *               username:
- *                 type: string
- *               motDePasse:
- *                 type: string
- *               password:
- *                 type: string
+ *             oneOf:
+ *               - type: object
+ *                 required: [identifiant, motDePasse]
+ *                 properties:
+ *                   identifiant:
+ *                     type: string
+ *                     description: Nom utilisateur ou email (format recommande)
+ *                   motDePasse:
+ *                     type: string
+ *                     format: password
+ *               - type: object
+ *                 required: [username, password]
+ *                 properties:
+ *                   username:
+ *                     type: string
+ *                     description: Alias legacy de identifiant
+ *                   password:
+ *                     type: string
+ *                     format: password
+ *           examples:
+ *             format_recommande:
+ *               summary: Format recommande
+ *               value:
+ *                 identifiant: pmtfrommd
+ *                 motDePasse: PaMaT1732771719013
+ *             format_legacy:
+ *               summary: Format legacy compatible
+ *               value:
+ *                 username: pmtfrommd
+ *                 password: PaMaT1732771719013
  *     responses:
  *       200:
  *         description: Utilisateur authentifie, cookies de session emis
