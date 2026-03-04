@@ -9,11 +9,23 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *     summary: Genere un secret TOTP temporaire + URL otpAuth pour Google Authenticator
  *     tags:
  *       - Authentification
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     parameters:
+ *       - in: header
+ *         name: x-csrf-token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Double submit token, doit correspondre au cookie kya_csrf_token.
  *     responses:
  *       200:
  *         description: Secret temporaire genere
  *       403:
- *         description: Reserve au Super Admin
+ *         description: Reserve au Super Admin ou CSRF/origine invalide
  */
 export const POST = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,

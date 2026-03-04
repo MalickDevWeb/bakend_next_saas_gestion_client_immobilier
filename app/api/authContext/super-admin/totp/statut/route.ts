@@ -9,11 +9,14 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *     summary: Retourne le statut d activation TOTP du Super Admin
  *     tags:
  *       - Authentification
+ *     security:
+ *       - accessTokenCookie: []
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Statut TOTP
  *       403:
- *         description: Reserve au Super Admin
+ *         description: Reserve au Super Admin ou origine non autorisee
  */
 export const GET = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,

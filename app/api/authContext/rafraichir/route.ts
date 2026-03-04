@@ -7,13 +7,28 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  * /api/authContext/rafraichir:
  *   post:
  *     summary: Rafraichit la session avec rotation de refresh token + detection de reutilisation
+ *     description: >
+ *       Exige le cookie `kya_refresh_token` et l'entete `x-csrf-token`
+ *       (valeur identique au cookie `kya_csrf_token`).
  *     tags:
  *       - Authentification
+ *     security:
+ *       - refreshTokenCookie: []
+ *         csrfHeader: []
+ *     parameters:
+ *       - in: header
+ *         name: x-csrf-token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Double submit token, doit correspondre au cookie kya_csrf_token.
  *     responses:
  *       200:
  *         description: Session rafraichie
  *       401:
  *         description: Refresh token invalide ou compromis
+ *       403:
+ *         description: CSRF invalide ou origine non autorisee
  */
 export const POST = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,

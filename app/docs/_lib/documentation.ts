@@ -46,6 +46,12 @@ export const DOCUMENTS_SITE: TypeDocumentSite[] = [
     resume: 'Repository + DAO + domaine auth complet avec driver prisma ou memoire.',
   },
   {
+    slug: 'guide-module-authentification',
+    titre: 'Guide module authentification de A a Z',
+    fichier: 'GUIDE_MODULE_AUTHENTIFICATION_DE_A_A_Z.md',
+    resume: 'Parcours complet, fichier par fichier, flux, tests Swagger et debug securite.',
+  },
+  {
     slug: 'seeders',
     titre: 'Guide complet des seeders',
     fichier: 'SEEDERS_GUIDE_COMPLET.md',

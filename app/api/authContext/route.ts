@@ -9,11 +9,16 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *     summary: Recupere le contexte d authentification courant
  *     tags:
  *       - Authentification
+ *     security:
+ *       - accessTokenCookie: []
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Contexte courant
  *       401:
  *         description: Non authentifie
+ *       403:
+ *         description: Origine non autorisee (CORS strict)
  */
 export const GET = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,

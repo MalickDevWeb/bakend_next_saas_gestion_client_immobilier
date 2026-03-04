@@ -7,6 +7,9 @@ Ce document explique le nouveau module authentification conforme a l architectur
 - DAO branchable (Prisma ou memoire),
 - entites auth + objets valeur + builders utilises en runtime.
 
+Pour un guide pedagogique ultra detaille (pas a pas, fichier par fichier, tests Swagger):
+- `GUIDE_MODULE_AUTHENTIFICATION_DE_A_A_Z.md`
+
 ## 1. Flux final
 
 1. Route API (`app/api/authContext/**`)

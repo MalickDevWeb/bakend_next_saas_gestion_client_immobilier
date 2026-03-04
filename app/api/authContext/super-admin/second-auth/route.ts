@@ -9,6 +9,18 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *     summary: Valide la seconde authentification Super Admin via TOTP
  *     tags:
  *       - Authentification
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     parameters:
+ *       - in: header
+ *         name: x-csrf-token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Double submit token, doit correspondre au cookie kya_csrf_token.
  *     requestBody:
  *       required: true
  *       content:
@@ -25,7 +37,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *       401:
  *         description: Code invalide
  *       403:
- *         description: Reserve au Super Admin
+ *         description: Reserve au Super Admin ou CSRF/origine invalide
  *       412:
  *         description: TOTP non active
  */

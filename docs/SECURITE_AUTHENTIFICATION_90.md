@@ -11,6 +11,9 @@ Ce document decrit la couche securite ajoutee au backend:
 - RBAC serveur,
 - headers securite + CORS strict.
 
+Guide pedagogique complet (fichier par fichier + procedure de test complete):
+- `GUIDE_MODULE_AUTHENTIFICATION_DE_A_A_Z.md`
+
 ## 1. Endpoints implementes (avec Swagger)
 
 Routes API documentees:
@@ -30,6 +33,11 @@ Compatibilite frontend legacy:
 - alias sans prefixe `/api`:
   - `/authContext/*`
   - `/auth/*` (`login`, `session`, `logout`)
+
+Swagger a ete enrichi avec:
+- security schemes (`bearerAuth`, `accessTokenCookie`, `refreshTokenCookie`, `csrfHeader`);
+- indication claire des endpoints qui exigent `x-csrf-token`;
+- injection automatique du header CSRF dans la page `/documentation` quand le cookie existe.
 
 ## 2. Base de donnees (sans JSON)
 

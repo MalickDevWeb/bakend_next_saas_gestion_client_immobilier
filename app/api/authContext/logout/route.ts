@@ -9,9 +9,23 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *     summary: Termine la session active
  *     tags:
  *       - Authentification
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     parameters:
+ *       - in: header
+ *         name: x-csrf-token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Double submit token, doit correspondre au cookie kya_csrf_token.
  *     responses:
  *       200:
  *         description: Session terminee
+ *       403:
+ *         description: CSRF invalide ou origine non autorisee
  */
 export const POST = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,

@@ -9,6 +9,18 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *     summary: Active TOTP sur le compte Super Admin
  *     tags:
  *       - Authentification
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     parameters:
+ *       - in: header
+ *         name: x-csrf-token
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Double submit token, doit correspondre au cookie kya_csrf_token.
  *     requestBody:
  *       required: true
  *       content:
@@ -25,6 +37,8 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *         description: TOTP active
  *       401:
  *         description: Code invalide
+ *       403:
+ *         description: Reserve au Super Admin ou CSRF/origine invalide
  */
 export const POST = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,

@@ -7,6 +7,9 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  * /api/authContext/login:
  *   post:
  *     summary: Connexion avec rotation refresh token et cookies securises
+ *     description: >
+ *       Authentifie un utilisateur et ecrit les cookies `kya_access_token`, `kya_refresh_token`,
+ *       `kya_csrf_token`. Le token n'est pas renvoye dans le JSON.
  *     tags:
  *       - Authentification
  *     requestBody:
@@ -26,9 +29,11 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *                 type: string
  *     responses:
  *       200:
- *         description: Utilisateur authentifie
+ *         description: Utilisateur authentifie, cookies de session emis
  *       401:
  *         description: Identifiants invalides
+ *       403:
+ *         description: Origine non autorisee (CORS strict)
  *       429:
  *         description: Trop de tentatives
  */

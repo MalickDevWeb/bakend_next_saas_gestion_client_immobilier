@@ -9,6 +9,9 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *     summary: Liste les derniers evenements d audit securite (RBAC serveur)
  *     tags:
  *       - Securite
+ *     security:
+ *       - accessTokenCookie: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: limite
@@ -25,7 +28,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *       401:
  *         description: Non authentifie
  *       403:
- *         description: Permission manquante
+ *         description: Permission manquante, seconde auth requise, ou origine non autorisee
  */
 export const GET = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,
