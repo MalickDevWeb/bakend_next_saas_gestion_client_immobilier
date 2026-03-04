@@ -6,7 +6,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  * @swagger
  * /api/authContext/super-admin/second-auth:
  *   post:
- *     summary: Valide la seconde authentification Super Admin via TOTP
+ *     summary: Valide la seconde authentification Super Admin (TOTP ou identifiant/mot de passe)
  *     tags:
  *       - Authentification
  *     security:
@@ -35,6 +35,35 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *                     description: Code TOTP 6 chiffres
  *                     example: "123456"
  *               - type: object
+ *                 required: [identifiant, motDePasse]
+ *                 properties:
+ *                   identifiant:
+ *                     type: string
+ *                     description: Meme identifiant que le login (nom utilisateur, email ou numero)
+ *                   motDePasse:
+ *                     type: string
+ *                     format: password
+ *                     description: Meme mot de passe que le login
+ *               - type: object
+ *                 required: [numero, motDePasse]
+ *                 properties:
+ *                   numero:
+ *                     type: string
+ *                     description: Alias mobile de identifiant
+ *                   motDePasse:
+ *                     type: string
+ *                     format: password
+ *                     description: Meme mot de passe que le login
+ *               - type: object
+ *                 required: [username, password]
+ *                 properties:
+ *                   username:
+ *                     type: string
+ *                   password:
+ *                     type: string
+ *                     format: password
+ *                     description: Alias legacy frontend
+ *               - type: object
  *                 required: [motDePasse]
  *                 properties:
  *                   motDePasse:
@@ -53,6 +82,11 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *               summary: Verification par code TOTP
  *               value:
  *                 codeTotp: "123456"
+ *             mode_identifiants_recommande:
+ *               summary: Verification par identifiant et mot de passe
+ *               value:
+ *                 identifiant: "771234567"
+ *                 motDePasse: "PaMaT1732771719013"
  *             mode_password_frontend:
  *               summary: Verification compatible frontend
  *               value:

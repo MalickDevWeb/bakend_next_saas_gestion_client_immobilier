@@ -111,6 +111,7 @@ export class ServiceTotpSuperAdminAuthentification {
 
   public async verifierSecondeAuthSuperAdmin(
     jetonAcces: string,
+    identifiant: string | null,
     codeTotp: string | null,
     motDePasse: string | null,
     contexte: TypeContexteRequeteAuthentification
@@ -130,11 +131,18 @@ export class ServiceTotpSuperAdminAuthentification {
 
     const motDePasseSaisi = String(motDePasse || '').trim()
     if (motDePasseSaisi) {
+      const identifiantSaisi = String(identifiant || '').trim()
+      const identifiantRecherche =
+        identifiantSaisi ||
+        contexteUtilisateur.utilisateur.nomUtilisateur ||
+        contexteUtilisateur.utilisateur.email
+
       const utilisateurCourant = await this.repositoryAuthentification.rechercherUtilisateurParIdentifiantOuEmail(
-        contexteUtilisateur.utilisateur.nomUtilisateur || contexteUtilisateur.utilisateur.email
+        identifiantRecherche
       )
 
       const motDePasseValide =
+        utilisateurCourant?.id === contexteUtilisateur.utilisateur.id &&
         Boolean(utilisateurCourant?.motDePasseHache) &&
         (await this.serviceHachage.verifier(
           motDePasseSaisi,

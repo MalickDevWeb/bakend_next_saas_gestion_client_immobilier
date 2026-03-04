@@ -45,6 +45,7 @@ export class ControleurAuthContext {
     const valide = this.validateurAuthentification.validerSecondeAuth(entree)
     return this.serviceAuthentification.verifierSecondeAuthSuperAdmin(
       jetonAcces,
+      valide.identifiant || null,
       valide.codeTotp || null,
       valide.motDePasse || null,
       contexte

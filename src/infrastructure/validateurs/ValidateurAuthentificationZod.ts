@@ -22,6 +22,33 @@ const schemaSecondeAuthentification = z.union([
     .transform((donnees) => ({ codeTotp: donnees.codeTotp })),
   z
     .object({
+      identifiant: z.string().trim().min(3).max(120),
+      motDePasse: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({
+      identifiant: donnees.identifiant,
+      motDePasse: donnees.motDePasse,
+    })),
+  z
+    .object({
+      numero: z.string().trim().min(3).max(120),
+      motDePasse: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({
+      identifiant: donnees.numero,
+      motDePasse: donnees.motDePasse,
+    })),
+  z
+    .object({
+      username: z.string().trim().min(3).max(120),
+      password: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({
+      identifiant: donnees.username,
+      motDePasse: donnees.password,
+    })),
+  z
+    .object({
       motDePasse: z.string().min(8).max(256),
     })
     .transform((donnees) => ({ motDePasse: donnees.motDePasse })),

@@ -4,6 +4,7 @@ export interface ParametresConnexionAuthentification {
 }
 
 export interface ParametresSecondeAuthentification {
+  identifiant?: string
   codeTotp?: string
   motDePasse?: string
 }

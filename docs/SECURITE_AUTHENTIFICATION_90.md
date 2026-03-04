@@ -79,12 +79,8 @@ Objectif:
 
 1. Initialisation: secret temporaire + `otpauth://`.
 2. Activation: verification code 6 chiffres.
-3. Seconde auth: verification TOTP sur endpoint dedie.
+3. Seconde auth: verification TOTP ou verification par les memes identifiants que le login (`identifiant/numero + motDePasse`).
 4. TTL 2FA court (configurable, default 60s).
-
-Compatibilite frontend actuelle:
-- `POST /api/authContext/super-admin/second-auth` accepte aussi `password`/`motDePasse`
-  pour valider la seconde auth avec les memes identifiants que le frontend legacy.
 
 ## 4. CSRF + CORS + headers
 
