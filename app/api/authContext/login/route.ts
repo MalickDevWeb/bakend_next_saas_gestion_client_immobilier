@@ -17,25 +17,15 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *       content:
  *         application/json:
  *           schema:
- *             oneOf:
- *               - type: object
- *                 required: [identifiant, motDePasse]
- *                 properties:
- *                   identifiant:
- *                     type: string
- *                     description: Nom utilisateur ou email (format recommande)
- *                   motDePasse:
- *                     type: string
- *                     format: password
- *               - type: object
- *                 required: [username, password]
- *                 properties:
- *                   username:
- *                     type: string
- *                     description: Alias legacy de identifiant
- *                   password:
- *                     type: string
- *                     format: password
+ *             type: object
+ *             required: [identifiant, motDePasse]
+ *             properties:
+ *               identifiant:
+ *                 type: string
+ *                 description: Nom utilisateur, email ou numero de telephone
+ *               motDePasse:
+ *                 type: string
+ *                 format: password
  *           examples:
  *             format_recommande:
  *               summary: Format recommande
@@ -43,7 +33,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *                 identifiant: pmtfrommd
  *                 motDePasse: PaMaT1732771719013
  *             format_legacy:
- *               summary: Format legacy compatible
+ *               summary: Le backend accepte aussi username/password (legacy)
  *               value:
  *                 username: pmtfrommd
  *                 password: PaMaT1732771719013

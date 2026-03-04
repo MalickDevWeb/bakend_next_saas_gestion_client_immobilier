@@ -129,6 +129,7 @@ class ConteneurDependances {
     this.serviceTotp,
     this.serviceChiffrement,
     this.serviceAuditSecurite,
+    this.serviceHachageMotDePasse,
     this.configurationApplication
   )
   public serviceAutorisationAuthentification = new ServiceAutorisationAuthentification(

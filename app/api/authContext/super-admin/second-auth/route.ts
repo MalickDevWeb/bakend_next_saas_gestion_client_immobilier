@@ -26,11 +26,37 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               codeTotp:
- *                 type: string
- *                 example: "123456"
+ *             oneOf:
+ *               - type: object
+ *                 required: [codeTotp]
+ *                 properties:
+ *                   codeTotp:
+ *                     type: string
+ *                     description: Code TOTP 6 chiffres
+ *                     example: "123456"
+ *               - type: object
+ *                 required: [motDePasse]
+ *                 properties:
+ *                   motDePasse:
+ *                     type: string
+ *                     format: password
+ *                     description: Mode compatible frontend actuel
+ *               - type: object
+ *                 required: [password]
+ *                 properties:
+ *                   password:
+ *                     type: string
+ *                     format: password
+ *                     description: Alias legacy compatible frontend
+ *           examples:
+ *             mode_totp:
+ *               summary: Verification par code TOTP
+ *               value:
+ *                 codeTotp: "123456"
+ *             mode_password_frontend:
+ *               summary: Verification compatible frontend
+ *               value:
+ *                 password: "PaMaT1732771719013"
  *     responses:
  *       200:
  *         description: Seconde authentification validee

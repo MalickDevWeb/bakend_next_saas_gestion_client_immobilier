@@ -82,6 +82,10 @@ Objectif:
 3. Seconde auth: verification TOTP sur endpoint dedie.
 4. TTL 2FA court (configurable, default 60s).
 
+Compatibilite frontend actuelle:
+- `POST /api/authContext/super-admin/second-auth` accepte aussi `password`/`motDePasse`
+  pour valider la seconde auth avec les memes identifiants que le frontend legacy.
+
 ## 4. CSRF + CORS + headers
 
 ## 4.1 CSRF

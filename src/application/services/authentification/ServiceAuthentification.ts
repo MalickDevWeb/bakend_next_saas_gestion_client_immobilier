@@ -74,12 +74,14 @@ export class ServiceAuthentification {
 
   public async verifierSecondeAuthSuperAdmin(
     jetonAcces: string,
-    codeTotp: string,
+    codeTotp: string | null,
+    motDePasse: string | null,
     contexte: TypeContexteRequeteAuthentification
   ): Promise<DtoReponseAuthentification> {
     return this.serviceTotpSuperAdminAuthentification.verifierSecondeAuthSuperAdmin(
       jetonAcces,
       codeTotp,
+      motDePasse,
       contexte
     )
   }

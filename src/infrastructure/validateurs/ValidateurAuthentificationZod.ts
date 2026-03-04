@@ -14,9 +14,23 @@ const schemaConnexion = z.object({
   motDePasse: z.string().min(8).max(256),
 })
 
-const schemaSecondeAuthentification = z.object({
-  codeTotp: z.string().regex(/^\d{6}$/),
-})
+const schemaSecondeAuthentification = z.union([
+  z
+    .object({
+      codeTotp: z.string().regex(/^\d{6}$/),
+    })
+    .transform((donnees) => ({ codeTotp: donnees.codeTotp })),
+  z
+    .object({
+      motDePasse: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({ motDePasse: donnees.motDePasse })),
+  z
+    .object({
+      password: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({ motDePasse: donnees.password })),
+])
 
 const schemaActivationTotp = z.object({
   codeTotp: z.string().regex(/^\d{6}$/),
@@ -43,7 +57,7 @@ export class ValidateurAuthentificationZod
     const resultat = schemaSecondeAuthentification.safeParse(entree)
     if (!resultat.success) {
       throw new ExceptionAuthentificationValidation(
-        t(ERRORS.AUTH_TOTP_INVALIDE),
+        t(ERRORS.PARAMETRES_INVALIDES),
         resultat.error.flatten()
       )
     }

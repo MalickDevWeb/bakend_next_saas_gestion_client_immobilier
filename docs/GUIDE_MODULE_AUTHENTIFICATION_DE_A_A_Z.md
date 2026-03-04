@@ -106,6 +106,7 @@ Pourquoi:
 3. `POST /api/authContext/super-admin/second-auth`
    - verifie code TOTP;
    - marque session comme seconde auth validee.
+   - mode compatibilite frontend: accepte aussi `password`/`motDePasse`.
 4. `GET /api/authContext/super-admin/totp/statut`
    - retourne statut actif/non actif.
 

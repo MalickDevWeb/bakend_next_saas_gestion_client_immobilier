@@ -4,7 +4,8 @@ export interface ParametresConnexionAuthentification {
 }
 
 export interface ParametresSecondeAuthentification {
-  codeTotp: string
+  codeTotp?: string
+  motDePasse?: string
 }
 
 export interface ParametresActivationTotpSuperAdmin {
