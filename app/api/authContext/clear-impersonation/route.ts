@@ -4,9 +4,9 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
 
 /**
  * @swagger
- * /api/authContext/super-admin/totp/activer:
+ * /api/authContext/clear-impersonation:
  *   post:
- *     summary: Active TOTP sur le compte Super Admin
+ *     summary: Desactive l impersonation ADMIN active
  *     description: Endpoint reserve exclusivement au role SUPER_ADMIN.
  *     tags:
  *       - Authentification
@@ -22,22 +22,9 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *         schema:
  *           type: string
  *         description: Double submit token, doit correspondre au cookie kya_csrf_token.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               secretTemporaire:
- *                 type: string
- *               codeTotp:
- *                 type: string
  *     responses:
  *       200:
- *         description: TOTP active
- *       401:
- *         description: Code invalide
+ *         description: Impersonation desactivee
  *       403:
  *         description: Reserve au Super Admin ou CSRF/origine invalide
  */
@@ -46,16 +33,14 @@ export const POST = executerAvecGestionErreurs(
   async (requete: NextRequest) => {
     conteneurDependances.adaptateurRequeteSecurite.exigerCsrf(requete)
     const jetonAcces = conteneurDependances.adaptateurRequeteSecurite.extraireJetonAcces(requete)
-    const corps = await requete.json().catch(() => ({}))
-    const resultat = await conteneurDependances.controleurAuthContext.activerTotpSuperAdmin(
-      jetonAcces,
-      corps,
-      conteneurDependances.contexteRequeteHttp.extraireSecurite(requete)
-    )
+    await conteneurDependances.controleurAuthContext.effacerImpersonation(jetonAcces)
 
-    return conteneurDependances.reponseHttp.succes({
-      ...resultat,
+    const reponse = conteneurDependances.reponseHttp.succes({
+      ok: true,
       impersonation: null,
     })
+    conteneurDependances.serviceCookiesAuthentification.nettoyerCookieImpersonation(reponse)
+    return reponse
   }
 )
+

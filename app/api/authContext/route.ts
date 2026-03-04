@@ -25,10 +25,20 @@ export const GET = executerAvecGestionErreurs(
   async (requete: NextRequest) => {
     const jetonAcces = conteneurDependances.adaptateurRequeteSecurite.extraireJetonAcces(requete)
     const resultat = await conteneurDependances.controleurAuthContext.contexte(jetonAcces)
+    const role = String(resultat.user?.role || '').toUpperCase()
+    const impersonation =
+      role === 'SUPER_ADMIN'
+        ? conteneurDependances.adaptateurRequeteSecurite.lireImpersonation(requete)
+        : null
 
-    return conteneurDependances.reponseHttp.succes({
+    const reponse = conteneurDependances.reponseHttp.succes({
       ...resultat,
-      impersonation: null,
+      impersonation,
     })
+
+    if (role !== 'SUPER_ADMIN') {
+      conteneurDependances.serviceCookiesAuthentification.nettoyerCookieImpersonation(reponse)
+    }
+    return reponse
   }
 )

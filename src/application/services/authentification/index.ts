@@ -5,3 +5,4 @@ export * from '@/src/application/services/authentification/ServiceSecuriteSessio
 export * from '@/src/application/services/authentification/ServiceTotpSuperAdminAuthentification'
 export * from '@/src/application/services/authentification/ServiceAutorisationAuthentification'
 export * from '@/src/application/services/authentification/ServiceAuditAuthentification'
+export * from '@/src/application/services/authentification/ServiceImpersonationAuthentification'

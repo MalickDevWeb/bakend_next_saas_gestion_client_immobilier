@@ -50,7 +50,7 @@ Pourquoi:
 ### 3.1 Connexion
 
 1. Client appelle `POST /api/authContext/login`.
-2. Route lit `identifiant` et `motDePasse`.
+2. Route lit `identifiant` (telephone ou email) et `motDePasse`.
 3. Controleur valide la charge utile.
 4. Service session:
    - verifie blocage anti brute-force;
@@ -110,7 +110,31 @@ Pourquoi:
 4. `GET /api/authContext/super-admin/totp/statut`
    - retourne statut actif/non actif.
 
-### 3.6 Audit securite
+### 3.6 ADMIN 1FA (sans seconde auth)
+
+1. `ADMIN` utilise le meme endpoint `POST /api/authContext/login`.
+2. L identifiant de login peut etre `telephone` ou `email`.
+3. La reponse utilisateur retourne:
+   - `role: "ADMIN"`
+   - `superAdminSecondAuthRequired: false`
+4. Au seed initial, `ADMIN` recoit le preset frontend:
+   - dashboard, clients, rentals, payments, documents, settings, work, imports, notifications, pdfExport.
+5. `ADMIN` est bloque (`403`) sur:
+   - `/api/authContext/super-admin/second-auth`
+   - `/api/authContext/super-admin/totp/*`
+
+### 3.7 Impersonation Super Admin -> Admin
+
+1. `POST /api/authContext/impersonate`
+   - reserve SUPER_ADMIN;
+   - active l espace admin cible;
+   - verifie que la cible existe en base avec role `ADMIN` et statut `ACTIF`.
+2. `POST /api/authContext/clear-impersonation`
+   - reserve SUPER_ADMIN;
+   - supprime l usurpation en cours.
+3. Le contexte `GET /api/authContext` renvoie `impersonation` quand active.
+
+### 3.8 Audit securite
 
 `GET /api/securite/audits`:
 - exige auth valide;
@@ -127,6 +151,8 @@ Pourquoi:
 - `app/api/authContext/route.ts`
 - `app/api/authContext/rafraichir/route.ts`
 - `app/api/authContext/logout/route.ts`
+- `app/api/authContext/impersonate/route.ts`
+- `app/api/authContext/clear-impersonation/route.ts`
 - `app/api/authContext/super-admin/totp/initialiser/route.ts`
 - `app/api/authContext/super-admin/totp/activer/route.ts`
 - `app/api/authContext/super-admin/second-auth/route.ts`
@@ -173,6 +199,7 @@ Infrastructure (Zod):
 - `src/application/services/authentification/ServiceTotpSuperAdminAuthentification.ts`
 - `src/application/services/authentification/ServiceAutorisationAuthentification.ts`
 - `src/application/services/authentification/ServiceAuditAuthentification.ts`
+- `src/application/services/authentification/ServiceImpersonationAuthentification.ts`
 
 ### 4.6 DTO, mappeur, fabriques
 
@@ -381,6 +408,9 @@ ALERTE_SECURITE_WEBHOOK_URL=
 SEED_SUPER_ADMIN_TELEPHONE=771234567
 SEED_SUPER_ADMIN_EMAIL=malickteuw.devweb@gmail.com
 SEED_SUPER_ADMIN_MOT_DE_PASSE=PaMaT1732771719013
+SEED_ADMIN_TELEPHONE=771234568
+SEED_ADMIN_EMAIL=admin@kya.local
+SEED_ADMIN_MOT_DE_PASSE=Admin@123456
 ```
 
 ---
@@ -400,10 +430,12 @@ Ordre:
 5. `POST /api/authContext/super-admin/totp/initialiser`
 6. `POST /api/authContext/super-admin/totp/activer`
 7. `POST /api/authContext/super-admin/second-auth`
-8. `GET /api/securite/audits?limite=10`
-9. `POST /api/authContext/rafraichir`
-10. `POST /api/authContext/logout`
-11. `GET /api/authContext` (doit echouer apres logout)
+8. `POST /api/authContext/impersonate`
+9. `POST /api/authContext/clear-impersonation`
+10. `GET /api/securite/audits?limite=10`
+11. `POST /api/authContext/rafraichir`
+12. `POST /api/authContext/logout`
+13. `GET /api/authContext` (doit echouer apres logout)
 
 Important CSRF:
 - pour les POST proteges, envoyer `x-csrf-token` egal au cookie `kya_csrf_token`.
@@ -445,6 +477,16 @@ Cause:
 
 Action:
 - appeler endpoint `second-auth` avec code TOTP.
+
+### 9.5 "Acces super admin requis"
+
+Cause:
+- utilisateur connecte avec role `ADMIN`;
+- appel d un endpoint `/api/authContext/super-admin/*`.
+
+Action:
+- ne pas appeler ces endpoints pour un ADMIN;
+- continuer avec le flux 1FA (`login`, `contexte`, `refresh`, `logout`).
 
 ---
 

@@ -6,7 +6,8 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  * @swagger
  * /api/authContext/super-admin/second-auth:
  *   post:
- *     summary: Valide la seconde authentification Super Admin (TOTP ou identifiant/mot de passe)
+ *     summary: Valide la seconde authentification SUPER_ADMIN (TOTP ou identifiant/mot de passe)
+ *     description: Endpoint reserve exclusivement au role SUPER_ADMIN.
  *     tags:
  *       - Authentification
  *     security:
@@ -39,7 +40,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *                 properties:
  *                   identifiant:
  *                     type: string
- *                     description: Meme identifiant que le login (telephone)
+ *                     description: Meme identifiant que le login (telephone ou email)
  *                   motDePasse:
  *                     type: string
  *                     format: password

@@ -1,4 +1,5 @@
 import {
+  DtoEtatImpersonation,
   DtoListeAuditsSecurite,
   DtoReponseAuthentification,
   DtoStatutTotpSuperAdmin,
@@ -9,6 +10,7 @@ import { ServiceAutorisationAuthentification } from '@/src/application/services/
 import { ServiceContexteAuthentification } from '@/src/application/services/authentification/ServiceContexteAuthentification'
 import { ServiceSessionAuthentification } from '@/src/application/services/authentification/ServiceSessionAuthentification'
 import { ServiceTotpSuperAdminAuthentification } from '@/src/application/services/authentification/ServiceTotpSuperAdminAuthentification'
+import { ServiceImpersonationAuthentification } from '@/src/application/services/authentification/ServiceImpersonationAuthentification'
 import { TypeContexteRequeteAuthentification } from '@/src/domaine/types/authentification/TypeContexteRequeteAuthentification'
 import { TypeContexteSessionAuthentification } from '@/src/domaine/types/authentification/TypeContexteSessionAuthentification'
 import { TypeResultatConnexionAuthentification } from '@/src/domaine/types/authentification/TypeResultatConnexionAuthentification'
@@ -21,7 +23,8 @@ export class ServiceAuthentification {
     private readonly serviceContexteAuthentification: ServiceContexteAuthentification,
     private readonly serviceTotpSuperAdminAuthentification: ServiceTotpSuperAdminAuthentification,
     private readonly serviceAutorisationAuthentification: ServiceAutorisationAuthentification,
-    private readonly serviceAuditAuthentification: ServiceAuditAuthentification
+    private readonly serviceAuditAuthentification: ServiceAuditAuthentification,
+    private readonly serviceImpersonationAuthentification: ServiceImpersonationAuthentification
   ) {}
 
   public async connexion(
@@ -110,5 +113,23 @@ export class ServiceAuthentification {
     limite: number
   ): Promise<DtoListeAuditsSecurite> {
     return this.serviceAuditAuthentification.listerAuditsSecurite(jetonAcces, limite)
+  }
+
+  public async definirImpersonation(
+    jetonAcces: string,
+    adminId: string,
+    adminName: string,
+    userId?: string | null
+  ): Promise<DtoEtatImpersonation> {
+    return this.serviceImpersonationAuthentification.definirImpersonation(
+      jetonAcces,
+      adminId,
+      adminName,
+      userId
+    )
+  }
+
+  public async effacerImpersonation(jetonAcces: string): Promise<void> {
+    return this.serviceImpersonationAuthentification.effacerImpersonation(jetonAcces)
   }
 }

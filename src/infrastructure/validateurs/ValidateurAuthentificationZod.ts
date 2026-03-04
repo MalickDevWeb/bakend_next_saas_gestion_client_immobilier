@@ -3,12 +3,13 @@ import {
   InterfaceValidateurAuthentification,
   ParametresActivationTotpSuperAdmin,
   ParametresConnexionAuthentification,
+  ParametresImpersonationAuthentification,
   ParametresSecondeAuthentification,
 } from '@/src/coeur/interfaces/InterfaceValidateurAuthentification'
 import { t } from '@/src/messages'
 import { ERRORS } from '@/src/messages/app/errors'
 import { ExceptionAuthentificationValidation } from '@/src/application/exceptions'
-import { ObjetValeurTelephoneSenegal } from '@/src/domaine/objets_valeur'
+import { ObjetValeurEmail, ObjetValeurTelephoneSenegal } from '@/src/domaine/objets_valeur'
 
 const schemaTelephoneConnexion = z
   .string()
@@ -22,9 +23,26 @@ const schemaTelephoneConnexion = z
     }
   })
 
+const schemaIdentifiantConnexion = z
+  .string()
+  .trim()
+  .refine((valeur) => {
+    try {
+      new ObjetValeurTelephoneSenegal(valeur)
+      return true
+    } catch {
+      try {
+        new ObjetValeurEmail(valeur)
+        return true
+      } catch {
+        return false
+      }
+    }
+  })
+
 const schemaConnexion = z.union([
   z.object({
-    identifiant: schemaTelephoneConnexion,
+    identifiant: schemaIdentifiantConnexion,
     motDePasse: z.string().min(8).max(256),
   }),
   z
@@ -41,10 +59,22 @@ const schemaConnexion = z.union([
     .transform((donnees) => ({ identifiant: donnees.numero, motDePasse: donnees.motDePasse })),
   z
     .object({
-      identifiant: schemaTelephoneConnexion,
+      identifiant: schemaIdentifiantConnexion,
       password: z.string().min(8).max(256),
     })
     .transform((donnees) => ({ identifiant: donnees.identifiant, motDePasse: donnees.password })),
+  z
+    .object({
+      email: z.string().trim().email(),
+      motDePasse: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({ identifiant: donnees.email, motDePasse: donnees.motDePasse })),
+  z
+    .object({
+      email: z.string().trim().email(),
+      password: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({ identifiant: donnees.email, motDePasse: donnees.password })),
 ])
 
 const schemaSecondeAuthentification = z.union([
@@ -55,7 +85,7 @@ const schemaSecondeAuthentification = z.union([
     .transform((donnees) => ({ codeTotp: donnees.codeTotp })),
   z
     .object({
-      identifiant: schemaTelephoneConnexion,
+      identifiant: schemaIdentifiantConnexion,
       motDePasse: z.string().min(8).max(256),
     })
     .transform((donnees) => ({
@@ -73,7 +103,7 @@ const schemaSecondeAuthentification = z.union([
     })),
   z
     .object({
-      identifiant: schemaTelephoneConnexion,
+      identifiant: schemaIdentifiantConnexion,
       password: z.string().min(8).max(256),
     })
     .transform((donnees) => ({
@@ -95,6 +125,12 @@ const schemaSecondeAuthentification = z.union([
 const schemaActivationTotp = z.object({
   codeTotp: z.string().regex(/^\d{6}$/),
   secretTemporaire: z.string().trim().min(16).max(512),
+})
+
+const schemaImpersonation = z.object({
+  adminId: z.string().trim().min(1).max(190),
+  adminName: z.string().trim().min(1).max(190),
+  userId: z.string().trim().min(1).max(190).optional().nullable(),
 })
 
 const schemaLimiteAudit = z.coerce.number().int().min(1).max(500)
@@ -126,6 +162,17 @@ export class ValidateurAuthentificationZod
 
   public parserActivationTotp(entree: unknown): ParametresActivationTotpSuperAdmin {
     const resultat = schemaActivationTotp.safeParse(entree)
+    if (!resultat.success) {
+      throw new ExceptionAuthentificationValidation(
+        t(ERRORS.PARAMETRES_INVALIDES),
+        resultat.error.flatten()
+      )
+    }
+    return resultat.data
+  }
+
+  public parserImpersonation(entree: unknown): ParametresImpersonationAuthentification {
+    const resultat = schemaImpersonation.safeParse(entree)
     if (!resultat.success) {
       throw new ExceptionAuthentificationValidation(
         t(ERRORS.PARAMETRES_INVALIDES),

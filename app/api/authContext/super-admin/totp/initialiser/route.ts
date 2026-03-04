@@ -7,6 +7,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  * /api/authContext/super-admin/totp/initialiser:
  *   post:
  *     summary: Genere un secret TOTP temporaire + URL otpAuth pour Google Authenticator
+ *     description: Endpoint reserve exclusivement au role SUPER_ADMIN.
  *     tags:
  *       - Authentification
  *     security:

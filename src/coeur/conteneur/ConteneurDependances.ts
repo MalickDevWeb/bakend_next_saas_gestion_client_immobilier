@@ -18,6 +18,7 @@ import { ServiceSecuriteSessionAuthentification } from '@/src/application/servic
 import { ServiceTotpSuperAdminAuthentification } from '@/src/application/services/authentification/ServiceTotpSuperAdminAuthentification'
 import { ServiceAutorisationAuthentification } from '@/src/application/services/authentification/ServiceAutorisationAuthentification'
 import { ServiceAuditAuthentification } from '@/src/application/services/authentification/ServiceAuditAuthentification'
+import { ServiceImpersonationAuthentification } from '@/src/application/services/authentification/ServiceImpersonationAuthentification'
 import { ValidateurAuthentification } from '@/src/application/validateurs/ValidateurAuthentification'
 import { ControleurAuthContext } from '@/src/controleurs/ControleurAuthContext'
 import { ServiceCookiesAuthentification } from '@/src/infrastructure/securite/ServiceCookiesAuthentification'
@@ -139,12 +140,17 @@ class ConteneurDependances {
     this.repositoryAuthentification,
     this.serviceAutorisationAuthentification
   )
+  public serviceImpersonationAuthentification = new ServiceImpersonationAuthentification(
+    this.serviceContexteAuthentification,
+    this.repositoryAuthentification
+  )
   public serviceAuthentification = new ServiceAuthentification(
     this.serviceSessionAuthentification,
     this.serviceContexteAuthentification,
     this.serviceTotpSuperAdminAuthentification,
     this.serviceAutorisationAuthentification,
-    this.serviceAuditAuthentification
+    this.serviceAuditAuthentification,
+    this.serviceImpersonationAuthentification
   )
   public controleurAuthContext = new ControleurAuthContext(
     this.serviceAuthentification,

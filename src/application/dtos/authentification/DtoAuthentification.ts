@@ -12,6 +12,12 @@ export type DtoReponseAuthentification = {
   user: DtoUtilisateurAuthentifie | null
 }
 
+export type DtoEtatImpersonation = {
+  adminId: string
+  adminName: string
+  userId?: string | null
+} | null
+
 export type DtoEntreeConnexion = {
   identifiant: string
   motDePasse: string

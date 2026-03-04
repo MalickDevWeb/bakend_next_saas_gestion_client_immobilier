@@ -9,6 +9,13 @@ export const DONNEES_SECURITE_AUTH = {
     statut: 'ACTIF',
     totpActif: false,
   },
+  admin: {
+    telephone: process.env.SEED_ADMIN_TELEPHONE || '771234568',
+    email: process.env.SEED_ADMIN_EMAIL || 'admin@kya.local',
+    motDePasse: process.env.SEED_ADMIN_MOT_DE_PASSE || 'Admin@123456',
+    statut: 'ACTIF',
+    totpActif: false,
+  },
   permissionsSuperAdmin: [
     'AUTH_GERER',
     'AUDIT_LIRE',
@@ -18,5 +25,18 @@ export const DONNEES_SECURITE_AUTH = {
     'ENTREPRISES_GERER',
     'UTILISATEURS_GERER',
     'SECURITE_GERER',
+  ],
+  permissionsAdmin: [
+    // Preset frontend adminPermissions.ts (dashboard, clients, rentals, ...)
+    'DASHBOARD_ACCEDER',
+    'CLIENTS_GERER',
+    'LOCATIONS_GERER',
+    'PAIEMENTS_GERER',
+    'DOCUMENTS_GERER',
+    'PARAMETRES_GERER',
+    'TRAVAUX_GERER',
+    'IMPORTS_GERER',
+    'NOTIFICATIONS_GERER',
+    'PDF_EXPORTER',
   ],
 }

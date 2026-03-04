@@ -7,6 +7,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  * /api/authContext/super-admin/totp/statut:
  *   get:
  *     summary: Retourne le statut d activation TOTP du Super Admin
+ *     description: Endpoint reserve exclusivement au role SUPER_ADMIN.
  *     tags:
  *       - Authentification
  *     security:

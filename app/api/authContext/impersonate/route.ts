@@ -4,10 +4,10 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
 
 /**
  * @swagger
- * /api/authContext/super-admin/totp/activer:
+ * /api/authContext/impersonate:
  *   post:
- *     summary: Active TOTP sur le compte Super Admin
- *     description: Endpoint reserve exclusivement au role SUPER_ADMIN.
+ *     summary: Active l impersonation d un ADMIN par un SUPER_ADMIN
+ *     description: Endpoint reserve exclusivement au role SUPER_ADMIN. La cible doit etre un compte ADMIN actif existant.
  *     tags:
  *       - Authentification
  *     security:
@@ -28,16 +28,20 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *         application/json:
  *           schema:
  *             type: object
+ *             required: [adminId, adminName]
  *             properties:
- *               secretTemporaire:
+ *               adminId:
  *                 type: string
- *               codeTotp:
+ *               adminName:
  *                 type: string
+ *               userId:
+ *                 type: string
+ *                 nullable: true
  *     responses:
  *       200:
- *         description: TOTP active
- *       401:
- *         description: Code invalide
+ *         description: Impersonation activee
+ *       400:
+ *         description: Cible admin invalide (inexistante, inactive ou role non ADMIN)
  *       403:
  *         description: Reserve au Super Admin ou CSRF/origine invalide
  */
@@ -46,16 +50,22 @@ export const POST = executerAvecGestionErreurs(
   async (requete: NextRequest) => {
     conteneurDependances.adaptateurRequeteSecurite.exigerCsrf(requete)
     const jetonAcces = conteneurDependances.adaptateurRequeteSecurite.extraireJetonAcces(requete)
-    const corps = await requete.json().catch(() => ({}))
-    const resultat = await conteneurDependances.controleurAuthContext.activerTotpSuperAdmin(
+    const corps = (await requete.json().catch(() => ({}))) as Record<string, unknown>
+
+    const impersonation = await conteneurDependances.controleurAuthContext.definirImpersonation(
       jetonAcces,
-      corps,
-      conteneurDependances.contexteRequeteHttp.extraireSecurite(requete)
+      corps
     )
 
-    return conteneurDependances.reponseHttp.succes({
-      ...resultat,
-      impersonation: null,
+    const reponse = conteneurDependances.reponseHttp.succes({
+      ok: true,
+      impersonation,
     })
+    conteneurDependances.serviceCookiesAuthentification.ecrireCookieImpersonation(
+      reponse,
+      impersonation,
+      conteneurDependances.configurationSecurite.dureeJetonRefreshSecondes()
+    )
+    return reponse
   }
 )

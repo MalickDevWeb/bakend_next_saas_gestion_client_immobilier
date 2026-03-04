@@ -3,6 +3,7 @@
 Ce document decrit la couche securite ajoutee au backend:
 
 - vraie 2FA Super Admin via TOTP (Google Authenticator),
+- flux ADMIN en authentification simple (1FA) sur les memes routes auth,
 - rotation de refresh token avec detection de reutilisation,
 - rate limit strict (login / second-auth / refresh),
 - hash mot de passe fort (Argon2id),
@@ -22,11 +23,20 @@ Routes API documentees:
 - `GET /api/authContext`
 - `POST /api/authContext/rafraichir`
 - `POST /api/authContext/logout`
+- `POST /api/authContext/impersonate`
+- `POST /api/authContext/clear-impersonation`
 - `POST /api/authContext/super-admin/second-auth`
 - `POST /api/authContext/super-admin/totp/initialiser`
 - `POST /api/authContext/super-admin/totp/activer`
 - `GET /api/authContext/super-admin/totp/statut`
 - `GET /api/securite/audits` (RBAC serveur + seconde auth)
+
+Comportement de role:
+
+- `ADMIN`: login/session/refresh/logout uniquement (1FA).
+- `SUPER_ADMIN`: meme flux + endpoints super-admin + seconde auth + impersonation admin.
+- endpoints `/api/authContext/super-admin/*`: acces refuse (`403`) pour `ADMIN`.
+- endpoints `/api/authContext/impersonate` et `/api/authContext/clear-impersonation`: reserves `SUPER_ADMIN`.
 
 Compatibilite frontend legacy:
 
@@ -57,6 +67,8 @@ Objectif:
 - permissions serveur persistantes.
 - `Utilisateur.telephone` est unique et indexe pour les recherches d authentification.
 - `Utilisateur.email` reste unique.
+- seed de base: creation idempotente d un `SUPER_ADMIN` et d un `ADMIN`.
+- permissions seed `ADMIN` = preset frontend (dashboard, clients, rentals, payments, documents, settings, work, imports, notifications, pdfExport).
 
 ## 3. Flux securite
 
@@ -64,8 +76,9 @@ Objectif:
 
 1. Verification anti-bruteforce.
 2. Verification Argon2id du mot de passe.
-3. Creation session + refresh token hash.
-4. Emission cookies:
+3. Identifiant accepte: `telephone` ou `email`.
+4. Creation session + refresh token hash.
+5. Emission cookies:
    - `kya_access_token` (httpOnly),
    - `kya_refresh_token` (httpOnly),
    - `kya_csrf_token` (double submit token).
@@ -83,6 +96,21 @@ Objectif:
 2. Activation: verification code 6 chiffres.
 3. Seconde auth: verification TOTP ou verification par les memes identifiants que le login (`telephone/identifiant + motDePasse`).
 4. TTL 2FA court (configurable, default 60s).
+
+### 3.4 ADMIN 1FA
+
+1. Connexion avec `telephone` ou `email` + `motDePasse`.
+2. `superAdminSecondAuthRequired` retourne toujours `false`.
+3. Acces interdit aux endpoints super-admin (`403`).
+
+### 3.5 Impersonation Super Admin -> Admin
+
+1. `POST /api/authContext/impersonate` active l espace admin cible.
+2. Le backend verifie que la cible existe en base, est `ADMIN` et `ACTIF`.
+3. Si la cible n est pas valide, la requete est refusee (`400`).
+4. Etat stocke dans le cookie securise `kya_impersonation`.
+5. `GET /api/authContext` retourne cet etat dans `impersonation`.
+6. `POST /api/authContext/clear-impersonation` supprime l etat.
 
 ## 4. CSRF + CORS + headers
 
@@ -115,6 +143,7 @@ RBAC est applique cote serveur, pas seulement frontend:
   - session valide,
   - seconde auth super admin valide si role SUPER_ADMIN,
   - permission `AUDIT_LIRE`.
+- endpoints d impersonation exigent role `SUPER_ADMIN`.
 
 ## 6. Variables d environnement securite
 
@@ -137,6 +166,9 @@ AUTH_PERSISTENCE_DRIVER=prisma
 SEED_SUPER_ADMIN_TELEPHONE=771234567
 SEED_SUPER_ADMIN_EMAIL=superadmin@kya.local
 SEED_SUPER_ADMIN_MOT_DE_PASSE=SuperAdmin@123456
+SEED_ADMIN_TELEPHONE=771234568
+SEED_ADMIN_EMAIL=admin@kya.local
+SEED_ADMIN_MOT_DE_PASSE=Admin@123456
 ```
 
 ## 7. Commandes

@@ -64,6 +64,17 @@ export class DaoAuthentificationMemoire implements InterfaceDaoAuthentification 
     return null
   }
 
+  public async rechercherUtilisateurParId(
+    utilisateurId: string
+  ): Promise<DonneesUtilisateurAuthentification | null> {
+    const id = String(utilisateurId || '').trim()
+    if (!id) return null
+
+    const utilisateur = this.utilisateurs.get(id)
+    if (!utilisateur) return null
+    return this.clonerUtilisateur(utilisateur)
+  }
+
   public async creerSessionEtJetonRefresh(
     entree: EntreeCreationSessionAuthentification
   ): Promise<void> {

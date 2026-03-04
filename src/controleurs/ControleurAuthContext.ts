@@ -1,5 +1,6 @@
 import { ServiceAuthentification } from '@/src/application/services/authentification/ServiceAuthentification'
 import { ValidateurAuthentification } from '@/src/application/validateurs/ValidateurAuthentification'
+import { DtoEtatImpersonation } from '@/src/application/dtos/authentification/DtoAuthentification'
 import { TypeContexteRequeteAuthentification } from '@/src/domaine/types/authentification/TypeContexteRequeteAuthentification'
 
 export class ControleurAuthContext {
@@ -77,5 +78,22 @@ export class ControleurAuthContext {
   public async listerAuditsSecurite(jetonAcces: string, limiteBrute: unknown) {
     const limite = this.validateurAuthentification.validerLimiteAudit(limiteBrute)
     return this.serviceAuthentification.listerAuditsSecurite(jetonAcces, limite)
+  }
+
+  public async definirImpersonation(
+    jetonAcces: string,
+    entree: unknown
+  ): Promise<DtoEtatImpersonation> {
+    const valide = this.validateurAuthentification.validerImpersonation(entree)
+    return this.serviceAuthentification.definirImpersonation(
+      jetonAcces,
+      valide.adminId,
+      valide.adminName,
+      valide.userId
+    )
+  }
+
+  public async effacerImpersonation(jetonAcces: string): Promise<void> {
+    await this.serviceAuthentification.effacerImpersonation(jetonAcces)
   }
 }

@@ -13,6 +13,10 @@ export interface InterfaceRepositoryAuthentification {
     identifiant: string
   ): Promise<EntiteUtilisateurAuthentification | null>
 
+  rechercherUtilisateurParId(
+    utilisateurId: string
+  ): Promise<EntiteUtilisateurAuthentification | null>
+
   creerSessionEtJetonRefresh(
     commande: TypeCommandeCreationSessionAuthentification
   ): Promise<void>

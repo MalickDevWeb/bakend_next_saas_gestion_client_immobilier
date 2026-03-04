@@ -38,6 +38,14 @@ export abstract class RepositoryAuthentificationAbstrait
     return this.mapperUtilisateur(donnees)
   }
 
+  public async rechercherUtilisateurParId(
+    utilisateurId: string
+  ): Promise<EntiteUtilisateurAuthentification | null> {
+    const donnees = await this.daoAuthentification.rechercherUtilisateurParId(utilisateurId)
+    if (!donnees) return null
+    return this.mapperUtilisateur(donnees)
+  }
+
   public async creerSessionEtJetonRefresh(
     commande: TypeCommandeCreationSessionAuthentification
   ): Promise<void> {

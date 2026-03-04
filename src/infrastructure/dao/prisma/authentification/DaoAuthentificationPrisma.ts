@@ -35,6 +35,25 @@ export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
     return this.mapperUtilisateur(utilisateur)
   }
 
+  public async rechercherUtilisateurParId(
+    utilisateurId: string
+  ): Promise<DonneesUtilisateurAuthentification | null> {
+    const id = String(utilisateurId || '').trim()
+    if (!id) return null
+
+    const utilisateur = await this.prisma.utilisateur.findUnique({
+      where: { id },
+      include: {
+        permissions: {
+          where: { autorise: true },
+        },
+      },
+    })
+
+    if (!utilisateur) return null
+    return this.mapperUtilisateur(utilisateur)
+  }
+
   public async creerSessionEtJetonRefresh(
     entree: EntreeCreationSessionAuthentification
   ): Promise<void> {

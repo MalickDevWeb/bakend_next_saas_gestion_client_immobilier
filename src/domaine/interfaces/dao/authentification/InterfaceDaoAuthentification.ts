@@ -104,6 +104,10 @@ export interface InterfaceDaoAuthentification {
     identifiant: string
   ): Promise<DonneesUtilisateurAuthentification | null>
 
+  rechercherUtilisateurParId(
+    utilisateurId: string
+  ): Promise<DonneesUtilisateurAuthentification | null>
+
   creerSessionEtJetonRefresh(
     entree: EntreeCreationSessionAuthentification
   ): Promise<void>

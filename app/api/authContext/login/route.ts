@@ -6,10 +6,11 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  * @swagger
  * /api/authContext/login:
  *   post:
- *     summary: Connexion avec rotation refresh token et cookies securises
+ *     summary: Connexion ADMIN/SUPER_ADMIN avec rotation refresh token et cookies securises
  *     description: >
  *       Authentifie un utilisateur et ecrit les cookies `kya_access_token`, `kya_refresh_token`,
  *       `kya_csrf_token`. Le token n'est pas renvoye dans le JSON.
+ *       Pour ADMIN et SUPER_ADMIN, l identifiant accepte le telephone ou l email.
  *     tags:
  *       - Authentification
  *     requestBody:
@@ -22,7 +23,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *             properties:
  *               identifiant:
  *                 type: string
- *                 description: Telephone du compte (7XXXXXXXX ou +2217XXXXXXXX)
+ *                 description: Telephone ou email du compte (ex: 771234567, +221771234567, admin@kya.local)
  *               motDePasse:
  *                 type: string
  *                 format: password
@@ -37,6 +38,11 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
  *               value:
  *                 telephone: "771234567"
  *                 motDePasse: PaMaT1732771719013
+ *             format_email:
+ *               summary: Connexion par email
+ *               value:
+ *                 email: "admin@kya.local"
+ *                 motDePasse: Admin@123456
  *     responses:
  *       200:
  *         description: Utilisateur authentifie, cookies de session emis
@@ -72,6 +78,7 @@ export const POST = executerAvecGestionErreurs(
       conteneurDependances.configurationSecurite.dureeJetonAccesSecondes(),
       conteneurDependances.configurationSecurite.dureeJetonRefreshSecondes()
     )
+    conteneurDependances.serviceCookiesAuthentification.nettoyerCookieImpersonation(reponse)
 
     return reponse
   }

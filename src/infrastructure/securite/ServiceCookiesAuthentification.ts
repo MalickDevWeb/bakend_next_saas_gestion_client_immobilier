@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { DtoEtatImpersonation } from '@/src/application/dtos/authentification/DtoAuthentification'
 
 type TypeOptionsCookies = {
   modeSecurise: boolean
@@ -59,6 +60,31 @@ export class ServiceCookiesAuthentification {
     )
   }
 
+  public ecrireCookieImpersonation(
+    reponse: NextResponse,
+    etat: DtoEtatImpersonation,
+    dureeSecondes: number
+  ): void {
+    const valeur = Buffer.from(JSON.stringify(etat || null), 'utf8').toString('base64url')
+    reponse.cookies.set('kya_impersonation', valeur, {
+      httpOnly: true,
+      secure: this.options.modeSecurise,
+      sameSite: this.options.sameSite,
+      path: '/',
+      maxAge: dureeSecondes,
+    })
+  }
+
+  public nettoyerCookieImpersonation(reponse: NextResponse): void {
+    reponse.cookies.set('kya_impersonation', '', {
+      httpOnly: true,
+      secure: this.options.modeSecurise,
+      sameSite: this.options.sameSite,
+      path: '/',
+      maxAge: 0,
+    })
+  }
+
   public nettoyerCookies(reponse: NextResponse): void {
     reponse.cookies.set('kya_access_token', '', {
       httpOnly: true,
@@ -81,5 +107,6 @@ export class ServiceCookiesAuthentification {
       path: '/',
       maxAge: 0,
     })
+    this.nettoyerCookieImpersonation(reponse)
   }
 }

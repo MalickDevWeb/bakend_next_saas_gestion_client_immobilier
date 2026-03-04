@@ -17,6 +17,10 @@ export class ValidateurAuthentification {
     return this.validateurInfrastructure.parserActivationTotp(entree)
   }
 
+  public validerImpersonation(entree: unknown) {
+    return this.validateurInfrastructure.parserImpersonation(entree)
+  }
+
   public validerLimiteAudit(entree: unknown): number {
     return this.validateurInfrastructure.parserLimiteAudit(entree, 100)
   }

@@ -4,15 +4,51 @@ import { DONNEES_SECURITE_AUTH } from './donneesSecuriteAuth.mjs'
 
 export class SeederSecuriteAuthentification extends SeederAbstrait {
   async executer() {
-    const donneesSuperAdmin = DONNEES_SECURITE_AUTH.superAdmin
-    const permissions = DONNEES_SECURITE_AUTH.permissionsSuperAdmin
-
     let lignesTraitees = 0
     let lignesCreees = 0
     let lignesMisesAJour = 0
     let lignesIgnorees = 0
 
-    const motDePasseHache = await hash(donneesSuperAdmin.motDePasse, {
+    const resultatSuperAdmin = await this.upsertUtilisateurEtPermissions({
+      role: 'SUPER_ADMIN',
+      donneesUtilisateur: DONNEES_SECURITE_AUTH.superAdmin,
+      permissions: DONNEES_SECURITE_AUTH.permissionsSuperAdmin,
+    })
+    lignesTraitees += resultatSuperAdmin.lignesTraitees
+    lignesCreees += resultatSuperAdmin.lignesCreees
+    lignesMisesAJour += resultatSuperAdmin.lignesMisesAJour
+    lignesIgnorees += resultatSuperAdmin.lignesIgnorees
+
+    const resultatAdmin = await this.upsertUtilisateurEtPermissions({
+      role: 'ADMIN',
+      donneesUtilisateur: DONNEES_SECURITE_AUTH.admin,
+      permissions: DONNEES_SECURITE_AUTH.permissionsAdmin,
+    })
+    lignesTraitees += resultatAdmin.lignesTraitees
+    lignesCreees += resultatAdmin.lignesCreees
+    lignesMisesAJour += resultatAdmin.lignesMisesAJour
+    lignesIgnorees += resultatAdmin.lignesIgnorees
+
+    return {
+      nomSeeder: 'SeederSecuriteAuthentification',
+      lignesTraitees,
+      lignesCreees,
+      lignesMisesAJour,
+      lignesIgnorees,
+    }
+  }
+
+  async upsertUtilisateurEtPermissions({
+    role,
+    donneesUtilisateur,
+    permissions,
+  }) {
+    let lignesTraitees = 0
+    let lignesCreees = 0
+    let lignesMisesAJour = 0
+    let lignesIgnorees = 0
+
+    const motDePasseHache = await hash(donneesUtilisateur.motDePasse, {
       algorithm: Algorithm.Argon2id,
       memoryCost: 19_456,
       timeCost: 2,
@@ -22,36 +58,33 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
 
     const utilisateurExistant = await this.prisma.utilisateur.findFirst({
       where: {
-        OR: [
-          { telephone: donneesSuperAdmin.telephone },
-          { email: donneesSuperAdmin.email },
-        ],
+        OR: [{ telephone: donneesUtilisateur.telephone }, { email: donneesUtilisateur.email }],
       },
     })
 
     let utilisateurId = utilisateurExistant?.id || null
 
     if (!utilisateurExistant) {
-      const utilisateur = await this.prisma.utilisateur.create({
+      const utilisateurCree = await this.prisma.utilisateur.create({
         data: {
-          telephone: donneesSuperAdmin.telephone,
-          email: donneesSuperAdmin.email,
+          telephone: donneesUtilisateur.telephone,
+          email: donneesUtilisateur.email,
           motDePasseHache,
-          role: 'SUPER_ADMIN',
-          statut: donneesSuperAdmin.statut,
-          superAdminTotpActive: donneesSuperAdmin.totpActif,
+          role,
+          statut: donneesUtilisateur.statut,
+          superAdminTotpActive: role === 'SUPER_ADMIN' ? donneesUtilisateur.totpActif : false,
         },
       })
 
-      utilisateurId = utilisateur.id
+      utilisateurId = utilisateurCree.id
       lignesTraitees += 1
       lignesCreees += 1
-    } else if (utilisateurExistant.role !== 'SUPER_ADMIN') {
+    } else if (utilisateurExistant.role !== role) {
       await this.prisma.utilisateur.update({
         where: { id: utilisateurExistant.id },
         data: {
-          role: 'SUPER_ADMIN',
-          statut: donneesSuperAdmin.statut,
+          role,
+          statut: donneesUtilisateur.statut,
           motDePasseHache,
         },
       })
@@ -65,7 +98,6 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
 
     if (!utilisateurId) {
       return {
-        nomSeeder: 'SeederSecuriteAuthentification',
         lignesTraitees,
         lignesCreees,
         lignesMisesAJour,
@@ -105,8 +137,25 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
       }
     }
 
+    const permissionsActuelles = await this.prisma.permissionUtilisateur.findMany({
+      where: { utilisateurId },
+    })
+    const ensembleCibles = new Set(permissions)
+    for (const permissionActuelle of permissionsActuelles) {
+      if (ensembleCibles.has(permissionActuelle.code)) continue
+      if (!permissionActuelle.autorise) {
+        lignesIgnorees += 1
+        continue
+      }
+      await this.prisma.permissionUtilisateur.update({
+        where: { id: permissionActuelle.id },
+        data: { autorise: false },
+      })
+      lignesTraitees += 1
+      lignesMisesAJour += 1
+    }
+
     return {
-      nomSeeder: 'SeederSecuriteAuthentification',
       lignesTraitees,
       lignesCreees,
       lignesMisesAJour,
