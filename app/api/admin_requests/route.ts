@@ -1,8 +1,6 @@
 import { NextRequest } from 'next/server'
 import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances'
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
-import { appliquerEntetesAnnulation } from '@/src/infrastructure/http/appliquerEntetesAnnulation'
-import { executerMutationIdempotenteSiDemandee } from '@/src/infrastructure/http/executerMutationIdempotente'
 
 function extraireChampsAlerteDemandeAdmin(donnees: Record<string, unknown>): Record<string, unknown> {
   return {
@@ -35,15 +33,10 @@ function extraireChampsAlerteDemandeAdmin(donnees: Record<string, unknown>): Rec
  *     summary: Cree une demande d admin
  *     tags:
  *       - Administration Admin
- *     security:
- *       - accessTokenCookie: []
- *         csrfHeader: []
- *       - bearerAuth: []
- *         csrfHeader: []
  *     parameters:
  *       - in: header
- *         name: x-csrf-token
- *         required: true
+ *         name: x-idempotency-key
+ *         required: false
  *         schema:
  *           type: string
  *     requestBody:
@@ -58,7 +51,7 @@ function extraireChampsAlerteDemandeAdmin(donnees: Record<string, unknown>): Rec
  *       400:
  *         description: Parametres invalides
  *       403:
- *         description: Acces refuse (role/portee/CSRF)
+ *         description: Origine interdite (CORS)
  */
 export const GET = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,
@@ -78,33 +71,17 @@ export const GET = executerAvecGestionErreurs(
 export const POST = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,
   async (requete: NextRequest) => {
-    conteneurDependances.adaptateurRequeteSecurite.exigerCsrf(requete)
-    const jetonAcces = conteneurDependances.adaptateurRequeteSecurite.extraireJetonAcces(requete)
-    const impersonation = conteneurDependances.adaptateurRequeteSecurite.lireImpersonation(requete)
     const corps = (await requete.json().catch(() => ({}))) as Record<string, unknown>
-
-    return executerMutationIdempotenteSiDemandee({
-      prisma: conteneurDependances.prisma,
-      requete,
-      jetonAcces,
-      impersonation,
-      corps,
-      serviceAuthentification: conteneurDependances.serviceAuthentification,
-      executerMutation: async () => {
-        const resultat = await conteneurDependances.controleurAdministrationAdmin.creerDemandeAdmin(
-          jetonAcces,
-          impersonation,
-          corps
-        )
-        void conteneurDependances.serviceAlerteSuperAdminWebhook.envoyer({
-          eventType: 'SUPER_ADMIN_ADMIN_REQUEST_CREATED',
-          titre: 'Nouvelle demande admin a valider',
-          severite: 'warning',
-          details: extraireChampsAlerteDemandeAdmin(resultat.donnees),
-        })
-        const reponse = conteneurDependances.reponseHttp.succes(resultat.donnees)
-        return appliquerEntetesAnnulation(reponse, resultat.annulation)
-      },
+    const donnees = await conteneurDependances.controleurAdministrationAdmin.creerDemandeAdminPublique(
+      corps
+    )
+    void conteneurDependances.serviceAlerteSuperAdminWebhook.envoyer({
+      eventType: 'SUPER_ADMIN_ADMIN_REQUEST_CREATED',
+      titre: 'Nouvelle demande admin a valider',
+      severite: 'warning',
+      details: extraireChampsAlerteDemandeAdmin(donnees),
     })
+
+    return conteneurDependances.reponseHttp.succes(donnees)
   }
 )

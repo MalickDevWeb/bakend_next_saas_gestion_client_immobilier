@@ -640,6 +640,10 @@ export class ControleurAdministrationAdmin {
     )
   }
 
+  public async creerDemandeAdminPublique(corps: Record<string, unknown>) {
+    return this.serviceAdministrationAdminSupervision.creerDemandeAdminPublique(corps)
+  }
+
   public async mettreAJourDemandeAdmin(
     jetonAcces: string,
     impersonation: DtoEtatImpersonation,

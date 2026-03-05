@@ -58,6 +58,14 @@ export class ServiceAdministrationAdminSupervisionDemandes {
     return { donnees: dto, annulation }
   }
 
+  public async creerDemandeAdminPublique(
+    corps: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
+    const entite = this.dependances.constructeur.construireEntiteDemandeAdminDepuisCorps(corps)
+    await this.dependances.daoDemandeAdmin.sauvegarder(entite)
+    return this.dependances.mappeur.mapperDemandeAdminEnDto(entite)
+  }
+
   public async mettreAJourDemandeAdmin(
     jetonAcces: string,
     impersonation: DtoEtatImpersonation,

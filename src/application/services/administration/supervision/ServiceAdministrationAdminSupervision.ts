@@ -82,6 +82,12 @@ export class ServiceAdministrationAdminSupervision {
     return this.serviceDemandes.creerDemandeAdmin(jetonAcces, impersonation, corps)
   }
 
+  public creerDemandeAdminPublique(
+    corps: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
+    return this.serviceDemandes.creerDemandeAdminPublique(corps)
+  }
+
   public mettreAJourDemandeAdmin(
     jetonAcces: string,
     impersonation: DtoEtatImpersonation,
