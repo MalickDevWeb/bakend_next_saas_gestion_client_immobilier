@@ -45,3 +45,11 @@ npm run dev
 - `GET /api/documentation`
 - `GET /documentation`
 - `GET /docs` (site web documentation)
+- `GET /api/securite/super-admin/rapport-hebdo` (rapport global + webhook super admin)
+- `GET /api/notifications/clients/impayes` (relances clients impayes + resume admin)
+
+## Variables d environnement utiles (alertes super admin)
+
+- `ALERTE_SUPER_ADMIN_WEBHOOK_URL` (fallback sur `ALERTE_SECURITE_WEBHOOK_URL`)
+- `SUPER_ADMIN_SANTE_ALERT_COOLDOWN_MS` (anti-spam alertes sante, defaut 900000)
+- `SUPER_ADMIN_REPORT_CRON_SECRET` (header `x-cron-secret` pour cron)

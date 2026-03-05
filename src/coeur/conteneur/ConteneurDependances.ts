@@ -11,6 +11,7 @@ import { ServiceTotp } from '@/src/infrastructure/securite/ServiceTotp'
 import { ServiceChiffrementSymetrique } from '@/src/infrastructure/securite/ServiceChiffrementSymetrique'
 import { ServiceAuditSecurite } from '@/src/infrastructure/securite/ServiceAuditSecurite'
 import { ServiceAuditSecuriteMemoire } from '@/src/infrastructure/securite/ServiceAuditSecuriteMemoire'
+import { ServiceAlerteSuperAdminWebhook } from '@/src/infrastructure/alertes/ServiceAlerteSuperAdminWebhook'
 import { ServiceAuthentification } from '@/src/application/services/authentification/ServiceAuthentification'
 import { ServiceContexteAuthentification } from '@/src/application/services/authentification/ServiceContexteAuthentification'
 import { ServiceSessionAuthentification } from '@/src/application/services/authentification/ServiceSessionAuthentification'
@@ -115,9 +116,19 @@ class ConteneurDependances {
   )
   public daoAuthentificationPrisma: InterfaceDaoAuthentification = new DaoAuthentificationPrisma(this.prisma)
   public daoAuthentificationMemoire = new DaoAuthentificationMemoire()
+  public serviceAlerteSuperAdminWebhook = new ServiceAlerteSuperAdminWebhook(
+    this.configurationSecurite.urlWebhookAlertesSuperAdmin()
+  )
   public serviceAuditSecuritePrisma: InterfaceServiceAuditSecurite = new ServiceAuditSecurite(
     this.prisma,
-    this.configurationSecurite.urlWebhookAlertes()
+    this.configurationSecurite.urlWebhookAlertes(),
+    {
+      apiToken: this.configurationSecurite.whatsappCloudApiToken(),
+      phoneNumberId: this.configurationSecurite.whatsappCloudPhoneNumberId(),
+      destination: this.configurationSecurite.whatsappCloudDestination(),
+      apiVersion: this.configurationSecurite.whatsappCloudApiVersion(),
+    },
+    this.serviceAlerteSuperAdminWebhook
   )
   public serviceAuditSecuriteMemoire: InterfaceServiceAuditSecurite =
     new ServiceAuditSecuriteMemoire(this.daoAuthentificationMemoire)

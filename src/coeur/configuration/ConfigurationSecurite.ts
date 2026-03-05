@@ -75,6 +75,37 @@ export class ConfigurationSecurite {
     return String(process.env.ALERTE_SECURITE_WEBHOOK_URL || '').trim()
   }
 
+  public urlWebhookAlertesSuperAdmin(): string {
+    const dedie = String(process.env.ALERTE_SUPER_ADMIN_WEBHOOK_URL || '').trim()
+    if (dedie) return dedie
+    return this.urlWebhookAlertes()
+  }
+
+  public cooldownAlerteSanteSuperAdminMillisecondes(): number {
+    return this.nombreEntier(process.env.SUPER_ADMIN_SANTE_ALERT_COOLDOWN_MS, 15 * 60 * 1000)
+  }
+
+  public cleCronRapportHebdoSuperAdmin(): string {
+    return String(process.env.SUPER_ADMIN_REPORT_CRON_SECRET || '').trim()
+  }
+
+  public whatsappCloudApiToken(): string {
+    return String(process.env.WHATSAPP_CLOUD_API_TOKEN || '').trim()
+  }
+
+  public whatsappCloudPhoneNumberId(): string {
+    return String(process.env.WHATSAPP_CLOUD_PHONE_NUMBER_ID || '').trim()
+  }
+
+  public whatsappCloudDestination(): string {
+    return String(process.env.WHATSAPP_CLOUD_DESTINATION || '').trim()
+  }
+
+  public whatsappCloudApiVersion(): string {
+    const valeur = String(process.env.WHATSAPP_CLOUD_API_VERSION || 'v22.0').trim()
+    return valeur || 'v22.0'
+  }
+
   private nombreEntier(valeurBrute: string | undefined, valeurParDefaut: number): number {
     const valeur = Number(valeurBrute)
     if (!Number.isFinite(valeur) || valeur <= 0) return valeurParDefaut

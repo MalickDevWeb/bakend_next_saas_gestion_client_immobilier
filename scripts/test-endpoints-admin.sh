@@ -311,6 +311,8 @@ test_api "Supervision admin_requests refuse ADMIN" GET "/api/admin_requests" "$A
 test_api "Supervision entreprises refuse ADMIN" GET "/api/entreprises" "$ADMIN_COOKIE" "" "" 403
 test_api "Supervision users refuse ADMIN" GET "/api/users" "$ADMIN_COOKIE" "" "" 403
 test_api "Securite audits refuse ADMIN" GET "/api/securite/audits?limite=10" "$ADMIN_COOKIE" "" "" 403
+test_api "Rapport hebdo SUPER_ADMIN refuse ADMIN" GET "/api/securite/super-admin/rapport-hebdo?envoyer=false" "$ADMIN_COOKIE" "" "" 403
+test_api "Relances impayes clients reserve SUPER_ADMIN" GET "/api/notifications/clients/impayes?dryRun=true&limit=20" "$ADMIN_COOKIE" "" "" 403
 
 test_api "Blocked IP delete" DELETE "/api/blocked_ips/${BLOCKED_IP_ID}" "$ADMIN_COOKIE" "" "$ADMIN_CSRF" 200
 test_api "Audit log delete" DELETE "/api/audit_logs/${AUDIT_ID}" "$ADMIN_COOKIE" "" "$ADMIN_CSRF" 200

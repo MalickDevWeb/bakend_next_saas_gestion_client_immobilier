@@ -223,6 +223,8 @@ test_api "Supervision admins bloque avant second-auth" GET "/api/admins" "$SUPER
 test_api "Second-auth SUPER_ADMIN" POST "/api/authContext/super-admin/second-auth" "$SUPER_COOKIE" \
   "{\"motDePasse\":\"${SUPER_ADMIN_MOT_DE_PASSE}\"}" "$SUPER_CSRF" 200
 test_api "Securite audits SUPER_ADMIN" GET "/api/securite/audits?limite=10" "$SUPER_COOKIE" "" "" 200
+test_api "Rapport hebdo SUPER_ADMIN (preview)" GET "/api/securite/super-admin/rapport-hebdo?envoyer=false" "$SUPER_COOKIE" "" "" 200
+test_api "Relances impayes clients (preview)" GET "/api/notifications/clients/impayes?dryRun=true&limit=20" "$SUPER_COOKIE" "" "" 200
 
 reauth_super_admin
 test_api "Supervision admins list" GET "/api/admins" "$SUPER_COOKIE" "" "" 200
