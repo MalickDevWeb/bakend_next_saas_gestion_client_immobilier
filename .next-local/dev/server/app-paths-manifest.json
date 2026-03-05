@@ -1,6 +1,0 @@
-{
-  "/api/authContext/login/route": "app/api/authContext/login/route.js",
-  "/api/documentation/route": "app/api/documentation/route.js",
-  "/api/sante/route": "app/api/sante/route.js",
-  "/documentation/page": "app/documentation/page.js"
-}
