@@ -15,11 +15,12 @@ export const POST = executerAvecGestionErreurs(
     const corps = (await requete.json().catch(() => ({}))) as TypeChargeSignatureCloudinary
     const apiKey = String(process.env.CLOUDINARY_API_KEY || '').trim()
     const apiSecret = String(process.env.CLOUDINARY_API_SECRET || '').trim()
+    const cloudName = String(process.env.CLOUDINARY_CLOUD_NAME || '').trim()
 
-    if (!apiKey || !apiSecret) {
+    if (!apiKey || !apiSecret || !cloudName) {
       throw new ErreurHttp(
         CODE_HTTP.ERREUR_INTERNE,
-        'Cloudinary non configure (CLOUDINARY_API_KEY/CLOUDINARY_API_SECRET).',
+        'Cloudinary non configure (CLOUDINARY_API_KEY/CLOUDINARY_API_SECRET/CLOUDINARY_CLOUD_NAME).',
         { code: 'CLOUDINARY_NOT_CONFIGURED' }
       )
     }
@@ -39,6 +40,7 @@ export const POST = executerAvecGestionErreurs(
       api_key: apiKey,
       timestamp,
       signature,
+      cloud_name: cloudName,
     })
   }
 )

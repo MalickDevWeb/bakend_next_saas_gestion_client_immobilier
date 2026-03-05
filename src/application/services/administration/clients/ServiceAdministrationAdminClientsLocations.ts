@@ -52,6 +52,7 @@ export class ServiceAdministrationAdminClientsLocations {
   ): Promise<TypeResultatMutationAdministrationAdmin<Record<string, unknown>>> {
     const contexte = await this.dependances.securite.obtenirContexteAcces(jetonAcces, impersonation, 'clients')
     const entite = this.dependances.constructeur.construireEntiteClientDepuisCorps(corps, contexte.adminId)
+    await this.verifierDoublonClientParAdmin(entite, contexte.adminId)
     await this.dependances.daoClient.sauvegarder(entite)
 
     const dto = this.dependances.mappeur.mapperClientEnDto(entite)
@@ -96,6 +97,7 @@ export class ServiceAdministrationAdminClientsLocations {
       contexte.adminId,
       clientId
     )
+    await this.verifierDoublonClientParAdmin(entite, contexte.adminId, clientId)
     await this.dependances.daoClient.sauvegarder(entite)
 
     const dto = this.dependances.mappeur.mapperClientEnDto(entite)
@@ -192,6 +194,42 @@ export class ServiceAdministrationAdminClientsLocations {
 
   private estClientVisibleParAdmin(client: EntiteClient, adminId: string): boolean {
     return String(client.adminId || '').trim() === String(adminId || '').trim()
+  }
+
+  private async verifierDoublonClientParAdmin(
+    entite: EntiteClient,
+    adminId: string,
+    selfId?: string
+  ): Promise<void> {
+    const telephoneNormalise = this.normaliserTelephone(entite.telephone)
+    const emailNormalise = this.normaliserTexte(entite.email)
+    if (!telephoneNormalise && !emailNormalise) return
+
+    const elements = await this.dependances.daoClient.lister()
+    for (const client of elements) {
+      if (selfId && String(client.id || '').trim() === String(selfId || '').trim()) continue
+      if (!this.estClientVisibleParAdmin(client, adminId)) continue
+
+      const telephoneClient = this.normaliserTelephone(client.telephone)
+      const emailClient = this.normaliserTexte(client.email)
+      const conflitTelephone = Boolean(telephoneNormalise && telephoneClient && telephoneNormalise === telephoneClient)
+      const conflitEmail = Boolean(emailNormalise && emailClient && emailNormalise === emailClient)
+      if (conflitTelephone || conflitEmail) {
+        throw new ErreurHttp(CODE_HTTP.CONFLIT, t(ERRORS.ADMIN_CLIENT_DUPLIQUE_PAR_ADMIN))
+      }
+    }
+  }
+
+  private normaliserTelephone(valeur: unknown): string {
+    const digits = String(valeur || '').replace(/\D/g, '')
+    if (digits.startsWith('221')) {
+      return digits.slice(3)
+    }
+    return digits
+  }
+
+  private normaliserTexte(valeur: unknown): string {
+    return String(valeur || '').trim().toLowerCase()
   }
 
   private exigerEntite<T>(entite: T | null | undefined, message: string): asserts entite is T {
