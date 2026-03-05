@@ -24,7 +24,8 @@ export class ConfigurationSecurite {
   }
 
   public dureeSecondeAuthSuperAdminMillisecondes(): number {
-    return this.nombreEntier(process.env.AUTH_SUPER_ADMIN_2FA_TTL_MS, 60 * 1000)
+    // 30 minutes par défaut pour éviter une redemande 2FA quasi immédiate à chaque action.
+    return this.nombreEntier(process.env.AUTH_SUPER_ADMIN_2FA_TTL_MS, 30 * 60 * 1000)
   }
 
   public limiteEchecsConnexion(): number {
@@ -55,6 +56,8 @@ export class ConfigurationSecurite {
       '/authContext/login',
       '/api/auth/login',
       '/auth/login',
+      '/api/auth/pending-check',
+      '/auth/pending-check',
       '/api/admin_requests',
       '/admin_requests',
       '/api/sign',
