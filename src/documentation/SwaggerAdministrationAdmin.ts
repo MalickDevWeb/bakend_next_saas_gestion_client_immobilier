@@ -1,6 +1,10 @@
 /**
  * @swagger
  * /api/clients:
+ *   description: >
+ *     Endpoint scope par adminId.
+ *     - ADMIN: ne voit et ne manipule que ses propres clients.
+ *     - SUPER_ADMIN: doit activer l impersonation (/api/authContext/impersonate) pour travailler dans le scope d un admin cible.
  *   get:
  *     summary: Liste les clients admin
  *     tags: [Administration Admin]
@@ -10,6 +14,8 @@
  *     responses:
  *       200:
  *         description: Liste des clients
+ *       403:
+ *         description: Permission manquante ou acces hors scope admin
  *   post:
  *     summary: Cree un client admin
  *     tags: [Administration Admin]
@@ -28,7 +34,12 @@
  *     responses:
  *       200:
  *         description: Client cree
+ *       403:
+ *         description: Permission manquante ou acces hors scope admin
  * /api/clients/{id}:
+ *   description: >
+ *     Controle d appartenance strict.
+ *     Le client cible doit appartenir au scope admin courant (adminId).
  *   get:
  *     summary: Recupere un client admin
  *     tags: [Administration Admin]
@@ -43,6 +54,8 @@
  *     responses:
  *       200:
  *         description: Client
+ *       403:
+ *         description: Permission manquante ou client hors scope admin
  *   put:
  *     summary: Met a jour un client admin
  *     tags: [Administration Admin]
@@ -66,6 +79,8 @@
  *     responses:
  *       200:
  *         description: Client mis a jour
+ *       403:
+ *         description: Permission manquante ou client hors scope admin
  *   patch:
  *     summary: Met a jour partiellement un client admin
  *     tags: [Administration Admin]
@@ -89,8 +104,112 @@
  *     responses:
  *       200:
  *         description: Client mis a jour
+ *       403:
+ *         description: Permission manquante ou client hors scope admin
  *   delete:
  *     summary: Supprime un client admin
+ *     tags: [Administration Admin]
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Suppression effectuee
+ *       403:
+ *         description: Permission manquante ou client hors scope admin
+ *
+ * /api/locations:
+ *   get:
+ *     summary: Liste les locations admin
+ *     tags: [Administration Admin]
+ *     security:
+ *       - accessTokenCookie: []
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Liste des locations
+ *   post:
+ *     summary: Cree une location admin
+ *     tags: [Administration Admin]
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { type: object, additionalProperties: true }
+ *     responses:
+ *       200:
+ *         description: Location creee
+ * /api/locations/{id}:
+ *   get:
+ *     summary: Recupere une location admin
+ *     tags: [Administration Admin]
+ *     security:
+ *       - accessTokenCookie: []
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Location
+ *   put:
+ *     summary: Met a jour une location admin
+ *     tags: [Administration Admin]
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { type: object, additionalProperties: true }
+ *     responses:
+ *       200:
+ *         description: Location mise a jour
+ *   patch:
+ *     summary: Met a jour partiellement une location admin
+ *     tags: [Administration Admin]
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { type: object, additionalProperties: true }
+ *     responses:
+ *       200:
+ *         description: Location mise a jour
+ *   delete:
+ *     summary: Supprime une location admin
  *     tags: [Administration Admin]
  *     security:
  *       - accessTokenCookie: []
@@ -981,4 +1100,3 @@
  *         description: URL traitee
  */
 export const SWAGGER_ADMINISTRATION_ADMIN_ACTIVE = true
-

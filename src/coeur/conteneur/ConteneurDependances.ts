@@ -30,7 +30,9 @@ import { UtilitairesSecurite } from '@/src/infrastructure/securite/UtilitairesSe
 import { ReponseHttp } from '@/src/infrastructure/http/ReponseHttp'
 import { ContexteRequeteHttp } from '@/src/infrastructure/http/ContexteRequeteHttp'
 import { ValidateurAuthentificationZod } from '@/src/infrastructure/validateurs/ValidateurAuthentificationZod'
-import { MappeurUtilisateurAuthentification } from '@/src/application/mappers/MappeurUtilisateurAuthentification'
+import {
+  MappeurUtilisateurAuthentification,
+} from '@/src/application/mappers'
 import { DaoAuthentificationPrisma } from '@/src/infrastructure/dao/prisma/authentification/DaoAuthentificationPrisma'
 import { DaoAuthentificationMemoire } from '@/src/infrastructure/dao/memoire/authentification/DaoAuthentificationMemoire'
 import { InterfaceDaoAuthentification } from '@/src/domaine/interfaces/dao/authentification/InterfaceDaoAuthentification'
@@ -52,11 +54,21 @@ import {
   DaoStatutAbonnementAdminMemoire,
 } from '@/src/infrastructure/dao/memoire/administration'
 import {
+  DaoPaiementAbonnementAdminPrisma,
+  DaoStatutAbonnementAdminPrisma,
+} from '@/src/infrastructure/dao/prisma/administration'
+import {
   DaoClientMemoire,
   DaoDocumentMemoire,
   DaoPaiementCautionMemoire,
   DaoTransactionPaiementMemoire,
 } from '@/src/infrastructure/dao/memoire/locations'
+import {
+  DaoClientPrisma,
+  DaoDocumentPrisma,
+  DaoPaiementCautionPrisma,
+  DaoTransactionPaiementPrisma,
+} from '@/src/infrastructure/dao/prisma/locations'
 import {
   DaoExecutionImportMemoire,
   DaoIpBloqueeMemoire,
@@ -64,10 +76,21 @@ import {
   DaoJournalAuditMemoire,
   DaoNotificationMemoire,
 } from '@/src/infrastructure/dao/memoire/systeme'
+import {
+  DaoExecutionImportPrisma,
+  DaoIpBloqueePrisma,
+  DaoItemTravailPrisma,
+  DaoJournalAuditPrisma,
+  DaoNotificationPrisma,
+  DaoParametreAdminPrisma,
+} from '@/src/infrastructure/dao/prisma/systeme'
+import { creerServiceAdministrationAdminSupervision } from '@/src/coeur/conteneur/FabriqueServiceAdministrationAdminSupervision'
 
 class ConteneurDependances {
   public configurationApplication = new ConfigurationApplication()
   public configurationSecurite = new ConfigurationSecurite()
+  public utiliseMemoire =
+    this.configurationApplication.driverPersistanceAuthentification() === 'memoire'
   public prisma = ClientPrisma.obtenirInstance()
   public clientBaseDeDonnees = new AdaptateurPrisma()
   public validateurEntree = new ValidateurZod()
@@ -99,9 +122,7 @@ class ConteneurDependances {
   public serviceAuditSecuriteMemoire: InterfaceServiceAuditSecurite =
     new ServiceAuditSecuriteMemoire(this.daoAuthentificationMemoire)
   public serviceAuditSecurite: InterfaceServiceAuditSecurite =
-    this.configurationApplication.driverPersistanceAuthentification() === 'memoire'
-      ? this.serviceAuditSecuriteMemoire
-      : this.serviceAuditSecuritePrisma
+    this.utiliseMemoire ? this.serviceAuditSecuriteMemoire : this.serviceAuditSecuritePrisma
   public serviceCookiesAuthentification = new ServiceCookiesAuthentification({
     modeSecurise: this.configurationSecurite.modeCookieSecurise(),
     sameSite: this.configurationSecurite.modeSameSiteCookies(),
@@ -115,9 +136,7 @@ class ConteneurDependances {
   public repositoryAuthentificationMemoire: InterfaceRepositoryAuthentification =
     new RepositoryAuthentificationMemoire(this.daoAuthentificationMemoire)
   public repositoryAuthentification: InterfaceRepositoryAuthentification =
-    this.configurationApplication.driverPersistanceAuthentification() === 'memoire'
-      ? this.repositoryAuthentificationMemoire
-      : this.repositoryAuthentificationPrisma
+    this.utiliseMemoire ? this.repositoryAuthentificationMemoire : this.repositoryAuthentificationPrisma
   public fabriqueSessionAuthentification = new FabriqueSessionAuthentification()
   public fabriqueJetonRefresh = new FabriqueJetonRefresh()
   public serviceContexteAuthentification = new ServiceContexteAuthentification(
@@ -152,17 +171,9 @@ class ConteneurDependances {
     this.serviceHachageMotDePasse,
     this.configurationApplication
   )
-  public serviceAutorisationAuthentification = new ServiceAutorisationAuthentification(
-    this.serviceContexteAuthentification
-  )
-  public serviceAuditAuthentification = new ServiceAuditAuthentification(
-    this.repositoryAuthentification,
-    this.serviceAutorisationAuthentification
-  )
-  public serviceImpersonationAuthentification = new ServiceImpersonationAuthentification(
-    this.serviceContexteAuthentification,
-    this.repositoryAuthentification
-  )
+  public serviceAutorisationAuthentification = new ServiceAutorisationAuthentification(this.serviceContexteAuthentification)
+  public serviceAuditAuthentification = new ServiceAuditAuthentification(this.repositoryAuthentification, this.serviceAutorisationAuthentification)
+  public serviceImpersonationAuthentification = new ServiceImpersonationAuthentification(this.serviceContexteAuthentification, this.repositoryAuthentification)
   public serviceAuthentification = new ServiceAuthentification(
     this.serviceSessionAuthentification,
     this.serviceContexteAuthentification,
@@ -171,42 +182,76 @@ class ConteneurDependances {
     this.serviceAuditAuthentification,
     this.serviceImpersonationAuthentification
   )
-  public controleurAuthContext = new ControleurAuthContext(
-    this.serviceAuthentification,
-    this.validateurAuthentification
-  )
+  public controleurAuthContext = new ControleurAuthContext(this.serviceAuthentification, this.validateurAuthentification)
   public daoClientMemoire = new DaoClientMemoire()
+  public daoClientPrisma = new DaoClientPrisma(this.prisma)
+  public daoClient = this.utiliseMemoire ? this.daoClientMemoire : this.daoClientPrisma
   public daoDocumentMemoire = new DaoDocumentMemoire()
+  public daoDocumentPrisma = new DaoDocumentPrisma(this.prisma)
+  public daoDocument = this.utiliseMemoire ? this.daoDocumentMemoire : this.daoDocumentPrisma
   public daoTransactionPaiementMemoire = new DaoTransactionPaiementMemoire()
+  public daoTransactionPaiementPrisma = new DaoTransactionPaiementPrisma(this.prisma)
+  public daoTransactionPaiement =
+    this.utiliseMemoire ? this.daoTransactionPaiementMemoire : this.daoTransactionPaiementPrisma
   public daoPaiementCautionMemoire = new DaoPaiementCautionMemoire()
+  public daoPaiementCautionPrisma = new DaoPaiementCautionPrisma(this.prisma)
+  public daoPaiementCaution =
+    this.utiliseMemoire ? this.daoPaiementCautionMemoire : this.daoPaiementCautionPrisma
   public daoItemTravailMemoire = new DaoItemTravailMemoire()
+  public daoItemTravailPrisma = new DaoItemTravailPrisma(this.prisma)
+  public daoItemTravail = this.utiliseMemoire ? this.daoItemTravailMemoire : this.daoItemTravailPrisma
   public daoExecutionImportMemoire = new DaoExecutionImportMemoire()
+  public daoExecutionImportPrisma = new DaoExecutionImportPrisma(this.prisma)
+  public daoExecutionImport =
+    this.utiliseMemoire ? this.daoExecutionImportMemoire : this.daoExecutionImportPrisma
   public daoNotificationMemoire = new DaoNotificationMemoire()
+  public daoNotificationPrisma = new DaoNotificationPrisma(this.prisma)
+  public daoNotification = this.utiliseMemoire ? this.daoNotificationMemoire : this.daoNotificationPrisma
   public daoIpBloqueeMemoire = new DaoIpBloqueeMemoire()
+  public daoIpBloqueePrisma = new DaoIpBloqueePrisma(this.prisma)
+  public daoIpBloquee = this.utiliseMemoire ? this.daoIpBloqueeMemoire : this.daoIpBloqueePrisma
   public daoJournalAuditMemoire = new DaoJournalAuditMemoire()
+  public daoJournalAuditPrisma = new DaoJournalAuditPrisma(this.prisma)
+  public daoJournalAudit = this.utiliseMemoire ? this.daoJournalAuditMemoire : this.daoJournalAuditPrisma
   public daoPaiementAbonnementAdminMemoire = new DaoPaiementAbonnementAdminMemoire()
+  public daoPaiementAbonnementAdminPrisma = new DaoPaiementAbonnementAdminPrisma(this.prisma)
+  public daoPaiementAbonnementAdmin =
+    this.utiliseMemoire
+      ? this.daoPaiementAbonnementAdminMemoire
+      : this.daoPaiementAbonnementAdminPrisma
   public daoStatutAbonnementAdminMemoire = new DaoStatutAbonnementAdminMemoire()
-  public serviceAdministrationAdmin = new ServiceAdministrationAdmin(
-    this.serviceAuthentification,
-    this.daoClientMemoire,
-    this.daoDocumentMemoire,
-    this.daoTransactionPaiementMemoire,
-    this.daoPaiementCautionMemoire,
-    this.daoItemTravailMemoire,
-    this.daoExecutionImportMemoire,
-    this.daoNotificationMemoire,
-    this.daoIpBloqueeMemoire,
-    this.daoJournalAuditMemoire,
-    this.daoPaiementAbonnementAdminMemoire,
-    this.daoStatutAbonnementAdminMemoire
-  )
+  public daoStatutAbonnementAdminPrisma = new DaoStatutAbonnementAdminPrisma(this.prisma)
+  public daoStatutAbonnementAdmin =
+    this.utiliseMemoire
+      ? this.daoStatutAbonnementAdminMemoire
+      : this.daoStatutAbonnementAdminPrisma
+  public daoParametreAdminPrisma = new DaoParametreAdminPrisma(this.prisma)
+  public serviceAdministrationAdmin = new ServiceAdministrationAdmin({
+    serviceAuthentification: this.serviceAuthentification,
+    daoClient: this.daoClient,
+    daoDocument: this.daoDocument,
+    daoTransactionPaiement: this.daoTransactionPaiement,
+    daoPaiementCaution: this.daoPaiementCaution,
+    daoItemTravail: this.daoItemTravail,
+    daoExecutionImport: this.daoExecutionImport,
+    daoNotification: this.daoNotification,
+    daoIpBloquee: this.daoIpBloquee,
+    daoJournalAudit: this.daoJournalAudit,
+    daoPaiementAbonnementAdmin: this.daoPaiementAbonnementAdmin,
+    daoStatutAbonnementAdmin: this.daoStatutAbonnementAdmin,
+    daoParametreAdmin: this.utiliseMemoire ? undefined : this.daoParametreAdminPrisma,
+  })
+  public serviceAdministrationAdminSupervision = creerServiceAdministrationAdminSupervision({
+    utiliseMemoire: this.utiliseMemoire,
+    prisma: this.prisma,
+    serviceAuthentification: this.serviceAuthentification,
+    serviceHachageMotDePasse: this.serviceHachageMotDePasse,
+  })
   public controleurAdministrationAdmin = new ControleurAdministrationAdmin(
-    this.serviceAdministrationAdmin
+    this.serviceAdministrationAdmin,
+    this.serviceAdministrationAdminSupervision
   )
-  public serviceSante = new ServiceSante(
-    this.clientBaseDeDonnees,
-    this.configurationApplication
-  )
+  public serviceSante = new ServiceSante(this.clientBaseDeDonnees, this.configurationApplication)
   public controleurSante = new ControleurSante(this.serviceSante, this.validateurEntree)
 }
 

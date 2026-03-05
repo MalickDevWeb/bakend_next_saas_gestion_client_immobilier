@@ -1,8 +1,12 @@
 import { DtoEtatImpersonation } from '@/src/application/dtos/authentification/DtoAuthentification'
 import { ServiceAdministrationAdmin } from '@/src/application/services/administration/ServiceAdministrationAdmin'
+import { ServiceAdministrationAdminSupervision } from '@/src/application/services/administration/supervision/ServiceAdministrationAdminSupervision'
 
 export class ControleurAdministrationAdmin {
-  constructor(private readonly serviceAdministrationAdmin: ServiceAdministrationAdmin) {}
+  constructor(
+    private readonly serviceAdministrationAdmin: ServiceAdministrationAdmin,
+    private readonly serviceAdministrationAdminSupervision: ServiceAdministrationAdminSupervision
+  ) {}
 
   public async listerClients(
     jetonAcces: string,
@@ -53,6 +57,65 @@ export class ControleurAdministrationAdmin {
     clientId: string
   ) {
     return this.serviceAdministrationAdmin.supprimerClient(jetonAcces, impersonation, clientId)
+  }
+
+  public async listerLocations(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    requeteUrl: URL
+  ) {
+    return this.serviceAdministrationAdmin.listerLocations(
+      jetonAcces,
+      impersonation,
+      requeteUrl.searchParams.get('_sort') || requeteUrl.searchParams.get('sortBy'),
+      requeteUrl.searchParams.get('_order') || requeteUrl.searchParams.get('order')
+    )
+  }
+
+  public async obtenirLocation(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    locationId: string
+  ) {
+    return this.serviceAdministrationAdmin.obtenirLocation(
+      jetonAcces,
+      impersonation,
+      locationId
+    )
+  }
+
+  public async creerLocation(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdmin.creerLocation(jetonAcces, impersonation, corps)
+  }
+
+  public async mettreAJourLocation(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    locationId: string,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdmin.mettreAJourLocation(
+      jetonAcces,
+      impersonation,
+      locationId,
+      corps
+    )
+  }
+
+  public async supprimerLocation(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    locationId: string
+  ) {
+    return this.serviceAdministrationAdmin.supprimerLocation(
+      jetonAcces,
+      impersonation,
+      locationId
+    )
   }
 
   public async listerDocuments(jetonAcces: string, impersonation: DtoEtatImpersonation) {
@@ -478,6 +541,248 @@ export class ControleurAdministrationAdmin {
       jetonAcces,
       impersonation,
       String(corps.url || '')
+    )
+  }
+
+  public async listerAdmins(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    requeteUrl: URL
+  ) {
+    return this.serviceAdministrationAdminSupervision.listerAdmins(
+      jetonAcces,
+      impersonation,
+      requeteUrl.searchParams.get('_sort') || requeteUrl.searchParams.get('sortBy'),
+      requeteUrl.searchParams.get('_order') || requeteUrl.searchParams.get('order')
+    )
+  }
+
+  public async obtenirAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    adminId: string
+  ) {
+    return this.serviceAdministrationAdminSupervision.obtenirAdmin(
+      jetonAcces,
+      impersonation,
+      adminId
+    )
+  }
+
+  public async creerAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdminSupervision.creerAdmin(jetonAcces, impersonation, corps)
+  }
+
+  public async mettreAJourAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    adminId: string,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdminSupervision.mettreAJourAdmin(
+      jetonAcces,
+      impersonation,
+      adminId,
+      corps
+    )
+  }
+
+  public async supprimerAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    adminId: string
+  ) {
+    return this.serviceAdministrationAdminSupervision.supprimerAdmin(
+      jetonAcces,
+      impersonation,
+      adminId
+    )
+  }
+
+  public async listerDemandesAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    requeteUrl: URL
+  ) {
+    return this.serviceAdministrationAdminSupervision.listerDemandesAdmin(
+      jetonAcces,
+      impersonation,
+      requeteUrl.searchParams.get('_sort') || requeteUrl.searchParams.get('sortBy'),
+      requeteUrl.searchParams.get('_order') || requeteUrl.searchParams.get('order')
+    )
+  }
+
+  public async obtenirDemandeAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    demandeId: string
+  ) {
+    return this.serviceAdministrationAdminSupervision.obtenirDemandeAdmin(
+      jetonAcces,
+      impersonation,
+      demandeId
+    )
+  }
+
+  public async creerDemandeAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdminSupervision.creerDemandeAdmin(
+      jetonAcces,
+      impersonation,
+      corps
+    )
+  }
+
+  public async mettreAJourDemandeAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    demandeId: string,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdminSupervision.mettreAJourDemandeAdmin(
+      jetonAcces,
+      impersonation,
+      demandeId,
+      corps
+    )
+  }
+
+  public async supprimerDemandeAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    demandeId: string
+  ) {
+    return this.serviceAdministrationAdminSupervision.supprimerDemandeAdmin(
+      jetonAcces,
+      impersonation,
+      demandeId
+    )
+  }
+
+  public async listerEntreprises(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation
+  ) {
+    return this.serviceAdministrationAdminSupervision.listerEntreprises(
+      jetonAcces,
+      impersonation
+    )
+  }
+
+  public async obtenirEntreprise(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    entrepriseId: string
+  ) {
+    return this.serviceAdministrationAdminSupervision.obtenirEntreprise(
+      jetonAcces,
+      impersonation,
+      entrepriseId
+    )
+  }
+
+  public async creerEntreprise(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdminSupervision.creerEntreprise(
+      jetonAcces,
+      impersonation,
+      corps
+    )
+  }
+
+  public async mettreAJourEntreprise(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    entrepriseId: string,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdminSupervision.mettreAJourEntreprise(
+      jetonAcces,
+      impersonation,
+      entrepriseId,
+      corps
+    )
+  }
+
+  public async supprimerEntreprise(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    entrepriseId: string
+  ) {
+    return this.serviceAdministrationAdminSupervision.supprimerEntreprise(
+      jetonAcces,
+      impersonation,
+      entrepriseId
+    )
+  }
+
+  public async listerUtilisateurs(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation
+  ) {
+    return this.serviceAdministrationAdminSupervision.listerUtilisateurs(
+      jetonAcces,
+      impersonation
+    )
+  }
+
+  public async obtenirUtilisateur(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    utilisateurId: string
+  ) {
+    return this.serviceAdministrationAdminSupervision.obtenirUtilisateur(
+      jetonAcces,
+      impersonation,
+      utilisateurId
+    )
+  }
+
+  public async creerUtilisateur(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdminSupervision.creerUtilisateur(
+      jetonAcces,
+      impersonation,
+      corps
+    )
+  }
+
+  public async mettreAJourUtilisateur(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    utilisateurId: string,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdminSupervision.mettreAJourUtilisateur(
+      jetonAcces,
+      impersonation,
+      utilisateurId,
+      corps
+    )
+  }
+
+  public async supprimerUtilisateur(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    utilisateurId: string
+  ) {
+    return this.serviceAdministrationAdminSupervision.supprimerUtilisateur(
+      jetonAcces,
+      impersonation,
+      utilisateurId
     )
   }
 }

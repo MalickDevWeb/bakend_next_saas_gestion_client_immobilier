@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances'
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
 import { appliquerEntetesAnnulation } from '@/src/infrastructure/http/appliquerEntetesAnnulation'
+import { executerMutationIdempotenteSiDemandee } from '@/src/infrastructure/http/executerMutationIdempotente'
 
 type ParametresRoute = { params: Promise<{ id: string }> }
 
@@ -28,14 +29,25 @@ const miseAJourDepot = executerAvecGestionErreurs(
     const jetonAcces = conteneurDependances.adaptateurRequeteSecurite.extraireJetonAcces(requete)
     const impersonation = conteneurDependances.adaptateurRequeteSecurite.lireImpersonation(requete)
     const corps = (await requete.json().catch(() => ({}))) as Record<string, unknown>
-    const resultat = await conteneurDependances.controleurAdministrationAdmin.mettreAJourDepot(
+
+    return executerMutationIdempotenteSiDemandee({
+      prisma: conteneurDependances.prisma,
+      requete,
       jetonAcces,
       impersonation,
-      id,
-      corps
-    )
-    const reponse = conteneurDependances.reponseHttp.succes(resultat.donnees)
-    return appliquerEntetesAnnulation(reponse, resultat.annulation)
+      corps,
+      serviceAuthentification: conteneurDependances.serviceAuthentification,
+      executerMutation: async () => {
+        const resultat = await conteneurDependances.controleurAdministrationAdmin.mettreAJourDepot(
+          jetonAcces,
+          impersonation,
+          id,
+          corps
+        )
+        const reponse = conteneurDependances.reponseHttp.succes(resultat.donnees)
+        return appliquerEntetesAnnulation(reponse, resultat.annulation)
+      },
+    })
   }
 )
 
@@ -49,12 +61,23 @@ export const DELETE = executerAvecGestionErreurs(
     conteneurDependances.adaptateurRequeteSecurite.exigerCsrf(requete)
     const jetonAcces = conteneurDependances.adaptateurRequeteSecurite.extraireJetonAcces(requete)
     const impersonation = conteneurDependances.adaptateurRequeteSecurite.lireImpersonation(requete)
-    const resultat = await conteneurDependances.controleurAdministrationAdmin.supprimerDepot(
+
+    return executerMutationIdempotenteSiDemandee({
+      prisma: conteneurDependances.prisma,
+      requete,
       jetonAcces,
       impersonation,
-      id
-    )
-    const reponse = conteneurDependances.reponseHttp.succes(resultat.donnees)
-    return appliquerEntetesAnnulation(reponse, resultat.annulation)
+      corps: {},
+      serviceAuthentification: conteneurDependances.serviceAuthentification,
+      executerMutation: async () => {
+        const resultat = await conteneurDependances.controleurAdministrationAdmin.supprimerDepot(
+          jetonAcces,
+          impersonation,
+          id
+        )
+        const reponse = conteneurDependances.reponseHttp.succes(resultat.donnees)
+        return appliquerEntetesAnnulation(reponse, resultat.annulation)
+      },
+    })
   }
 )

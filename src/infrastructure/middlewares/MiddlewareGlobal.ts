@@ -23,6 +23,7 @@ const PREFIXES_ROUTES_API = [
   '/audit_logs',
   '/blocked_ips',
   '/cloudinary',
+  '/sign',
 ]
 
 export class MiddlewareGlobal {

@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances'
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
+import { adapterUtilisateurAuthentifieFrontend } from '@/src/infrastructure/http/adapterUtilisateurAuthentifieFrontend'
 
 /**
  * @swagger
@@ -33,6 +34,7 @@ export const GET = executerAvecGestionErreurs(
 
     const reponse = conteneurDependances.reponseHttp.succes({
       ...resultat,
+      user: adapterUtilisateurAuthentifieFrontend(resultat.user),
       impersonation,
     })
 

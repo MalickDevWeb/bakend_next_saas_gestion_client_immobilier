@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances'
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
+import { adapterUtilisateurAuthentifieFrontend } from '@/src/infrastructure/http/adapterUtilisateurAuthentifieFrontend'
 
 /**
  * @swagger
@@ -43,7 +44,7 @@ export const POST = executerAvecGestionErreurs(
     )
 
     const reponse = conteneurDependances.reponseHttp.succes({
-      user: resultat.user,
+      user: adapterUtilisateurAuthentifieFrontend(resultat.user),
     })
 
     conteneurDependances.serviceCookiesAuthentification.ecrireCookiesRafraichissement(

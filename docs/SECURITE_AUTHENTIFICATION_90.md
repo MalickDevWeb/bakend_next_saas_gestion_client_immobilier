@@ -31,6 +31,7 @@ Routes API documentees:
 - `POST /api/authContext/super-admin/totp/activer`
 - `GET /api/authContext/super-admin/totp/statut`
 - `GET /api/securite/audits` (RBAC serveur + seconde auth)
+- `GET|POST /api/locations` + `GET|PUT|PATCH|DELETE /api/locations/{id}`
 
 Comportement de role:
 

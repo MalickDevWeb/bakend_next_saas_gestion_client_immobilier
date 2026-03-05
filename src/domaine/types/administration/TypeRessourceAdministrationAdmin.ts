@@ -1,5 +1,10 @@
 export type TypeRessourceAdministrationAdmin =
+  | 'admins'
+  | 'admin_requests'
+  | 'entreprises'
+  | 'users'
   | 'clients'
+  | 'locations'
   | 'documents'
   | 'payments'
   | 'deposits'

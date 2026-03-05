@@ -23,9 +23,11 @@ Flux applique dans le code:
 
 1. Route HTTP (`app/api/**`)
 2. Controleur (`src/controleurs/ControleurAdministrationAdmin.ts`)
-3. Service applicatif (`src/application/services/administration/ServiceAdministrationAdmin.ts`)
-4. DAO (interfaces domaine)
-5. DAO memoire/prisma (infrastructure)
+3. Facade applicative courte (`src/application/services/administration/ServiceAdministrationAdmin.ts`)
+4. Facade metier courte (`src/application/services/administration/ServiceAdministrationAdminMetier.ts`)
+5. Composant operations admin (`src/application/services/administration/ServiceAdministrationAdminOperations.ts`)
+6. DAO (interfaces domaine)
+7. DAO memoire/prisma (infrastructure)
 
 Points importants:
 - pas de logique metier dans les routes;
@@ -52,6 +54,8 @@ Points importants:
   - `src/controleurs/ControleurAdministrationAdmin.ts`
 - Service:
   - `src/application/services/administration/ServiceAdministrationAdmin.ts`
+  - `src/application/services/administration/ServiceAdministrationAdminMetier.ts`
+  - `src/application/services/administration/ServiceAdministrationAdminOperations.ts`
 - Entetes undo:
   - `src/infrastructure/http/appliquerEntetesAnnulation.ts`
 - Cablage DI:
@@ -174,4 +178,3 @@ Puis valider en UI:
 - paiements admin;
 - notifications;
 - settings.
-

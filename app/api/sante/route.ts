@@ -21,7 +21,7 @@ import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAv
 export const GET = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,
   async (requete: NextRequest) => {
-    const verbeux = requete.nextUrl.searchParams.get('verbeux')
+    const verbeux = requete.nextUrl.searchParams.get('verbeux') ?? undefined
     const resultat = await conteneurDependances.controleurSante.traiterRequete({ verbeux })
     return conteneurDependances.reponseHttp.succes(resultat)
   }

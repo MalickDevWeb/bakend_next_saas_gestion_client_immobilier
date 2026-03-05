@@ -55,6 +55,8 @@ export class ConfigurationSecurite {
       '/authContext/login',
       '/api/auth/login',
       '/auth/login',
+      '/api/sign',
+      '/sign',
       '/api/sante',
       '/api/documentation',
     ]

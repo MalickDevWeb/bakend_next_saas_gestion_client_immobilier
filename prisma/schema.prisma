@@ -42,10 +42,72 @@ model Utilisateur {
   tentatives             TentativeConnexion[]
   audits                 JournalAudit[]
   permissions            PermissionUtilisateur[]
+  profilAdmin            Admin?
 
   @@index([telephone])
   @@index([role, statut])
   @@map("utilisateurs")
+}
+
+model Admin {
+  id                           String                  @id @default(cuid())
+  utilisateurId                String                  @unique
+  nomUtilisateur               String
+  nom                          String
+  email                        String
+  statut                       TypeStatutAdmin         @default(EN_ATTENTE)
+  entrepriseId                 String?
+  modeAbonnement               TypeModeAbonnementAdmin @default(monthly)
+  montantMensuelAbonnement     Float                   @default(0)
+  montantAnnuelAbonnement      Float                   @default(0)
+  autoriserMontantPersonnalise Boolean                 @default(false)
+  permissionTableauDeBord      Boolean                 @default(true)
+  permissionClients            Boolean                 @default(true)
+  permissionLocations          Boolean                 @default(true)
+  permissionPaiements          Boolean                 @default(true)
+  permissionDocuments          Boolean                 @default(true)
+  permissionParametres         Boolean                 @default(true)
+  permissionTravaux            Boolean                 @default(true)
+  permissionImports            Boolean                 @default(true)
+  permissionNotifications      Boolean                 @default(true)
+  permissionExportPdf          Boolean                 @default(true)
+  creeLe                       DateTime                @default(now())
+  misAJourLe                   DateTime                @updatedAt
+  utilisateur                  Utilisateur             @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+
+  @@index([statut, creeLe])
+  @@index([entrepriseId])
+  @@map("admins")
+}
+
+model DemandeAdmin {
+  id            String          @id @default(cuid())
+  nom           String
+  email         String?
+  telephone     String?
+  nomEntreprise String?
+  statut        TypeStatutAdmin @default(EN_ATTENTE)
+  nomUtilisateur String?
+  motDePasse    String?
+  paye          Boolean         @default(false)
+  payeLe        DateTime?
+  creeLe        DateTime        @default(now())
+  misAJourLe    DateTime        @updatedAt
+
+  @@index([statut, creeLe])
+  @@index([nomEntreprise])
+  @@map("demandes_admin")
+}
+
+model Entreprise {
+  id         String   @id @default(cuid())
+  nom        String
+  adminId    String?
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+
+  @@index([adminId])
+  @@map("entreprises")
 }
 
 model SessionAuthentification {
@@ -132,6 +194,299 @@ model PermissionUtilisateur {
   @@map("permissions_utilisateur")
 }
 
+model Client {
+  id         String     @id
+  adminId    String
+  prenom     String
+  nom        String
+  telephone  String
+  cni        String
+  email      String?
+  statut     String     @default("active")
+  creeLe     DateTime   @default(now())
+  misAJourLe DateTime   @updatedAt
+  locations  Location[]
+
+  @@index([adminId, creeLe])
+  @@index([telephone])
+  @@map("clients")
+}
+
+model Location {
+  id                  String            @id
+  clientId            String
+  typeBien            String
+  nomBien             String
+  loyerMensuel        Float
+  dateDebut           DateTime
+  cautionMontantTotal Float             @default(0)
+  cautionMontantPaye  Float             @default(0)
+  creeLe              DateTime          @default(now())
+  misAJourLe          DateTime          @updatedAt
+  client              Client            @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  documents           Document[]
+  paiementsMensuels   PaiementMensuel[]
+  depots              PaiementCaution[]
+
+  @@index([clientId, creeLe])
+  @@map("locations")
+}
+
+model Document {
+  id         String    @id
+  locationId String?
+  nom        String
+  type       String
+  url        String
+  dateAjout  DateTime
+  estSigne   Boolean   @default(false)
+  creeLe     DateTime  @default(now())
+  misAJourLe DateTime  @updatedAt
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@index([locationId, creeLe])
+  @@map("documents")
+}
+
+model PaiementMensuel {
+  id          String               @id
+  locationId  String
+  periodeDebut DateTime
+  periodeFin  DateTime
+  dateEcheance DateTime
+  montantDu   Float
+  montantPaye Float                @default(0)
+  statut      String               @default("unpaid")
+  creeLe      DateTime             @default(now())
+  misAJourLe  DateTime             @updatedAt
+  location    Location             @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  transactions TransactionPaiement[]
+
+  @@index([locationId, creeLe])
+  @@index([statut])
+  @@map("location_monthly_payments")
+}
+
+model TransactionPaiement {
+  id               String           @id
+  paiementMensuelId String?
+  montant          Float
+  datePaiement     DateTime
+  numeroRecu       String
+  description      String?
+  statut           String           @default("completed")
+  creeLe           DateTime         @default(now())
+  misAJourLe       DateTime         @updatedAt
+  paiementMensuel  PaiementMensuel? @relation(fields: [paiementMensuelId], references: [id], onDelete: Cascade)
+
+  @@index([paiementMensuelId, creeLe])
+  @@index([statut])
+  @@map("payments")
+}
+
+model PaiementCaution {
+  id         String    @id
+  locationId String?
+  montant    Float
+  datePaiement DateTime
+  numeroRecu String
+  note       String?
+  statut     String    @default("completed")
+  creeLe     DateTime  @default(now())
+  misAJourLe DateTime  @updatedAt
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@index([locationId, creeLe])
+  @@index([statut])
+  @@map("deposits")
+}
+
+model ItemTravail {
+  id                    String   @id
+  titre                 String
+  description           String
+  priorite              String   @default("medium")
+  statut                String   @default("pending")
+  dateEcheance          DateTime?
+  detecteAutomatiquement Boolean @default(false)
+  creeLe                DateTime @default(now())
+  misAJourLe            DateTime @updatedAt
+
+  @@index([creeLe])
+  @@map("work_items")
+}
+
+model ExecutionImport {
+  id                String            @id
+  adminId           String?
+  nomFichier        String?
+  nombreLignesTotal Int               @default(0)
+  ignoree           Boolean           @default(false)
+  lectureReussie    Boolean           @default(true)
+  lectureAvecErreurs Boolean          @default(false)
+  creeLe            DateTime          @default(now())
+  misAJourLe        DateTime          @updatedAt
+  lignesInserees    LigneImportee[]
+  erreurs           ErreurImport[]
+
+  @@index([adminId, creeLe])
+  @@map("import_runs")
+}
+
+model LigneImportee {
+  id               String          @id
+  executionImportId String
+  prenom           String
+  nom              String
+  telephone        String
+  email            String?
+  creeLe           DateTime        @default(now())
+  executionImport  ExecutionImport @relation(fields: [executionImportId], references: [id], onDelete: Cascade)
+
+  @@index([executionImportId, creeLe])
+  @@map("import_run_inserted_rows")
+}
+
+model ErreurImport {
+  id               String               @id @default(cuid())
+  executionImportId String
+  numeroLigne      Int
+  donneesBrutesTexte String?
+  creeLe           DateTime             @default(now())
+  executionImport  ExecutionImport      @relation(fields: [executionImportId], references: [id], onDelete: Cascade)
+  messages         MessageErreurImport[]
+
+  @@index([executionImportId, numeroLigne])
+  @@map("import_run_errors")
+}
+
+model MessageErreurImport {
+  id            String      @id @default(cuid())
+  erreurImportId String
+  message       String
+  ordre         Int         @default(0)
+  erreurImport  ErreurImport @relation(fields: [erreurImportId], references: [id], onDelete: Cascade)
+
+  @@index([erreurImportId, ordre])
+  @@map("import_run_error_messages")
+}
+
+model Notification {
+  id           String   @id
+  utilisateurId String
+  message      String
+  type         String?
+  estLue       Boolean  @default(false)
+  creeLe       DateTime @default(now())
+  misAJourLe   DateTime @updatedAt
+
+  @@index([utilisateurId, creeLe])
+  @@map("notifications")
+}
+
+model IpBloquee {
+  id         String   @id
+  adresseIp  String
+  raison     String?
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+
+  @@index([creeLe])
+  @@index([adresseIp])
+  @@map("blocked_ips")
+}
+
+model JournalAuditAdmin {
+  id         String   @id
+  acteur     String?
+  action     String?
+  typeCible  String?
+  idCible    String?
+  message    String?
+  adresseIp  String?
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+
+  @@index([creeLe])
+  @@map("audit_logs")
+}
+
+model PaiementAbonnementAdmin {
+  id                  String   @id
+  adminId             String
+  montant             Float
+  methode             String
+  mois                String
+  entrepriseId        String?
+  statut              String   @default("pending")
+  fournisseur         String?
+  referenceFournisseur String?
+  urlPaiement         String?
+  telephonePayeur     String?
+  referenceTransaction String?
+  note                String?
+  payeLe              DateTime?
+  approuveLe          DateTime?
+  approuvePar         String?
+  modeAbonnement      String   @default("monthly")
+  creeLe              DateTime @default(now())
+  misAJourLe          DateTime @updatedAt
+
+  @@index([adminId, creeLe])
+  @@map("admin_payments")
+}
+
+model StatutAbonnementAdmin {
+  adminId              String   @id
+  bloque               Boolean  @default(false)
+  moisEnRetard         String?
+  echeance             DateTime?
+  moisRequis           String
+  moisCourant          String
+  joursGrace           Int      @default(5)
+  modeAbonnement       String   @default("monthly")
+  montantAttendu       Float?
+  autoriserMontantLibre Boolean @default(false)
+  creeLe               DateTime @default(now())
+  misAJourLe           DateTime @updatedAt
+
+  @@map("admin_payment_statuses")
+}
+
+model ParametreAdmin {
+  adminId    String
+  id         String
+  cle        String
+  valeur     String
+  creeLe     DateTime @default(now())
+  misAJourLe DateTime @updatedAt
+
+  @@id([adminId, id])
+  @@unique([adminId, cle])
+  @@index([adminId, misAJourLe])
+  @@map("settings")
+}
+
+model IdempotenceMutation {
+  id             String   @id @default(cuid())
+  cle            String
+  scope          String
+  methode        String
+  chemin         String
+  hashRequete    String
+  statut         String   @default("IN_PROGRESS")
+  codeHttp       Int?
+  corpsReponse   Json?
+  entetesReponse Json?
+  creeLe         DateTime @default(now())
+  expireLe       DateTime
+  misAJourLe     DateTime @updatedAt
+
+  @@unique([cle, scope, methode, chemin], map: "idempotence_mutation_unique")
+  @@index([expireLe], map: "idempotence_mutation_expire_idx")
+  @@map("idempotence_mutations")
+}
+
 enum TypeValeurConfiguration {
   STRING
   NUMBER
@@ -151,12 +506,28 @@ enum TypeOrigineConfiguration {
 enum TypeRoleUtilisateur {
   SUPER_ADMIN
   ADMIN
+  UTILISATEUR
 }
 
 enum TypeStatutUtilisateur {
   ACTIF
   SUSPENDU
   EN_ATTENTE
+  ARCHIVE
+}
+
+enum TypeStatutAdmin {
+  EN_ATTENTE
+  ACTIF
+  SUSPENDU
+  BLACKLISTE
+  ARCHIVE
+}
+
+enum TypeModeAbonnementAdmin {
+  monthly
+  premium
+  annual
 }
 
 enum TypeTentativeConnexion {

@@ -31,6 +31,8 @@ export class ReponseHttp {
       )
     }
 
+    console.error('[ReponseHttp] Erreur interne non capturee:', erreur)
+
     return NextResponse.json(
       {
         message: t(ERRORS.ERREUR_INTERNE_SERVEUR),

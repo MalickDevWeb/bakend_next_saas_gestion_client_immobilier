@@ -1,0 +1,4 @@
+import type { TypeDependancesServiceAdministrationAdminLocations } from '@/src/application/types/administration/clients/TypeDependancesServiceAdministrationAdminLocations'
+
+export type TypeDependancesServiceAdministrationAdminClientsLocations =
+  TypeDependancesServiceAdministrationAdminLocations

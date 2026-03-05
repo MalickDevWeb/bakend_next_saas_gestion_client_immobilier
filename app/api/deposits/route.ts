@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances'
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
 import { appliquerEntetesAnnulation } from '@/src/infrastructure/http/appliquerEntetesAnnulation'
+import { executerMutationIdempotenteSiDemandee } from '@/src/infrastructure/http/executerMutationIdempotente'
 
 export const GET = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,
@@ -23,12 +24,23 @@ export const POST = executerAvecGestionErreurs(
     const jetonAcces = conteneurDependances.adaptateurRequeteSecurite.extraireJetonAcces(requete)
     const impersonation = conteneurDependances.adaptateurRequeteSecurite.lireImpersonation(requete)
     const corps = (await requete.json().catch(() => ({}))) as Record<string, unknown>
-    const resultat = await conteneurDependances.controleurAdministrationAdmin.creerDepot(
+
+    return executerMutationIdempotenteSiDemandee({
+      prisma: conteneurDependances.prisma,
+      requete,
       jetonAcces,
       impersonation,
-      corps
-    )
-    const reponse = conteneurDependances.reponseHttp.succes(resultat.donnees)
-    return appliquerEntetesAnnulation(reponse, resultat.annulation)
+      corps,
+      serviceAuthentification: conteneurDependances.serviceAuthentification,
+      executerMutation: async () => {
+        const resultat = await conteneurDependances.controleurAdministrationAdmin.creerDepot(
+          jetonAcces,
+          impersonation,
+          corps
+        )
+        const reponse = conteneurDependances.reponseHttp.succes(resultat.donnees)
+        return appliquerEntetesAnnulation(reponse, resultat.annulation)
+      },
+    })
   }
 )

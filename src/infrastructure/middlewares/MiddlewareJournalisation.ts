@@ -3,11 +3,7 @@ import { InterfaceMiddlewareHttp } from '@/src/infrastructure/middlewares/Interf
 
 export class MiddlewareJournalisation implements InterfaceMiddlewareHttp {
   public traiter(requete: NextRequest): NextResponse | null {
-    if (requete.nextUrl.pathname.startsWith('/api')) {
-      console.info(
-        `[MIDDLEWARE] ${requete.method} ${requete.nextUrl.pathname}`
-      )
-    }
+    void requete
 
     return null
   }

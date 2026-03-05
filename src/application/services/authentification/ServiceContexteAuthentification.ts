@@ -1,6 +1,6 @@
 import { InterfaceRepositoryAuthentification } from '@/src/domaine/interfaces/repository/InterfaceRepositoryAuthentification'
 import { InterfaceServiceJetonAcces } from '@/src/coeur/interfaces/InterfaceServiceJetonAcces'
-import { MappeurUtilisateurAuthentification } from '@/src/application/mappers/MappeurUtilisateurAuthentification'
+import { MappeurUtilisateurAuthentification } from '@/src/application/mappers'
 import { TypeContexteSessionAuthentification } from '@/src/domaine/types/authentification/TypeContexteSessionAuthentification'
 import { t } from '@/src/messages'
 import { ERRORS } from '@/src/messages/app/errors'

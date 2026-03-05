@@ -29,6 +29,14 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
     lignesMisesAJour += resultatAdmin.lignesMisesAJour
     lignesIgnorees += resultatAdmin.lignesIgnorees
 
+    const resultatSupervision = await this.upsertDonneesSupervisionAdmin(
+      resultatAdmin.utilisateur
+    )
+    lignesTraitees += resultatSupervision.lignesTraitees
+    lignesCreees += resultatSupervision.lignesCreees
+    lignesMisesAJour += resultatSupervision.lignesMisesAJour
+    lignesIgnorees += resultatSupervision.lignesIgnorees
+
     return {
       nomSeeder: 'SeederSecuriteAuthentification',
       lignesTraitees,
@@ -63,6 +71,8 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
     })
 
     let utilisateurId = utilisateurExistant?.id || null
+    let utilisateur = utilisateurExistant || null
+    const forceUpdate = String(process.env.SEED_FORCE_UPDATE || '').trim().toLowerCase() === 'true'
 
     if (!utilisateurExistant) {
       const utilisateurCree = await this.prisma.utilisateur.create({
@@ -77,12 +87,15 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
       })
 
       utilisateurId = utilisateurCree.id
+      utilisateur = utilisateurCree
       lignesTraitees += 1
       lignesCreees += 1
     } else if (utilisateurExistant.role !== role) {
-      await this.prisma.utilisateur.update({
+      const utilisateurMisAJour = await this.prisma.utilisateur.update({
         where: { id: utilisateurExistant.id },
         data: {
+          telephone: donneesUtilisateur.telephone,
+          email: donneesUtilisateur.email,
           role,
           statut: donneesUtilisateur.statut,
           motDePasseHache,
@@ -90,9 +103,25 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
       })
 
       utilisateurId = utilisateurExistant.id
+      utilisateur = utilisateurMisAJour
+      lignesTraitees += 1
+      lignesMisesAJour += 1
+    } else if (forceUpdate) {
+      const utilisateurMisAJour = await this.prisma.utilisateur.update({
+        where: { id: utilisateurExistant.id },
+        data: {
+          telephone: donneesUtilisateur.telephone,
+          email: donneesUtilisateur.email,
+          statut: donneesUtilisateur.statut,
+          motDePasseHache,
+        },
+      })
+      utilisateurId = utilisateurExistant.id
+      utilisateur = utilisateurMisAJour
       lignesTraitees += 1
       lignesMisesAJour += 1
     } else {
+      utilisateur = utilisateurExistant
       lignesIgnorees += 1
     }
 
@@ -102,6 +131,7 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
         lignesCreees,
         lignesMisesAJour,
         lignesIgnorees: lignesIgnorees + permissions.length,
+        utilisateur: null,
       }
     }
 
@@ -153,6 +183,133 @@ export class SeederSecuriteAuthentification extends SeederAbstrait {
       })
       lignesTraitees += 1
       lignesMisesAJour += 1
+    }
+
+    return {
+      lignesTraitees,
+      lignesCreees,
+      lignesMisesAJour,
+      lignesIgnorees,
+      utilisateur,
+    }
+  }
+
+  async upsertDonneesSupervisionAdmin(utilisateurAdmin) {
+    if (!utilisateurAdmin) {
+      return {
+        lignesTraitees: 0,
+        lignesCreees: 0,
+        lignesMisesAJour: 0,
+        lignesIgnorees: 0,
+      }
+    }
+
+    let lignesTraitees = 0
+    let lignesCreees = 0
+    let lignesMisesAJour = 0
+    let lignesIgnorees = 0
+
+    const adminExistant = await this.prisma.admin.findUnique({
+      where: { utilisateurId: utilisateurAdmin.id },
+    })
+
+    const donneesAdmin = {
+      utilisateurId: utilisateurAdmin.id,
+      nomUtilisateur:
+        DONNEES_SECURITE_AUTH.profilAdmin.nomUtilisateur || utilisateurAdmin.telephone,
+      nom: DONNEES_SECURITE_AUTH.profilAdmin.nom,
+      email: utilisateurAdmin.email,
+      statut: DONNEES_SECURITE_AUTH.profilAdmin.statut,
+      modeAbonnement: DONNEES_SECURITE_AUTH.profilAdmin.modeAbonnement,
+      montantMensuelAbonnement: DONNEES_SECURITE_AUTH.profilAdmin.montantMensuelAbonnement,
+      montantAnnuelAbonnement: DONNEES_SECURITE_AUTH.profilAdmin.montantAnnuelAbonnement,
+      autoriserMontantPersonnalise:
+        DONNEES_SECURITE_AUTH.profilAdmin.autoriserMontantPersonnalise,
+      permissionTableauDeBord: true,
+      permissionClients: true,
+      permissionLocations: true,
+      permissionPaiements: true,
+      permissionDocuments: true,
+      permissionParametres: true,
+      permissionTravaux: true,
+      permissionImports: true,
+      permissionNotifications: true,
+      permissionExportPdf: true,
+    }
+
+    const admin = adminExistant
+      ? await this.prisma.admin.update({
+          where: { id: adminExistant.id },
+          data: donneesAdmin,
+        })
+      : await this.prisma.admin.create({
+          data: donneesAdmin,
+        })
+
+    lignesTraitees += 1
+    if (adminExistant) lignesMisesAJour += 1
+    else lignesCreees += 1
+
+    const entrepriseExistante = await this.prisma.entreprise.findUnique({
+      where: { id: DONNEES_SECURITE_AUTH.entrepriseAdmin.id },
+    })
+    if (entrepriseExistante) {
+      await this.prisma.entreprise.update({
+        where: { id: entrepriseExistante.id },
+        data: {
+          nom: DONNEES_SECURITE_AUTH.entrepriseAdmin.nom,
+          adminId: admin.id,
+        },
+      })
+      lignesTraitees += 1
+      lignesMisesAJour += 1
+    } else {
+      await this.prisma.entreprise.create({
+        data: {
+          id: DONNEES_SECURITE_AUTH.entrepriseAdmin.id,
+          nom: DONNEES_SECURITE_AUTH.entrepriseAdmin.nom,
+          adminId: admin.id,
+        },
+      })
+      lignesTraitees += 1
+      lignesCreees += 1
+    }
+
+    const demandeExistante = await this.prisma.demandeAdmin.findUnique({
+      where: { id: DONNEES_SECURITE_AUTH.demandeAdmin.id },
+    })
+    const donneesDemande = {
+      nom: DONNEES_SECURITE_AUTH.demandeAdmin.nom,
+      email: DONNEES_SECURITE_AUTH.demandeAdmin.email,
+      telephone: DONNEES_SECURITE_AUTH.demandeAdmin.telephone,
+      nomEntreprise: DONNEES_SECURITE_AUTH.demandeAdmin.nomEntreprise,
+      statut: DONNEES_SECURITE_AUTH.demandeAdmin.statut,
+      nomUtilisateur: DONNEES_SECURITE_AUTH.demandeAdmin.nomUtilisateur,
+      motDePasse: DONNEES_SECURITE_AUTH.demandeAdmin.motDePasse,
+      paye: DONNEES_SECURITE_AUTH.demandeAdmin.paye,
+      payeLe: DONNEES_SECURITE_AUTH.demandeAdmin.paye ? new Date() : null,
+    }
+
+    if (demandeExistante) {
+      await this.prisma.demandeAdmin.update({
+        where: { id: demandeExistante.id },
+        data: donneesDemande,
+      })
+      lignesTraitees += 1
+      lignesMisesAJour += 1
+    } else {
+      await this.prisma.demandeAdmin.create({
+        data: {
+          id: DONNEES_SECURITE_AUTH.demandeAdmin.id,
+          ...donneesDemande,
+        },
+      })
+      lignesTraitees += 1
+      lignesCreees += 1
+    }
+
+    if (!lignesTraitees) {
+      lignesIgnorees += 1
     }
 
     return {

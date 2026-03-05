@@ -6,7 +6,7 @@ import { InterfaceServiceAuditSecurite } from '@/src/coeur/interfaces/InterfaceS
 import { InterfaceUtilitairesSecurite } from '@/src/coeur/interfaces/InterfaceUtilitairesSecurite'
 import { ConfigurationSecurite } from '@/src/coeur/configuration/ConfigurationSecurite'
 import { InterfaceRepositoryAuthentification } from '@/src/domaine/interfaces/repository/InterfaceRepositoryAuthentification'
-import { MappeurUtilisateurAuthentification } from '@/src/application/mappers/MappeurUtilisateurAuthentification'
+import { MappeurUtilisateurAuthentification } from '@/src/application/mappers'
 import { ServiceSecuriteSessionAuthentification } from '@/src/application/services/authentification/ServiceSecuriteSessionAuthentification'
 import { TypeContexteRequeteAuthentification } from '@/src/domaine/types/authentification/TypeContexteRequeteAuthentification'
 import { TypeResultatConnexionAuthentification } from '@/src/domaine/types/authentification/TypeResultatConnexionAuthentification'

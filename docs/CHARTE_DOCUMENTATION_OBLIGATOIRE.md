@@ -2,6 +2,13 @@
 
 Cette charte est une regle projet:
 
+## Regle 0 - Prompt maitre obligatoire pour chaque demande
+
+Chaque nouvelle demande de fonctionnalite doit utiliser:
+- `docs/PROMPT_MAITRE_IMPLEMENTATION_FONCTIONNALITE.md`
+
+Interdiction de contourner ce cadre. Toute implementation doit suivre ses etapes A -> Z.
+
 ## Regle 1 - Toute modification de code doit avoir sa documentation
 
 A chaque changement de code, il faut documenter:
@@ -47,8 +54,27 @@ Un travail n'est considere termine que si:
 - docs associees mises a jour
 - `npm run lint` passe
 - `npx tsc --noEmit` passe
+- tests de la fonctionnalite executes et valides (minimum: tests manuels documentes + checks qualite)
 
-## Regle 5 - Format d'une bonne note de documentation
+## Regle 5 - Tests obligatoires par fonctionnalite
+
+Avant de passer a la fonctionnalite suivante, il faut:
+
+1. definir le plan de test de la fonctionnalite (cas nominal + cas erreur + securite/permissions);
+2. executer les checks qualite (`npm run test:qualite`);
+3. executer le score qualite (`npm run qualite:score`) avec seuil >= 80%;
+   - portee par defaut: code modifie (delta de la fonctionnalite)
+   - audit global possible: `QUALITE_PORTEE=projet npm run qualite:score`
+4. executer les tests API/flux (Swagger/curl/Postman) et noter les resultats;
+5. consigner les preuves de test dans la doc du module.
+
+Reference test obligatoire:
+- `docs/PROTOCOLE_TESTS_PAR_FONCTIONNALITE.md`
+
+Regle de blocage:
+- si score qualite < 80%, on corrige et on relance jusqu a atteindre >= 80%.
+
+## Regle 6 - Format d'une bonne note de documentation
 
 Chaque note doit repondre a ces 5 questions:
 - Quoi ?
@@ -64,4 +90,5 @@ Chaque note doit repondre a ces 5 questions:
 - [ ] Les captures/arborescences sont a jour si structure changee
 - [ ] Le portail web `/docs` affiche le nouveau document
 - [ ] Lint + Typecheck sont verts
-
+- [ ] Tests fonctionnalite executes et traces dans la doc
+- [ ] Score qualite >= 80%

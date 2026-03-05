@@ -1,0 +1,23 @@
+services:
+  backend-api-test:
+    image: node:20-bookworm-slim
+    working_dir: /app
+    env_file:
+      - .env
+    environment:
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: development
+      AUTH_SUPER_ADMIN_2FA_TTL_MS: "300000"
+    command: >
+      bash -lc "
+      apt-get update &&
+      apt-get install -y --no-install-recommends openssl curl &&
+      npm ci &&
+      npm run prisma:generate &&
+      npm run dev -- --hostname 0.0.0.0 --port 3000 --webpack
+      "
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "${API_TEST_PORT:-3001}:3000"

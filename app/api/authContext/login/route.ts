@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances'
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
+import { adapterUtilisateurAuthentifieFrontend } from '@/src/infrastructure/http/adapterUtilisateurAuthentifieFrontend'
 
 /**
  * @swagger
@@ -58,7 +59,14 @@ export const POST = executerAvecGestionErreurs(
   async (requete: NextRequest) => {
     const corps = (await requete.json().catch(() => ({}))) as Record<string, unknown>
     const identifiant =
-      String(corps.identifiant || corps.telephone || corps.numero || corps.email || '').trim()
+      String(
+        corps.identifiant ||
+          corps.username ||
+          corps.telephone ||
+          corps.numero ||
+          corps.email ||
+          ''
+      ).trim()
     const motDePasse = String(corps.motDePasse || corps.password || '')
 
     const resultat = await conteneurDependances.controleurAuthContext.connexion(
@@ -67,7 +75,7 @@ export const POST = executerAvecGestionErreurs(
     )
 
     const reponse = conteneurDependances.reponseHttp.succes({
-      user: resultat.user,
+      user: adapterUtilisateurAuthentifieFrontend(resultat.user),
     })
 
     conteneurDependances.serviceCookiesAuthentification.ecrireCookiesConnexion(

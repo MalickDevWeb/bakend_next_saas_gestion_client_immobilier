@@ -1,0 +1,17 @@
+
+classDiagram
+direction LR
+
+class Admin
+class Client
+class Location
+class PaiementMensuel
+class PaiementCaution
+class Document
+
+Admin "1" --> "0..*" Client
+Client "1" --> "0..*" Location
+Location "1" --> "0..*" PaiementMensuel
+Client "1" --> "0..*" PaiementCaution
+Location "1" --> "0..*" Document
+

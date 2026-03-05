@@ -20,9 +20,18 @@ export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
     identifiant: string
   ): Promise<DonneesUtilisateurAuthentification | null> {
     const identifiantNormalise = String(identifiant || '').trim()
+    const identifiantMinuscule = identifiantNormalise.toLowerCase()
     const utilisateur = await this.prisma.utilisateur.findFirst({
       where: {
-        OR: [{ telephone: identifiantNormalise }, { email: identifiantNormalise }],
+        OR: [
+          { telephone: identifiantNormalise },
+          {
+            email: {
+              equals: identifiantMinuscule,
+              mode: 'insensitive',
+            },
+          },
+        ],
       },
       include: {
         permissions: {

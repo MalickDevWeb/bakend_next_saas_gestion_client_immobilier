@@ -1,0 +1,60 @@
+
+classDiagram
+direction LR
+
+class Utilisateur {
+  +id: string
+  +telephone: string
+  +email: string
+  +motDePasseHache: string
+  +role: SUPER_ADMIN|ADMIN|UTILISATEUR
+  +statut: ACTIF|SUSPENDU|EN_ATTENTE|ARCHIVE
+}
+
+class Admin {
+  +id: string
+  +utilisateurId: string
+  +nomUtilisateur: string
+  +nom: string
+  +email: string
+  +statut: EN_ATTENTE|ACTIF|SUSPENDU|BLACKLISTE|ARCHIVE
+  +permissionTableauDeBord: boolean
+  +permissionClients: boolean
+  +permissionLocations: boolean
+  +permissionPaiements: boolean
+  +permissionDocuments: boolean
+  +permissionParametres: boolean
+  +permissionTravaux: boolean
+  +permissionImports: boolean
+  +permissionNotifications: boolean
+  +permissionExportPdf: boolean
+}
+
+class PermissionUtilisateur {
+  +id: string
+  +utilisateurId: string
+  +code: string
+  +autorise: boolean
+}
+
+class SessionAuthentification {
+  +id: string
+  +utilisateurId: string
+  +jetonAccesJti: string
+  +csrfToken: string
+  +expireLe: Date
+}
+
+class JetonRefresh {
+  +id: string
+  +sessionId: string
+  +hachageToken: string
+  +expireLe: Date
+  +revoqueLe: Date?
+}
+
+Utilisateur "1" --> "0..1" Admin : profilAdmin
+Utilisateur "1" --> "0..*" PermissionUtilisateur : permissions
+Utilisateur "1" --> "0..*" SessionAuthentification : sessions
+SessionAuthentification "1" --> "0..*" JetonRefresh : jetons
+

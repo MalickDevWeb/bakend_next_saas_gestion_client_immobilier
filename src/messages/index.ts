@@ -5,6 +5,7 @@
 
 export * from './validation'
 export * from './app'
+export * from './app/administration'
 
 export { t, getAction, getLabel, getStatus, getError } from './app'
 

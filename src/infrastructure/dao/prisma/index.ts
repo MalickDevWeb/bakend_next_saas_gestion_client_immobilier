@@ -1,1 +1,5 @@
 export * from '@/src/infrastructure/dao/prisma/authentification'
+export * from '@/src/infrastructure/dao/prisma/administration'
+export * from '@/src/infrastructure/dao/prisma/locations'
+export * from '@/src/infrastructure/dao/prisma/systeme'
+export * from '@/src/infrastructure/dao/prisma/utilisateurs'

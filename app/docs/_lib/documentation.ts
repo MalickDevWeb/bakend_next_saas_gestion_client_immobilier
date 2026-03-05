@@ -22,6 +22,13 @@ export const DOCUMENTS_SITE: TypeDocumentSite[] = [
     resume: 'Point d entree et ordre recommande de lecture.',
   },
   {
+    slug: 'prompt-maitre-implementation',
+    titre: 'Prompt maitre implementation',
+    fichier: 'PROMPT_MAITRE_IMPLEMENTATION_FONCTIONNALITE.md',
+    resume:
+      'Prompt de reference A a Z: dossier par dossier, couche par couche, avec checklist anti-oubli.',
+  },
+  {
     slug: 'guide-maitre',
     titre: 'Guide maitre architecture',
     fichier: 'GUIDE_MAITRE_ARCHITECTURE_REUTILISABLE.md',
@@ -57,6 +64,12 @@ export const DOCUMENTS_SITE: TypeDocumentSite[] = [
     fichier: 'GUIDE_MODULE_ADMIN_DE_A_A_Z.md',
     resume:
       'Fonctionnalites admin front/back, endpoints utilises, permissions, undo et procedure de test complete.',
+  },
+  {
+    slug: 'protocole-tests-fonctionnalite',
+    titre: 'Protocole tests fonctionnalite',
+    fichier: 'PROTOCOLE_TESTS_PAR_FONCTIONNALITE.md',
+    resume: 'Regle bloquante: tests obligatoires + score qualite minimum 80% avant suite.',
   },
   {
     slug: 'seeders',
