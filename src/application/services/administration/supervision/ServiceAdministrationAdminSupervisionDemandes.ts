@@ -8,7 +8,13 @@ import { ErreurHttp } from '@/src/coeur/erreurs/ErreurHttp'
 
 type TypeDependancesSupervisionDemandes = Pick<
   TypeDependancesServiceAdministrationAdminSupervision,
-  'securite' | 'annulation' | 'daoDemandeAdmin' | 'constructeur' | 'mappeur' | 'serviceHachageMotDePasse'
+  | 'securite'
+  | 'annulation'
+  | 'daoDemandeAdmin'
+  | 'constructeur'
+  | 'mappeur'
+  | 'serviceHachageMotDePasse'
+  | 'serviceAlerteSuperAdminWebhook'
 >
 
 export class ServiceAdministrationAdminSupervisionDemandes {
@@ -76,10 +82,25 @@ export class ServiceAdministrationAdminSupervisionDemandes {
     const existant = await this.dependances.daoDemandeAdmin.rechercherParId(demandeId)
     this.exigerEntite(existant, t(ERRORS.ADMIN_DEMANDE_ADMIN_INTROUVABLE))
     const avantEntite = existant
+    const statutAvant = String(avantEntite.statut || '').toUpperCase()
     const fusion = { ...this.dependances.mappeur.mapperDemandeAdminEnDto(existant), ...corps, id: demandeId }
     const entite = this.dependances.constructeur.construireEntiteDemandeAdminDepuisCorps(fusion, demandeId)
     await this.dependances.daoDemandeAdmin.sauvegarder(entite)
     const dto = this.dependances.mappeur.mapperDemandeAdminEnDto(entite)
+    const statutApres = String(entite.statut || '').toUpperCase()
+    if (statutAvant !== 'ACTIF' && statutApres === 'ACTIF') {
+      void this.dependances.serviceAlerteSuperAdminWebhook.envoyer({
+        eventType: 'SUPER_ADMIN_ADMIN_REQUEST_APPROVED',
+        titre: 'Demande admin approuvee',
+        severite: 'info',
+        details: {
+          ...this.extraireChampsAlerteDemandeAdmin(dto),
+          previousStatus: statutAvant || null,
+          approvedByUserId: contexte.utilisateurId ?? null,
+          approvedAt: new Date().toISOString(),
+        },
+      })
+    }
     const annulation = this.dependances.annulation.enregistrerActionAnnulation({
       ressource: 'admin_requests',
       operation: 'UPDATE',
@@ -182,6 +203,18 @@ export class ServiceAdministrationAdminSupervisionDemandes {
   private exigerEntite<T>(entite: T | null | undefined, message: string): asserts entite is T {
     if (!entite) {
       throw new ErreurHttp(CODE_HTTP.NON_TROUVE, message)
+    }
+  }
+
+  private extraireChampsAlerteDemandeAdmin(donnees: Record<string, unknown>): Record<string, unknown> {
+    return {
+      id: donnees.id ?? null,
+      name: donnees.name ?? null,
+      email: donnees.email ?? null,
+      phone: donnees.phone ?? null,
+      entrepriseName: donnees.entrepriseName ?? null,
+      status: donnees.status ?? null,
+      createdAt: donnees.createdAt ?? null,
     }
   }
 }

@@ -18,12 +18,14 @@ import {
 import { DaoUtilisateurPrisma } from '@/src/infrastructure/dao/prisma/utilisateurs'
 import { ServiceAuthentification } from '@/src/application/services/authentification/ServiceAuthentification'
 import { InterfaceServiceHachageMotDePasse } from '@/src/coeur/interfaces/InterfaceServiceHachageMotDePasse'
+import { ServiceAlerteSuperAdminWebhook } from '@/src/infrastructure/alertes/ServiceAlerteSuperAdminWebhook'
 
 type TypeParametresFabriqueServiceAdministrationAdminSupervision = {
   utiliseMemoire: boolean
   prisma: PrismaClient
   serviceAuthentification: ServiceAuthentification
   serviceHachageMotDePasse: InterfaceServiceHachageMotDePasse
+  serviceAlerteSuperAdminWebhook: ServiceAlerteSuperAdminWebhook
 }
 
 export function creerServiceAdministrationAdminSupervision({
@@ -31,6 +33,7 @@ export function creerServiceAdministrationAdminSupervision({
   prisma,
   serviceAuthentification,
   serviceHachageMotDePasse,
+  serviceAlerteSuperAdminWebhook,
 }: TypeParametresFabriqueServiceAdministrationAdminSupervision): ServiceAdministrationAdminSupervision {
   const securite = new ServiceAdministrationAdminSecurite(serviceAuthentification)
   const annulation = new ServiceAdministrationAdminAnnulation()
@@ -56,6 +59,7 @@ export function creerServiceAdministrationAdminSupervision({
     daoEntreprise,
     daoUtilisateur,
     serviceHachageMotDePasse,
+    serviceAlerteSuperAdminWebhook,
     constructeur,
     mappeur,
   })

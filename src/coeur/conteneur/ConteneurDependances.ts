@@ -257,6 +257,7 @@ class ConteneurDependances {
     prisma: this.prisma,
     serviceAuthentification: this.serviceAuthentification,
     serviceHachageMotDePasse: this.serviceHachageMotDePasse,
+    serviceAlerteSuperAdminWebhook: this.serviceAlerteSuperAdminWebhook,
   })
   public controleurAdministrationAdmin = new ControleurAdministrationAdmin(
     this.serviceAdministrationAdmin,
