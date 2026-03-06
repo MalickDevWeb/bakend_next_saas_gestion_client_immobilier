@@ -157,8 +157,17 @@ export class ServiceEmailBrevo implements InterfaceNotification {
         },
         body: JSON.stringify(charge),
       })
-      return reponse.ok
+      if (!reponse.ok) {
+        const details = await reponse.text().catch(() => '')
+        console.error('[Brevo] Envoi email refuse', {
+          statut: reponse.status,
+          details: details.slice(0, 500),
+        })
+        return false
+      }
+      return true
     } catch {
+      console.error('[Brevo] Echec technique pendant l envoi email')
       return false
     }
   }
