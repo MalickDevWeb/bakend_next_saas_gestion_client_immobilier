@@ -54,14 +54,37 @@ export class DaoAuthentificationMemoire implements InterfaceDaoAuthentification 
     identifiant: string
   ): Promise<DonneesUtilisateurAuthentification | null> {
     const identifiantNormalise = String(identifiant || '').trim().toLowerCase()
+    const telephonesPossibles = this.construireTelephonesPossibles(identifiant)
     for (const utilisateur of this.utilisateurs.values()) {
-      const telephone = utilisateur.telephone.toLowerCase()
+      const telephone = String(utilisateur.telephone || '').trim().toLowerCase()
       const email = utilisateur.email.toLowerCase()
-      if (telephone === identifiantNormalise || email === identifiantNormalise) {
+      if (telephonesPossibles.has(telephone) || email === identifiantNormalise) {
         return this.clonerUtilisateur(utilisateur)
       }
     }
     return null
+  }
+
+  private construireTelephonesPossibles(valeur: string): Set<string> {
+    const brut = String(valeur || '').trim()
+    const compact = brut.replace(/[\s-]+/g, '')
+    const digits = compact.replace(/\D/g, '')
+    const candidats = new Set<string>()
+
+    if (compact) candidats.add(compact.toLowerCase())
+    if (digits) candidats.add(digits.toLowerCase())
+
+    if (/^7\d{8}$/.test(digits)) {
+      candidats.add(`+221${digits}`.toLowerCase())
+      candidats.add(`221${digits}`.toLowerCase())
+    }
+
+    if (/^2217\d{8}$/.test(digits)) {
+      candidats.add(`+${digits}`.toLowerCase())
+      candidats.add(digits.slice(3).toLowerCase())
+    }
+
+    return candidats
   }
 
   public async rechercherUtilisateurParId(

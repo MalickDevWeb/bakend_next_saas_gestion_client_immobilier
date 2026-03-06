@@ -21,10 +21,19 @@ export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
   ): Promise<DonneesUtilisateurAuthentification | null> {
     const identifiantNormalise = String(identifiant || '').trim()
     const identifiantMinuscule = identifiantNormalise.toLowerCase()
+    const telephonesPossibles = this.construireTelephonesPossibles(identifiantNormalise)
     const utilisateur = await this.prisma.utilisateur.findFirst({
       where: {
         OR: [
-          { telephone: identifiantNormalise },
+          ...(telephonesPossibles.length > 0
+            ? [
+                {
+                  telephone: {
+                    in: telephonesPossibles,
+                  },
+                },
+              ]
+            : []),
           {
             email: {
               equals: identifiantMinuscule,
@@ -42,6 +51,30 @@ export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
 
     if (!utilisateur) return null
     return this.mapperUtilisateur(utilisateur)
+  }
+
+  private construireTelephonesPossibles(valeur: string): string[] {
+    const brut = String(valeur || '').trim()
+    if (!brut) return []
+
+    const compact = brut.replace(/[\s-]+/g, '')
+    const digits = compact.replace(/\D/g, '')
+    const candidats = new Set<string>()
+
+    if (compact) candidats.add(compact)
+    if (digits) candidats.add(digits)
+
+    if (/^7\d{8}$/.test(digits)) {
+      candidats.add(`+221${digits}`)
+      candidats.add(`221${digits}`)
+    }
+
+    if (/^2217\d{8}$/.test(digits)) {
+      candidats.add(`+${digits}`)
+      candidats.add(digits.slice(3))
+    }
+
+    return Array.from(candidats)
   }
 
   public async rechercherUtilisateurParId(
