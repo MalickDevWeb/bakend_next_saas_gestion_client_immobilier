@@ -3,6 +3,10 @@ import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
 import { appliquerEntetesAnnulation } from '@/src/infrastructure/http/appliquerEntetesAnnulation'
 import { executerMutationIdempotenteSiDemandee } from '@/src/infrastructure/http/executerMutationIdempotente'
+import {
+  estPaiementAbonnementFinalise,
+  publierEvenementPaiementAbonnementAdminSuperAdmin,
+} from '@/app/api/admin_payments/notificationPaiementsAdmin'
 
 type ParametresRoute = { params: Promise<{ id: string }> }
 
@@ -38,12 +42,28 @@ const miseAJourPaiementAdmin = executerAvecGestionErreurs(
       corps,
       serviceAuthentification: conteneurDependances.serviceAuthentification,
       executerMutation: async () => {
+        const donneesAvant = await conteneurDependances.controleurAdministrationAdmin.obtenirPaiementAdmin(
+          jetonAcces,
+          impersonation,
+          id
+        )
         const resultat = await conteneurDependances.controleurAdministrationAdmin.mettreAJourPaiementAdmin(
           jetonAcces,
           impersonation,
           id,
           corps
         )
+        const etaitFinalise = estPaiementAbonnementFinalise(donneesAvant as Record<string, unknown>)
+        const estFinalise = estPaiementAbonnementFinalise(resultat.donnees as Record<string, unknown>)
+        if (!etaitFinalise && estFinalise) {
+          try {
+            await publierEvenementPaiementAbonnementAdminSuperAdmin(
+              resultat.donnees as Record<string, unknown>
+            )
+          } catch {
+            // Notification best-effort.
+          }
+        }
         const reponse = conteneurDependances.reponseHttp.succes(resultat.donnees)
         return appliquerEntetesAnnulation(reponse, resultat.annulation)
       },

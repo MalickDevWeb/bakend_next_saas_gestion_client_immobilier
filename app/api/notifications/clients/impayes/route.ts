@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto'
 import { NextRequest } from 'next/server'
 import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances'
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
+import { lirePolitiquePlateforme } from '@/src/infrastructure/http/politiquePlateforme'
 import { ErreurHttp } from '@/src/coeur/erreurs/ErreurHttp'
 import { CODE_HTTP, ERRORS, t } from '@/src/messages'
 
@@ -22,9 +23,36 @@ type TypeRelanceClient = {
   clientEmail: string | null
 }
 
+type TypeContexteAdminRelance = {
+  adminId: string
+  adminName: string | null
+  adminEmail: string | null
+  companyName: string | null
+  logoUrl: string | null
+  appName: string
+}
+
 function convertirNombre(valeur: number | null | undefined): number {
   if (typeof valeur !== 'number' || !Number.isFinite(valeur)) return 0
   return Number(valeur.toFixed(2))
+}
+
+function normaliserTexte(valeur: unknown): string {
+  return String(valeur || '').trim()
+}
+
+function normaliserEmail(valeur: unknown): string | null {
+  const email = normaliserTexte(valeur)
+  if (!email) return null
+  const formatValide = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  return formatValide ? email : null
+}
+
+function normaliserLogoPublique(valeur: unknown): string | null {
+  const url = normaliserTexte(valeur)
+  if (!url) return null
+  if (!/^https?:\/\//i.test(url)) return null
+  return url
 }
 
 function lireBooleenParam(valeur: string | null | undefined, defautValeur = false): boolean {
@@ -147,6 +175,147 @@ function construireResumeAdmin(relances: TypeRelanceClient[]): Array<Record<stri
   }))
 }
 
+async function chargerContextesAdminRelances(
+  relances: TypeRelanceClient[]
+): Promise<Map<string, TypeContexteAdminRelance>> {
+  const adminIds = Array.from(new Set(relances.map((item) => normaliserTexte(item.adminId)).filter(Boolean)))
+  const contextes = new Map<string, TypeContexteAdminRelance>()
+  if (!adminIds.length) return contextes
+
+  const [admins, politique] = await Promise.all([
+    conteneurDependances.prisma.admin.findMany({
+      where: { id: { in: adminIds } },
+      select: { id: true, nom: true, email: true, entrepriseId: true },
+    }),
+    lirePolitiquePlateforme(conteneurDependances.prisma).catch(() => null),
+  ])
+
+  const entrepriseIds = Array.from(
+    new Set(
+      admins
+        .map((item) => normaliserTexte(item.entrepriseId))
+        .filter(Boolean)
+    )
+  )
+  const clesBranding = adminIds.flatMap((adminId) => [
+    `admin_branding_app_name:${adminId}`,
+    `admin_branding_logo_url:${adminId}`,
+  ])
+
+  const [entreprises, branding] = await Promise.all([
+    entrepriseIds.length
+      ? conteneurDependances.prisma.entreprise.findMany({
+          where: { id: { in: entrepriseIds } },
+          select: { id: true, nom: true },
+        })
+      : Promise.resolve([] as Array<{ id: string; nom: string }>),
+    clesBranding.length
+      ? conteneurDependances.prisma.parametreAdmin.findMany({
+          where: {
+            adminId: { in: adminIds },
+            cle: { in: clesBranding },
+          },
+          select: { adminId: true, cle: true, valeur: true },
+        })
+      : Promise.resolve([] as Array<{ adminId: string; cle: string; valeur: string }>),
+  ])
+
+  const entrepriseParId = new Map(entreprises.map((item) => [item.id, item.nom]))
+  const brandingParAdmin = new Map<string, { appName?: string; logoUrl?: string }>()
+  for (const item of branding) {
+    const adminId = normaliserTexte(item.adminId)
+    if (!adminId) continue
+    const brut = brandingParAdmin.get(adminId) || {}
+    if (item.cle === `admin_branding_app_name:${adminId}`) {
+      brut.appName = normaliserTexte(item.valeur)
+    }
+    if (item.cle === `admin_branding_logo_url:${adminId}`) {
+      brut.logoUrl = normaliserLogoPublique(item.valeur) || undefined
+    }
+    brandingParAdmin.set(adminId, brut)
+  }
+
+  const appNameParDefaut = normaliserTexte(politique?.branding.appName) || 'Keur Ya Aicha'
+  const logoParDefaut = normaliserLogoPublique(politique?.branding.logoUrl)
+
+  for (const adminId of adminIds) {
+    const admin = admins.find((item) => item.id === adminId)
+    const brandingAdmin = brandingParAdmin.get(adminId) || {}
+    const entrepriseId = normaliserTexte(admin?.entrepriseId) || null
+    const companyName = entrepriseId ? normaliserTexte(entrepriseParId.get(entrepriseId)) || null : null
+
+    contextes.set(adminId, {
+      adminId,
+      adminName: normaliserTexte(admin?.nom) || null,
+      adminEmail: normaliserEmail(admin?.email),
+      companyName,
+      logoUrl: brandingAdmin.logoUrl || logoParDefaut,
+      appName: normaliserTexte(brandingAdmin.appName) || appNameParDefaut,
+    })
+  }
+
+  return contextes
+}
+
+async function declencherEmailsRelancesClients(
+  relances: TypeRelanceClient[],
+  contextesAdmins: Map<string, TypeContexteAdminRelance>
+): Promise<number> {
+  const publications: Array<Promise<void>> = []
+
+  for (const relance of relances) {
+    const emailClient = normaliserEmail(relance.clientEmail)
+    if (!emailClient) continue
+    const contexteAdmin = contextesAdmins.get(relance.adminId)
+    const clientNom = normaliserTexte(relance.clientNom) || relance.clientTelephone
+
+    publications.push(
+      conteneurDependances.serviceEvenementsNotification.publier({
+        code: 'CLIENT_PAYMENT_OVERDUE',
+        titre: 'Rappel de paiement en retard',
+        message: `Le paiement du bien "${relance.propertyName}" est en retard de ${relance.joursRetard} jour(s).`,
+        severite: 'warning',
+        rolesDestinataires: ['CLIENT'],
+        destinataires: {
+          CLIENT: [
+            {
+              email: emailClient,
+              nom: clientNom,
+              role: 'CLIENT',
+            },
+          ],
+        },
+        details: {
+          notificationKey: relance.notificationKey,
+          clientId: relance.clientId,
+          clientName: clientNom,
+          clientPhone: relance.clientTelephone,
+          clientEmail: emailClient,
+          adminId: relance.adminId,
+          adminName: contexteAdmin?.adminName || null,
+          adminEmail: contexteAdmin?.adminEmail || null,
+          companyName: contexteAdmin?.companyName || null,
+          appName: contexteAdmin?.appName || 'Keur Ya Aicha',
+          logoUrl: contexteAdmin?.logoUrl || null,
+          paiementId: relance.paiementId,
+          locationId: relance.locationId,
+          propertyName: relance.propertyName,
+          dueDate: relance.dateEcheance,
+          daysLate: relance.joursRetard,
+          amountDue: relance.montantDu,
+          amountPaid: relance.montantPaye,
+          amountRemaining: relance.montantRestant,
+        },
+        tags: ['kya', 'payment-overdue', 'client'],
+      })
+    )
+  }
+
+  if (!publications.length) return 0
+  await Promise.allSettled(publications)
+  return publications.length
+}
+
 /**
  * @swagger
  * /api/notifications/clients/impayes:
@@ -222,6 +391,8 @@ export const GET = executerAvecGestionErreurs(
     }
 
     const resumeAdmin = construireResumeAdmin(relances)
+    const contextesAdmins = await chargerContextesAdminRelances(relances)
+    const totalEmailsClientsCibles = relances.filter((item) => Boolean(normaliserEmail(item.clientEmail))).length
 
     if (dryRun || relances.length === 0) {
       return conteneurDependances.reponseHttp.succes({
@@ -229,6 +400,7 @@ export const GET = executerAvecGestionErreurs(
         modeExecution: autoriseCron ? 'CRON_SECRET' : 'AUTH_SUPER_ADMIN',
         dryRun,
         webhookConfigure: conteneurDependances.serviceAlerteSuperAdminWebhook.estConfigure(),
+        totalEmailsClientsCibles,
         totalRelances: relances.length,
         totalRelancesBrutes: relancesBrutes.length,
         totalAdminsImpactes: resumeAdmin.length,
@@ -237,41 +409,38 @@ export const GET = executerAvecGestionErreurs(
       })
     }
 
-    if (!conteneurDependances.serviceAlerteSuperAdminWebhook.estConfigure()) {
-      throw new ErreurHttp(
-        CODE_HTTP.SERVICE_INDISPONIBLE,
-        'Webhook non configure pour les relances clients impayes'
-      )
-    }
+    const totalEmailsClientsDeclenches = await declencherEmailsRelancesClients(
+      relances,
+      contextesAdmins
+    )
 
-    const webhookClientEnvoye = await conteneurDependances.serviceAlerteSuperAdminWebhook.envoyer({
-      acteurCible: 'CLIENT',
-      eventType: 'CLIENT_OVERDUE_PAYMENT_REMINDER',
-      titre: 'Relances clients en retard de paiement',
-      severite: 'warning',
-      details: {
-        totalRelances: relances.length,
-        relances,
-      },
-    })
-
-    const webhookAdminEnvoye = await conteneurDependances.serviceAlerteSuperAdminWebhook.envoyer({
-      acteurCible: 'ADMIN',
-      eventType: 'ADMIN_CLIENT_OVERDUE_SUMMARY',
-      titre: 'Resume admin des retards clients',
-      severite: 'warning',
-      details: {
-        totalRelances: relances.length,
-        totalAdminsImpactes: resumeAdmin.length,
-        resumeAdmin,
-      },
-    })
-
-    if (!webhookClientEnvoye || !webhookAdminEnvoye) {
-      throw new ErreurHttp(
-        CODE_HTTP.ERREUR_INTERNE,
-        'Echec envoi webhook des relances clients impayes'
-      )
+    const webhookConfigure = conteneurDependances.serviceAlerteSuperAdminWebhook.estConfigure()
+    let webhookClientEnvoye = false
+    let webhookAdminEnvoye = false
+    if (webhookConfigure) {
+      ;[webhookClientEnvoye, webhookAdminEnvoye] = await Promise.all([
+        conteneurDependances.serviceAlerteSuperAdminWebhook.envoyer({
+          acteurCible: 'CLIENT',
+          eventType: 'CLIENT_OVERDUE_PAYMENT_REMINDER',
+          titre: 'Relances clients en retard de paiement',
+          severite: 'warning',
+          details: {
+            totalRelances: relances.length,
+            relances,
+          },
+        }),
+        conteneurDependances.serviceAlerteSuperAdminWebhook.envoyer({
+          acteurCible: 'ADMIN',
+          eventType: 'ADMIN_CLIENT_OVERDUE_SUMMARY',
+          titre: 'Resume admin des retards clients',
+          severite: 'warning',
+          details: {
+            totalRelances: relances.length,
+            totalAdminsImpactes: resumeAdmin.length,
+            resumeAdmin,
+          },
+        }),
+      ])
     }
 
     await conteneurDependances.prisma.notification.createMany({
@@ -288,9 +457,11 @@ export const GET = executerAvecGestionErreurs(
       acteurCible: 'CLIENT',
       modeExecution: autoriseCron ? 'CRON_SECRET' : 'AUTH_SUPER_ADMIN',
       dryRun: false,
-      webhookConfigure: true,
+      webhookConfigure,
       webhookClientEnvoye,
       webhookAdminEnvoye,
+      totalEmailsClientsCibles,
+      totalEmailsClientsDeclenches,
       totalRelances: relances.length,
       totalAdminsImpactes: resumeAdmin.length,
       resumeAdmin,

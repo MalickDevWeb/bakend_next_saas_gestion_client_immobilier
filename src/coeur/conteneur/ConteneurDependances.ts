@@ -12,6 +12,10 @@ import { ServiceChiffrementSymetrique } from '@/src/infrastructure/securite/Serv
 import { ServiceAuditSecurite } from '@/src/infrastructure/securite/ServiceAuditSecurite'
 import { ServiceAuditSecuriteMemoire } from '@/src/infrastructure/securite/ServiceAuditSecuriteMemoire'
 import { ServiceAlerteSuperAdminWebhook } from '@/src/infrastructure/alertes/ServiceAlerteSuperAdminWebhook'
+import { ServiceEmailBrevo } from '@/src/infrastructure/alertes/ServiceEmailBrevo'
+import { ServiceEvenementsNotification } from '@/src/infrastructure/alertes/ServiceEvenementsNotification'
+import { ServiceEcouteurEvenementsNotificationBrevo } from '@/src/infrastructure/alertes/ServiceEcouteurEvenementsNotificationBrevo'
+import { ServiceEcouteurEvenementsNotificationWebhook } from '@/src/infrastructure/alertes/ServiceEcouteurEvenementsNotificationWebhook'
 import { ServiceAuthentification } from '@/src/application/services/authentification/ServiceAuthentification'
 import { ServiceContexteAuthentification } from '@/src/application/services/authentification/ServiceContexteAuthentification'
 import { ServiceSessionAuthentification } from '@/src/application/services/authentification/ServiceSessionAuthentification'
@@ -43,6 +47,10 @@ import { InterfaceServiceJetonAcces } from '@/src/coeur/interfaces/InterfaceServ
 import { InterfaceServiceTotp } from '@/src/coeur/interfaces/InterfaceServiceTotp'
 import { InterfaceServiceChiffrement } from '@/src/coeur/interfaces/InterfaceServiceChiffrement'
 import { InterfaceServiceAuditSecurite } from '@/src/coeur/interfaces/InterfaceServiceAuditSecurite'
+import {
+  TypeDestinataireNotification,
+  TypeRoleDestinataireNotification,
+} from '@/src/coeur/interfaces/InterfaceNotification'
 import { InterfaceUtilitairesSecurite } from '@/src/coeur/interfaces/InterfaceUtilitairesSecurite'
 import { RepositoryAuthentificationPrisma } from '@/src/infrastructure/repositories/prisma/RepositoryAuthentificationPrisma'
 import { RepositoryAuthentificationMemoire } from '@/src/infrastructure/repositories/memoire/RepositoryAuthentificationMemoire'
@@ -120,6 +128,19 @@ class ConteneurDependances {
   public serviceAlerteSuperAdminWebhook = new ServiceAlerteSuperAdminWebhook(
     this.configurationSecurite.urlWebhookAlertesSuperAdmin()
   )
+  public serviceNotificationBrevo = new ServiceEmailBrevo({
+    cleApi: this.configurationSecurite.brevoCleApi(),
+    expediteurEmail: this.configurationSecurite.brevoExpediteurEmail(),
+    expediteurNom: this.configurationSecurite.brevoExpediteurNom(),
+  })
+  public serviceEvenementsNotification = new ServiceEvenementsNotification()
+  public serviceEcouteurEvenementsNotificationBrevo =
+    new ServiceEcouteurEvenementsNotificationBrevo({
+      serviceNotification: this.serviceNotificationBrevo,
+      destinatairesParRole: this.construireDestinatairesNotificationParRole(),
+    })
+  public serviceEcouteurEvenementsNotificationWebhook =
+    new ServiceEcouteurEvenementsNotificationWebhook(this.serviceAlerteSuperAdminWebhook)
   public serviceAuditSecuritePrisma: InterfaceServiceAuditSecurite = new ServiceAuditSecurite(
     this.prisma,
     this.configurationSecurite.urlWebhookAlertes(),
@@ -272,7 +293,7 @@ class ConteneurDependances {
     prisma: this.prisma,
     serviceAuthentification: this.serviceAuthentification,
     serviceHachageMotDePasse: this.serviceHachageMotDePasse,
-    serviceAlerteSuperAdminWebhook: this.serviceAlerteSuperAdminWebhook,
+    serviceEvenementsNotification: this.serviceEvenementsNotification,
   })
   public controleurAdministrationAdmin = new ControleurAdministrationAdmin(
     this.serviceAdministrationAdmin,
@@ -280,6 +301,41 @@ class ConteneurDependances {
   )
   public serviceSante = new ServiceSante(this.clientBaseDeDonnees, this.configurationApplication)
   public controleurSante = new ControleurSante(this.serviceSante, this.validateurEntree)
+
+  constructor() {
+    this.serviceEvenementsNotification.ecouterTous((evenement) =>
+      this.serviceEcouteurEvenementsNotificationBrevo.gerer(evenement)
+    )
+    this.serviceEvenementsNotification.ecouterTous((evenement) =>
+      this.serviceEcouteurEvenementsNotificationWebhook.gerer(evenement)
+    )
+  }
+
+  private construireDestinatairesNotificationParRole(): Partial<
+    Record<TypeRoleDestinataireNotification, TypeDestinataireNotification[]>
+  > {
+    return {
+      CLIENT: this.mapperEmailsEnDestinataires(
+        this.configurationSecurite.brevoDestinatairesNotificationsClients(),
+        'CLIENT'
+      ),
+      ADMIN: this.mapperEmailsEnDestinataires(
+        this.configurationSecurite.brevoDestinatairesNotificationsAdmins(),
+        'ADMIN'
+      ),
+      SUPER_ADMIN: this.mapperEmailsEnDestinataires(
+        this.configurationSecurite.brevoDestinatairesNotificationsSuperAdmins(),
+        'SUPER_ADMIN'
+      ),
+    }
+  }
+
+  private mapperEmailsEnDestinataires(
+    emails: string[],
+    role: TypeRoleDestinataireNotification
+  ): TypeDestinataireNotification[] {
+    return emails.map((email) => ({ email, role }))
+  }
 }
 
 export const conteneurDependances = new ConteneurDependances()

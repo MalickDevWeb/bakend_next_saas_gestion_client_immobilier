@@ -3,6 +3,7 @@ import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
 import { appliquerEntetesAnnulation } from '@/src/infrastructure/http/appliquerEntetesAnnulation'
 import { executerMutationIdempotenteSiDemandee } from '@/src/infrastructure/http/executerMutationIdempotente'
+import { publierEvenementPaiementAbonnementAdminSuperAdmin } from '@/app/api/admin_payments/notificationPaiementsAdmin'
 
 export const GET = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,
@@ -38,6 +39,13 @@ export const POST = executerAvecGestionErreurs(
           impersonation,
           corps
         )
+        try {
+          await publierEvenementPaiementAbonnementAdminSuperAdmin(
+            resultat.donnees as Record<string, unknown>
+          )
+        } catch {
+          // Notification best-effort.
+        }
         const reponse = conteneurDependances.reponseHttp.succes(resultat.donnees)
         return appliquerEntetesAnnulation(reponse, resultat.annulation)
       },

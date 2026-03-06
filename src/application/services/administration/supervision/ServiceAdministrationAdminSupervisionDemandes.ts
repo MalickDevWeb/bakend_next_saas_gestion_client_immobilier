@@ -14,7 +14,7 @@ type TypeDependancesSupervisionDemandes = Pick<
   | 'constructeur'
   | 'mappeur'
   | 'serviceHachageMotDePasse'
-  | 'serviceAlerteSuperAdminWebhook'
+  | 'serviceEvenementsNotification'
 >
 
 export class ServiceAdministrationAdminSupervisionDemandes {
@@ -53,6 +53,7 @@ export class ServiceAdministrationAdminSupervisionDemandes {
     const entite = this.dependances.constructeur.construireEntiteDemandeAdminDepuisCorps(corps)
     await this.dependances.daoDemandeAdmin.sauvegarder(entite)
     const dto = this.dependances.mappeur.mapperDemandeAdminEnDto(entite)
+    this.publierEvenementDemandeAdminCreee(dto, contexte.utilisateurId ?? null)
     const annulation = this.dependances.annulation.enregistrerActionAnnulation({
       ressource: 'admin_requests',
       operation: 'CREATE',
@@ -69,7 +70,9 @@ export class ServiceAdministrationAdminSupervisionDemandes {
   ): Promise<Record<string, unknown>> {
     const entite = this.dependances.constructeur.construireEntiteDemandeAdminDepuisCorps(corps)
     await this.dependances.daoDemandeAdmin.sauvegarder(entite)
-    return this.dependances.mappeur.mapperDemandeAdminEnDto(entite)
+    const dto = this.dependances.mappeur.mapperDemandeAdminEnDto(entite)
+    this.publierEvenementDemandeAdminCreee(dto, null)
+    return dto
   }
 
   public async mettreAJourDemandeAdmin(
@@ -89,16 +92,22 @@ export class ServiceAdministrationAdminSupervisionDemandes {
     const dto = this.dependances.mappeur.mapperDemandeAdminEnDto(entite)
     const statutApres = String(entite.statut || '').toUpperCase()
     if (statutAvant !== 'ACTIF' && statutApres === 'ACTIF') {
-      void this.dependances.serviceAlerteSuperAdminWebhook.envoyer({
-        eventType: 'SUPER_ADMIN_ADMIN_REQUEST_APPROVED',
+      void this.dependances.serviceEvenementsNotification.publier({
+        code: 'ADMIN_REQUEST_APPROVED',
         titre: 'Demande admin approuvee',
+        message: 'Une demande administrateur a ete approuvee.',
         severite: 'info',
+        rolesDestinataires: ['ADMIN', 'SUPER_ADMIN'],
+        destinataires: {
+          ADMIN: this.extraireDestinatairesAdminDepuisDemande(dto),
+        },
         details: {
           ...this.extraireChampsAlerteDemandeAdmin(dto),
           previousStatus: statutAvant || null,
           approvedByUserId: contexte.utilisateurId ?? null,
           approvedAt: new Date().toISOString(),
         },
+        tags: ['kya', 'admin-request', 'approved'],
       })
     }
     const annulation = this.dependances.annulation.enregistrerActionAnnulation({
@@ -216,5 +225,45 @@ export class ServiceAdministrationAdminSupervisionDemandes {
       status: donnees.status ?? null,
       createdAt: donnees.createdAt ?? null,
     }
+  }
+
+  private publierEvenementDemandeAdminCreee(
+    donnees: Record<string, unknown>,
+    createurUtilisateurId: string | null
+  ): void {
+    void this.dependances.serviceEvenementsNotification.publier({
+      code: 'ADMIN_REQUEST_CREATED',
+      titre: 'Nouvelle demande admin a valider',
+      message: 'Une nouvelle demande administrateur a ete soumise.',
+      severite: 'warning',
+      rolesDestinataires: ['SUPER_ADMIN'],
+      details: {
+        ...this.extraireChampsAlerteDemandeAdmin(donnees),
+        createdByUserId: createurUtilisateurId,
+      },
+      tags: ['kya', 'admin-request', 'created'],
+    })
+  }
+
+  private extraireDestinatairesAdminDepuisDemande(
+    donnees: Record<string, unknown>
+  ): Array<{ email: string; nom?: string; role: 'ADMIN' }> {
+    const email = this.normaliserEmail(donnees.email)
+    if (!email) return []
+    const nom = String(donnees.name || '').trim()
+    return [
+      {
+        email,
+        ...(nom ? { nom } : {}),
+        role: 'ADMIN',
+      },
+    ]
+  }
+
+  private normaliserEmail(valeur: unknown): string | null {
+    const email = String(valeur || '').trim()
+    if (!email) return null
+    const formatValide = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    return formatValide ? email : null
   }
 }

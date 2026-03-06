@@ -111,9 +111,54 @@ export class ConfigurationSecurite {
     return valeur || 'v22.0'
   }
 
+  public brevoCleApi(): string {
+    return String(
+      process.env.BREVO_API_KEY ||
+        process.env.API_KEY_KYA_BREVO ||
+        process.env.api_key_kya_brevo ||
+        ''
+    ).trim()
+  }
+
+  public brevoExpediteurEmail(): string {
+    return String(process.env.BREVO_SENDER_EMAIL || process.env.BREVO_FROM_EMAIL || '').trim()
+  }
+
+  public brevoExpediteurNom(): string {
+    return String(process.env.BREVO_SENDER_NAME || process.env.BREVO_FROM_NAME || 'Keur Ya Aicha').trim() || 'Keur Ya Aicha'
+  }
+
+  public brevoDestinatairesNotificationsClients(): string[] {
+    return this.lireListeEmails(process.env.BREVO_NOTIFICATION_CLIENT_EMAILS)
+  }
+
+  public brevoDestinatairesNotificationsAdmins(): string[] {
+    return this.lireListeEmails(process.env.BREVO_NOTIFICATION_ADMIN_EMAILS)
+  }
+
+  public brevoDestinatairesNotificationsSuperAdmins(): string[] {
+    const adresses = this.lireListeEmails(process.env.BREVO_NOTIFICATION_SUPER_ADMIN_EMAILS)
+    const fallback = this.lireListeEmails(process.env.SEED_SUPER_ADMIN_EMAIL)
+    return Array.from(new Set([...adresses, ...fallback]))
+  }
+
   private nombreEntier(valeurBrute: string | undefined, valeurParDefaut: number): number {
     const valeur = Number(valeurBrute)
     if (!Number.isFinite(valeur) || valeur <= 0) return valeurParDefaut
     return Math.floor(valeur)
+  }
+
+  private lireListeEmails(valeurBrute: string | undefined): string[] {
+    const brute = String(valeurBrute || '').trim()
+    if (!brute) return []
+    const uniques = new Set<string>()
+    for (const part of brute.split(/[,\n;]+/g)) {
+      const email = String(part || '').trim()
+      if (!email) continue
+      const formatValide = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+      if (!formatValide) continue
+      uniques.add(email)
+    }
+    return Array.from(uniques.values())
   }
 }

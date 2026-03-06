@@ -53,3 +53,12 @@ npm run dev
 - `ALERTE_SUPER_ADMIN_WEBHOOK_URL` (fallback sur `ALERTE_SECURITE_WEBHOOK_URL`)
 - `SUPER_ADMIN_SANTE_ALERT_COOLDOWN_MS` (anti-spam alertes sante, defaut 900000)
 - `SUPER_ADMIN_REPORT_CRON_SECRET` (header `x-cron-secret` pour cron)
+
+## Variables d environnement utiles (notifications Brevo)
+
+- `BREVO_API_KEY`
+- `BREVO_SENDER_EMAIL`
+- `BREVO_SENDER_NAME`
+- `BREVO_NOTIFICATION_CLIENT_EMAILS` (liste: `email1,email2`)
+- `BREVO_NOTIFICATION_ADMIN_EMAILS` (liste: `email1,email2`)
+- `BREVO_NOTIFICATION_SUPER_ADMIN_EMAILS` (liste: `email1,email2`, fallback `SEED_SUPER_ADMIN_EMAIL`)

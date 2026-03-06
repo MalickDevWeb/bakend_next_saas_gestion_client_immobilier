@@ -14,6 +14,7 @@ type TypeDependancesSupervisionAdmins = Pick<
   | 'daoAdmin'
   | 'daoUtilisateur'
   | 'serviceHachageMotDePasse'
+  | 'serviceEvenementsNotification'
   | 'constructeur'
   | 'mappeur'
 >
@@ -63,6 +64,7 @@ export class ServiceAdministrationAdminSupervisionAdmins {
     await this.dependances.daoUtilisateur.sauvegarder(utilisateur)
     const adminSauvegarde = await this.dependances.daoAdmin.sauvegarder(entite)
     const dto = this.dependances.mappeur.mapperAdminEnDto(adminSauvegarde)
+    this.publierEvenementAdminCree(dto, contexte.utilisateurId ?? null)
     const annulation = this.dependances.annulation.enregistrerActionAnnulation({
       ressource: 'admins',
       operation: 'CREATE',
@@ -116,6 +118,7 @@ export class ServiceAdministrationAdminSupervisionAdmins {
 
     const adminSauvegarde = await this.dependances.daoAdmin.sauvegarder(entite)
     const dto = this.dependances.mappeur.mapperAdminEnDto(adminSauvegarde)
+    this.publierEvenementAdminMisAJour(dto, contexte.utilisateurId ?? null)
     const annulation = this.dependances.annulation.enregistrerActionAnnulation({
       ressource: 'admins',
       operation: 'UPDATE',
@@ -269,5 +272,83 @@ export class ServiceAdministrationAdminSupervisionAdmins {
     if (statut === 'ARCHIVE') return 'ARCHIVE'
     if (statut === 'SUSPENDU' || statut === 'BLACKLISTE') return 'SUSPENDU'
     return 'ACTIF'
+  }
+
+  private publierEvenementAdminCree(donnees: Record<string, unknown>, createurUtilisateurId: string | null): void {
+    void this.dependances.serviceEvenementsNotification.publier({
+      code: 'ADMIN_CREATED',
+      titre: 'Compte admin cree',
+      message: 'Un nouveau compte administrateur a ete cree.',
+      severite: 'info',
+      rolesDestinataires: ['ADMIN', 'SUPER_ADMIN'],
+      destinataires: {
+        ADMIN: this.extraireDestinataireAdmin(donnees),
+      },
+      details: {
+        ...this.extraireChampsAlerteAdmin(donnees),
+        createdByUserId: createurUtilisateurId,
+      },
+      tags: ['kya', 'admin', 'created'],
+    })
+  }
+
+  private publierEvenementAdminMisAJour(
+    donnees: Record<string, unknown>,
+    modificateurUtilisateurId: string | null
+  ): void {
+    void this.dependances.serviceEvenementsNotification.publier({
+      code: 'ADMIN_UPDATED',
+      titre: 'Compte admin mis a jour',
+      message: 'Les informations d un compte administrateur ont ete modifiees.',
+      severite: 'info',
+      rolesDestinataires: ['ADMIN', 'SUPER_ADMIN'],
+      destinataires: {
+        ADMIN: this.extraireDestinataireAdmin(donnees),
+      },
+      details: {
+        ...this.extraireChampsAlerteAdmin(donnees),
+        updatedByUserId: modificateurUtilisateurId,
+      },
+      tags: ['kya', 'admin', 'updated'],
+    })
+  }
+
+  private extraireDestinataireAdmin(
+    donnees: Record<string, unknown>
+  ): Array<{ email: string; nom?: string; role: 'ADMIN' }> {
+    const email = this.normaliserEmail(donnees.email)
+    if (!email) return []
+    const nom = this.normaliserTexte(donnees.name)
+    return [
+      {
+        email,
+        ...(nom ? { nom } : {}),
+        role: 'ADMIN',
+      },
+    ]
+  }
+
+  private extraireChampsAlerteAdmin(donnees: Record<string, unknown>): Record<string, unknown> {
+    return {
+      id: donnees.id ?? null,
+      userId: donnees.userId ?? null,
+      username: donnees.username ?? null,
+      name: donnees.name ?? null,
+      email: donnees.email ?? null,
+      status: donnees.status ?? null,
+      entrepriseId: donnees.entrepriseId ?? null,
+      createdAt: donnees.createdAt ?? null,
+    }
+  }
+
+  private normaliserEmail(valeur: unknown): string | null {
+    const email = String(valeur || '').trim()
+    if (!email) return null
+    const formatValide = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    return formatValide ? email : null
+  }
+
+  private normaliserTexte(valeur: unknown): string {
+    return String(valeur || '').trim()
   }
 }

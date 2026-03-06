@@ -3,18 +3,6 @@ import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
 import { verifierMaintenanceGlobaleMutation } from '@/src/infrastructure/http/verifierMaintenanceGlobale'
 
-function extraireChampsAlerteDemandeAdmin(donnees: Record<string, unknown>): Record<string, unknown> {
-  return {
-    id: donnees.id ?? null,
-    name: donnees.name ?? null,
-    email: donnees.email ?? null,
-    phone: donnees.phone ?? null,
-    entrepriseName: donnees.entrepriseName ?? null,
-    status: donnees.status ?? null,
-    createdAt: donnees.createdAt ?? null,
-  }
-}
-
 /**
  * @swagger
  * /api/admin_requests:
@@ -81,13 +69,6 @@ export const POST = executerAvecGestionErreurs(
     const donnees = await conteneurDependances.controleurAdministrationAdmin.creerDemandeAdminPublique(
       corps
     )
-    void conteneurDependances.serviceAlerteSuperAdminWebhook.envoyer({
-      eventType: 'SUPER_ADMIN_ADMIN_REQUEST_CREATED',
-      titre: 'Nouvelle demande admin a valider',
-      severite: 'warning',
-      details: extraireChampsAlerteDemandeAdmin(donnees),
-    })
-
     return conteneurDependances.reponseHttp.succes(donnees)
   }
 )

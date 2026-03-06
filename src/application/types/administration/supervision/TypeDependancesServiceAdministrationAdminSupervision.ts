@@ -1,7 +1,7 @@
 import type { MappeurAdministrationSupervision } from '@/src/application/mappers'
 import type { ServiceAdministrationAdminConstructeursSupervision } from '@/src/application/services/administration/constructeurs/ServiceAdministrationAdminConstructeursSupervision'
 import type { InterfaceServiceHachageMotDePasse } from '@/src/coeur/interfaces/InterfaceServiceHachageMotDePasse'
-import type { ServiceAlerteSuperAdminWebhook } from '@/src/infrastructure/alertes/ServiceAlerteSuperAdminWebhook'
+import type { ServiceEvenementsNotification } from '@/src/infrastructure/alertes/ServiceEvenementsNotification'
 import type {
   InterfaceDaoAdmin,
   InterfaceDaoDemandeAdmin,
@@ -17,7 +17,7 @@ export type TypeDependancesServiceAdministrationAdminSupervision =
     daoEntreprise: InterfaceDaoEntreprise
     daoUtilisateur: InterfaceDaoUtilisateur
     serviceHachageMotDePasse: InterfaceServiceHachageMotDePasse
-    serviceAlerteSuperAdminWebhook: ServiceAlerteSuperAdminWebhook
+    serviceEvenementsNotification: ServiceEvenementsNotification
     constructeur: ServiceAdministrationAdminConstructeursSupervision
     mappeur: MappeurAdministrationSupervision
   }
