@@ -9,18 +9,45 @@ type TypeChargeSignatureCloudinary = {
   folder?: string
 }
 
+type TypeConfigCloudinary = {
+  apiKey: string
+  apiSecret: string
+  cloudName: string
+}
+
+function parserCloudinaryUrl(valeur: string): TypeConfigCloudinary | null {
+  const brute = String(valeur || '').trim()
+  if (!brute || !brute.startsWith('cloudinary://')) return null
+
+  try {
+    const sansProtocole = brute.slice('cloudinary://'.length)
+    const [authPart, cloudNamePart] = sansProtocole.split('@')
+    const [apiKeyPart, apiSecretPart] = String(authPart || '').split(':')
+    const apiKey = String(apiKeyPart || '').trim()
+    const apiSecret = String(apiSecretPart || '').trim()
+    const cloudName = String(cloudNamePart || '').trim()
+    if (!apiKey || !apiSecret || !cloudName) return null
+    return { apiKey, apiSecret, cloudName }
+  } catch {
+    return null
+  }
+}
+
 export const POST = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,
   async (requete: NextRequest) => {
     const corps = (await requete.json().catch(() => ({}))) as TypeChargeSignatureCloudinary
-    const apiKey = String(process.env.CLOUDINARY_API_KEY || '').trim()
-    const apiSecret = String(process.env.CLOUDINARY_API_SECRET || '').trim()
-    const cloudName = String(process.env.CLOUDINARY_CLOUD_NAME || '').trim()
+    const cloudinaryDepuisUrl = parserCloudinaryUrl(String(process.env.CLOUDINARY_URL || ''))
+    const apiKey = String(process.env.CLOUDINARY_API_KEY || cloudinaryDepuisUrl?.apiKey || '').trim()
+    const apiSecret = String(process.env.CLOUDINARY_API_SECRET || cloudinaryDepuisUrl?.apiSecret || '').trim()
+    const cloudName = String(
+      process.env.CLOUDINARY_CLOUD_NAME || cloudinaryDepuisUrl?.cloudName || ''
+    ).trim()
 
     if (!apiKey || !apiSecret || !cloudName) {
       throw new ErreurHttp(
         CODE_HTTP.ERREUR_INTERNE,
-        'Cloudinary non configure (CLOUDINARY_API_KEY/CLOUDINARY_API_SECRET/CLOUDINARY_CLOUD_NAME).',
+        'Cloudinary non configure (CLOUDINARY_URL ou CLOUDINARY_API_KEY/CLOUDINARY_API_SECRET/CLOUDINARY_CLOUD_NAME).',
         { code: 'CLOUDINARY_NOT_CONFIGURED' }
       )
     }
