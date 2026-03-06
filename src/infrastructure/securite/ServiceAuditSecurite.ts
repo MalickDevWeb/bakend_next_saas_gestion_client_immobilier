@@ -4,6 +4,10 @@ import {
   TypeEntreeAuditSecurite,
 } from '@/src/coeur/interfaces/InterfaceServiceAuditSecurite'
 import { ServiceAlerteSuperAdminWebhook } from '@/src/infrastructure/alertes/ServiceAlerteSuperAdminWebhook'
+import {
+  envoyerAlerteConformiteDepuisPolitique,
+  lirePolitiquePlateforme,
+} from '@/src/infrastructure/http/politiquePlateforme'
 
 type TypeConfigurationWhatsAppAlerte = {
   apiToken: string
@@ -20,6 +24,13 @@ export class ServiceAuditSecurite implements InterfaceServiceAuditSecurite {
     private readonly serviceAlerteSuperAdminWebhook?: ServiceAlerteSuperAdminWebhook
   ) {}
 
+  private mapperEvenementConformite(action: string): 'login_failure' | null {
+    if (action === 'AUTH_LOGIN_FAILED' || action === 'AUTH_LOCKED') {
+      return 'login_failure'
+    }
+    return null
+  }
+
   public async enregistrer(entree: TypeEntreeAuditSecurite): Promise<void> {
     await this.prisma.journalAudit.create({
       data: {
@@ -32,8 +43,35 @@ export class ServiceAuditSecurite implements InterfaceServiceAuditSecurite {
       },
     })
 
+    const evenementConformite = this.mapperEvenementConformite(String(entree.action || '').trim())
+    if (evenementConformite) {
+      void envoyerAlerteConformiteDepuisPolitique({
+        prisma: this.prisma,
+        type: 'security',
+        evenement: evenementConformite,
+        payload: {
+          username: entree.utilisateurId || 'unknown',
+          action: entree.action,
+          status: entree.statut,
+          details: entree.details || '',
+          ip: entree.adresseIp || null,
+        },
+      })
+    }
+
     const actionCritique = ['AUTH_REFRESH_REUSE_DETECTED', 'AUTH_LOCKED'].includes(entree.action)
     if (!actionCritique) return
+
+    let canalWhatsAppActif = true
+    try {
+      const politique = await lirePolitiquePlateforme(this.prisma)
+      if (!politique.auditCompliance.alertOnSecurityEvent) {
+        return
+      }
+      canalWhatsAppActif = Boolean(politique.notifications.channels.whatsapp)
+    } catch {
+      // fallback vers comportement historique
+    }
 
     const chargeAlerte = {
       acteurCible: 'SUPER_ADMIN',
@@ -75,6 +113,7 @@ export class ServiceAuditSecurite implements InterfaceServiceAuditSecurite {
     }
 
     const conf = this.configurationWhatsAppAlerte
+    if (!canalWhatsAppActif) return
     if (!conf) return
     if (!conf.apiToken || !conf.phoneNumberId || !conf.destination) return
 

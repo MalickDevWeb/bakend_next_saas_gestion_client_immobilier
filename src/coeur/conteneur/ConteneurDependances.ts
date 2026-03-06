@@ -86,6 +86,7 @@ import {
   DaoParametreAdminPrisma,
 } from '@/src/infrastructure/dao/prisma/systeme'
 import { creerServiceAdministrationAdminSupervision } from '@/src/coeur/conteneur/FabriqueServiceAdministrationAdminSupervision'
+import { lirePolitiquePlateforme } from '@/src/infrastructure/http/politiquePlateforme'
 
 class ConteneurDependances {
   public configurationApplication = new ConfigurationApplication()
@@ -158,7 +159,14 @@ class ConteneurDependances {
   public serviceSecuriteSessionAuthentification = new ServiceSecuriteSessionAuthentification(
     this.repositoryAuthentification,
     this.configurationSecurite,
-    this.serviceAuditSecurite
+    this.serviceAuditSecurite,
+    async () => {
+      const politique = await lirePolitiquePlateforme(this.prisma)
+      return {
+        maxFailedLogins: politique.sessionSecurity.maxFailedLogins,
+        lockoutMinutes: politique.sessionSecurity.lockoutMinutes,
+      }
+    }
   )
   public serviceSessionAuthentification = new ServiceSessionAuthentification(
     this.repositoryAuthentification,
@@ -170,7 +178,14 @@ class ConteneurDependances {
     this.fabriqueSessionAuthentification,
     this.fabriqueJetonRefresh,
     this.mappeurUtilisateurAuthentification,
-    this.serviceSecuriteSessionAuthentification
+    this.serviceSecuriteSessionAuthentification,
+    async () => {
+      const politique = await lirePolitiquePlateforme(this.prisma)
+      return {
+        sessionDurationMinutes: politique.sessionSecurity.sessionDurationMinutes,
+        inactivityTimeoutMinutes: politique.sessionSecurity.inactivityTimeoutMinutes,
+      }
+    }
   )
   public serviceTotpSuperAdminAuthentification = new ServiceTotpSuperAdminAuthentification(
     this.serviceContexteAuthentification,

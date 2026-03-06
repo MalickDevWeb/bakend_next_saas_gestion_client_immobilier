@@ -1,32 +1,22 @@
 import type { PrismaClient } from '@prisma/client'
 import { ErreurHttp } from '@/src/coeur/erreurs/ErreurHttp'
 import { CODE_HTTP } from '@/src/messages'
+import {
+  envoyerAlerteConformiteDepuisPolitique,
+  estMethodeEcriture,
+  lirePolitiquePlateforme,
+  normaliserCheminRegle,
+  POLITIQUE_PLATEFORME_PAR_DEFAUT,
+} from '@/src/infrastructure/http/politiquePlateforme'
 
-const CLE_PARAMETRE_MAINTENANCE_GLOBALE = 'platform_config_v1'
-const MESSAGE_MAINTENANCE_PAR_DEFAUT =
-  "Maintenance en cours. Les actions d'ecriture sont temporairement desactivees."
-const DUREE_CACHE_MAINTENANCE_MS = 15_000
+const MESSAGE_MAINTENANCE_PAR_DEFAUT = POLITIQUE_PLATEFORME_PAR_DEFAUT.maintenance.message
+const DUREE_THROTTLE_ALERTE_MAINTENANCE_MS = 30_000
+let derniereAlerteMaintenance = 0
 
 type TypeEtatMaintenanceGlobale = {
   active: boolean
   message: string
-  source: 'env' | 'setting' | 'default'
-}
-
-let cacheEtatMaintenance: { expireLe: number; etat: TypeEtatMaintenanceGlobale } | null = null
-let promesseLectureEtatMaintenance: Promise<TypeEtatMaintenanceGlobale> | null = null
-
-function estMethodeEcriture(methode: string): boolean {
-  const methodeNormalisee = String(methode || 'GET').toUpperCase()
-  return ['POST', 'PUT', 'PATCH', 'DELETE'].includes(methodeNormalisee)
-}
-
-function normaliserChemin(chemin: string): string {
-  const brut = String(chemin || '')
-  const sansQuery = brut.split('?')[0] || '/'
-  if (sansQuery === '/api') return '/'
-  if (sansQuery.startsWith('/api/')) return sansQuery.slice(4)
-  return sansQuery
+  source: 'env' | 'setting'
 }
 
 function estCheminExempteMaintenance(cheminNormalise: string): boolean {
@@ -55,86 +45,18 @@ function lireEtatMaintenanceDepuisVariablesEnvironnement(): TypeEtatMaintenanceG
   }
 }
 
-function parserEtatMaintenanceDepuisParametre(
-  valeurParametre: string | null | undefined
-): Pick<TypeEtatMaintenanceGlobale, 'active' | 'message'> | null {
-  const brute = String(valeurParametre || '').trim()
-  if (!brute) return null
-
-  try {
-    const payload = JSON.parse(brute) as {
-      maintenance?: { enabled?: unknown; message?: unknown }
-    }
-    const maintenance = payload?.maintenance
-    if (!maintenance || typeof maintenance !== 'object') return null
-
-    const active =
-      maintenance.enabled === true || String(maintenance.enabled || '').trim().toLowerCase() === 'true'
-    const message =
-      String(maintenance.message || '').trim() || MESSAGE_MAINTENANCE_PAR_DEFAUT
-    return { active, message }
-  } catch {
-    return null
-  }
-}
-
 export async function lireEtatMaintenanceGlobale(
   prisma: PrismaClient
 ): Promise<TypeEtatMaintenanceGlobale> {
   const etatDepuisEnv = lireEtatMaintenanceDepuisVariablesEnvironnement()
   if (etatDepuisEnv) return etatDepuisEnv
 
-  const maintenant = Date.now()
-  if (cacheEtatMaintenance && cacheEtatMaintenance.expireLe > maintenant) {
-    return cacheEtatMaintenance.etat
+  const politique = await lirePolitiquePlateforme(prisma)
+  return {
+    active: Boolean(politique.maintenance.enabled),
+    message: String(politique.maintenance.message || MESSAGE_MAINTENANCE_PAR_DEFAUT),
+    source: 'setting',
   }
-  if (promesseLectureEtatMaintenance) {
-    return promesseLectureEtatMaintenance
-  }
-
-  promesseLectureEtatMaintenance = (async () => {
-    try {
-      const parametre = await prisma.parametreAdmin.findFirst({
-        where: { cle: CLE_PARAMETRE_MAINTENANCE_GLOBALE },
-        orderBy: { misAJourLe: 'desc' },
-        select: { valeur: true },
-      })
-
-      const etatDepuisParametre = parserEtatMaintenanceDepuisParametre(parametre?.valeur)
-      const etat: TypeEtatMaintenanceGlobale = etatDepuisParametre
-        ? {
-            active: etatDepuisParametre.active,
-            message: etatDepuisParametre.message,
-            source: 'setting',
-          }
-        : {
-            active: false,
-            message: MESSAGE_MAINTENANCE_PAR_DEFAUT,
-            source: 'default',
-          }
-
-      cacheEtatMaintenance = {
-        expireLe: Date.now() + DUREE_CACHE_MAINTENANCE_MS,
-        etat,
-      }
-      return etat
-    } catch {
-      const fallback = lireEtatMaintenanceDepuisVariablesEnvironnement() || {
-        active: false,
-        message: MESSAGE_MAINTENANCE_PAR_DEFAUT,
-        source: 'default' as const,
-      }
-      cacheEtatMaintenance = {
-        expireLe: Date.now() + DUREE_CACHE_MAINTENANCE_MS,
-        etat: fallback,
-      }
-      return fallback
-    } finally {
-      promesseLectureEtatMaintenance = null
-    }
-  })()
-
-  return promesseLectureEtatMaintenance
 }
 
 export async function verifierMaintenanceGlobaleMutation(
@@ -144,14 +66,31 @@ export async function verifierMaintenanceGlobaleMutation(
 ): Promise<void> {
   if (!estMethodeEcriture(methode)) return
 
-  const cheminNormalise = normaliserChemin(chemin)
+  const cheminNormalise = normaliserCheminRegle(chemin)
   if (estCheminExempteMaintenance(cheminNormalise)) return
 
   const etat = await lireEtatMaintenanceGlobale(prisma)
   if (!etat.active) return
 
+  const maintenant = Date.now()
+  if (maintenant - derniereAlerteMaintenance >= DUREE_THROTTLE_ALERTE_MAINTENANCE_MS) {
+    derniereAlerteMaintenance = maintenant
+    void envoyerAlerteConformiteDepuisPolitique({
+      prisma,
+      type: 'security',
+      evenement: 'maintenance',
+      payload: {
+        message: etat.message,
+        path: cheminNormalise,
+        method: String(methode || '').toUpperCase(),
+        source: etat.source,
+      },
+    })
+  }
+
   throw new ErreurHttp(CODE_HTTP.SERVICE_INDISPONIBLE, etat.message, {
-    code: 'MAINTENANCE_ACTIVE',
+    code: 'MAINTENANCE_MODE',
+    legacyCode: 'MAINTENANCE_ACTIVE',
     source: etat.source,
   })
 }

@@ -9,6 +9,8 @@ import { CODES_PERMISSIONS_RESSOURCES_ADMIN, ERRORS, t } from '@/src/messages'
 
 const RESSOURCES_SUPER_ADMIN_DIRECTES: ReadonlySet<TypeRessourceAdministrationAdmin> =
   new Set(['admins', 'admin_requests', 'entreprises', 'users'])
+const RESSOURCES_SUPER_ADMIN_SANS_IMPERSONATION: ReadonlySet<TypeRessourceAdministrationAdmin> =
+  new Set([...RESSOURCES_SUPER_ADMIN_DIRECTES, 'settings'])
 
 export class ServiceAdministrationAdminSecurite {
   constructor(private readonly serviceAuthentification: ServiceAuthentification) {}
@@ -24,9 +26,11 @@ export class ServiceAdministrationAdminSecurite {
     const role = String(utilisateur.role || '').toUpperCase()
     const impersonationActive = role === 'SUPER_ADMIN' && Boolean(impersonation?.adminId)
     const ressourceSuperAdminDirecte = this.estRessourceSuperAdminDirecte(ressource)
+    const ressourceSuperAdminSansImpersonation =
+      this.estRessourceSuperAdminSansImpersonation(ressource)
     let adminId = ''
 
-    if (role === 'SUPER_ADMIN' && ressourceSuperAdminDirecte) {
+    if (role === 'SUPER_ADMIN' && ressourceSuperAdminSansImpersonation) {
       await this.serviceAuthentification.exigerSecondeAuthSuperAdmin(jetonAcces)
       adminId = String(impersonation?.adminId || utilisateur.id).trim()
     } else if (role === 'ADMIN') {
@@ -68,7 +72,8 @@ export class ServiceAdministrationAdminSecurite {
   ): void {
     if (
       contexte.role === 'SUPER_ADMIN' &&
-      (contexte.impersonationActive || this.estRessourceSuperAdminDirecte(ressource))
+      (contexte.impersonationActive ||
+        this.estRessourceSuperAdminSansImpersonation(ressource))
     ) {
       return
     }
@@ -91,5 +96,11 @@ export class ServiceAdministrationAdminSecurite {
     ressource: TypeRessourceAdministrationAdmin
   ): boolean {
     return RESSOURCES_SUPER_ADMIN_DIRECTES.has(ressource)
+  }
+
+  private estRessourceSuperAdminSansImpersonation(
+    ressource: TypeRessourceAdministrationAdmin
+  ): boolean {
+    return RESSOURCES_SUPER_ADMIN_SANS_IMPERSONATION.has(ressource)
   }
 }

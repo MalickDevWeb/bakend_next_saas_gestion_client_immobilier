@@ -19,6 +19,11 @@ import {
   ExceptionAuthentificationAutorisation,
 } from '@/src/application/exceptions'
 
+type TypeReglesSessionRuntime = {
+  sessionDurationMinutes: number
+  inactivityTimeoutMinutes: number
+}
+
 export class ServiceSessionAuthentification {
   constructor(
     private readonly repositoryAuthentification: InterfaceRepositoryAuthentification,
@@ -30,8 +35,58 @@ export class ServiceSessionAuthentification {
     private readonly fabriqueSessionAuthentification: FabriqueSessionAuthentification,
     private readonly fabriqueJetonRefresh: FabriqueJetonRefresh,
     private readonly mappeurUtilisateurAuthentification: MappeurUtilisateurAuthentification,
-    private readonly serviceSecuriteSessionAuthentification: ServiceSecuriteSessionAuthentification
+    private readonly serviceSecuriteSessionAuthentification: ServiceSecuriteSessionAuthentification,
+    private readonly lireReglesSessionRuntime?: () => Promise<TypeReglesSessionRuntime>
   ) {}
+
+  private async lireReglesSession(): Promise<{
+    dureeSessionSecondes: number
+    timeoutInactiviteSecondes: number
+    dureeJetonAccesSecondes: number
+    dureeJetonRefreshSecondes: number
+  }> {
+    const dureeSessionParDefaut = Math.max(60, this.configurationSecurite.dureeSessionSecondes())
+    const timeoutInactiviteParDefaut = Math.max(
+      60,
+      this.configurationSecurite.dureeJetonAccesSecondes()
+    )
+    const dureeJetonAccesSecondes = Math.max(60, this.configurationSecurite.dureeJetonAccesSecondes())
+    const dureeJetonRefreshSecondes = Math.max(60, this.configurationSecurite.dureeJetonRefreshSecondes())
+
+    if (!this.lireReglesSessionRuntime) {
+      return {
+        dureeSessionSecondes: dureeSessionParDefaut,
+        timeoutInactiviteSecondes: timeoutInactiviteParDefaut,
+        dureeJetonAccesSecondes,
+        dureeJetonRefreshSecondes,
+      }
+    }
+
+    try {
+      const regles = await this.lireReglesSessionRuntime()
+      const dureeSessionSecondes = Math.max(
+        60,
+        Math.floor(Number(regles.sessionDurationMinutes || 0) * 60) || dureeSessionParDefaut
+      )
+      const timeoutInactiviteSecondes = Math.max(
+        60,
+        Math.floor(Number(regles.inactivityTimeoutMinutes || 0) * 60) || timeoutInactiviteParDefaut
+      )
+      return {
+        dureeSessionSecondes,
+        timeoutInactiviteSecondes: Math.min(timeoutInactiviteSecondes, dureeSessionSecondes),
+        dureeJetonAccesSecondes,
+        dureeJetonRefreshSecondes,
+      }
+    } catch {
+      return {
+        dureeSessionSecondes: dureeSessionParDefaut,
+        timeoutInactiviteSecondes: timeoutInactiviteParDefaut,
+        dureeJetonAccesSecondes,
+        dureeJetonRefreshSecondes,
+      }
+    }
+  }
 
   public async connexion(
     identifiant: string,
@@ -115,14 +170,21 @@ export class ServiceSessionAuthentification {
     const csrfToken = this.utilitairesSecurite.tokenAleatoire(24)
     const hachageRefresh = this.utilitairesSecurite.hachageSha256(jetonRefresh)
     const maintenant = new Date()
+    const reglesSession = await this.lireReglesSession()
     const expirationSession = new Date(
-      maintenant.getTime() + this.configurationSecurite.dureeSessionSecondes() * 1000
+      maintenant.getTime() + reglesSession.dureeSessionSecondes * 1000
     )
     const expirationRefresh = new Date(
-      maintenant.getTime() + this.configurationSecurite.dureeJetonRefreshSecondes() * 1000
+      Math.min(
+        maintenant.getTime() + reglesSession.dureeJetonRefreshSecondes * 1000,
+        expirationSession.getTime()
+      )
     )
     const expirationAcces = new Date(
-      maintenant.getTime() + this.configurationSecurite.dureeJetonAccesSecondes() * 1000
+      Math.min(
+        maintenant.getTime() + reglesSession.timeoutInactiviteSecondes * 1000,
+        expirationSession.getTime()
+      )
     )
 
     const session = this.fabriqueSessionAuthentification.creerNouvelleSession({
@@ -201,6 +263,21 @@ export class ServiceSessionAuthentification {
 
     const session = jetonStocke.session
     const utilisateur = session.utilisateur
+    const maintenant = new Date()
+
+    if (session.estRevoqueeOuCompromise()) {
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_SESSION_REVOQUEE))
+    }
+
+    if (session.estExpiree(maintenant)) {
+      await this.repositoryAuthentification.revoquerSessionEtJetonsRefresh(session.id, maintenant)
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_SESSION_EXPIREE))
+    }
+
+    if (session.jetonAccesExpireLe.getTime() <= maintenant.getTime()) {
+      await this.repositoryAuthentification.revoquerSessionEtJetonsRefresh(session.id, maintenant)
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_SESSION_EXPIREE))
+    }
 
     // Si un refresh deja utilise/revoque revient, on considere une compromission potentielle.
     if (jetonStocke.estUtiliseOuRevoque()) {
@@ -215,21 +292,32 @@ export class ServiceSessionAuthentification {
     }
 
     if (jetonStocke.estExpire()) {
-      await this.repositoryAuthentification.revoquerJetonRefreshParId(jetonStocke.id, new Date())
+      await this.repositoryAuthentification.revoquerJetonRefreshParId(jetonStocke.id, maintenant)
       throw new ExceptionAuthentification(t(ERRORS.AUTH_REFRESH_EXPIRE))
     }
 
-    const maintenant = new Date()
+    const reglesSession = await this.lireReglesSession()
     const expirationRefresh = new Date(
-      maintenant.getTime() + this.configurationSecurite.dureeJetonRefreshSecondes() * 1000
+      Math.min(
+        maintenant.getTime() + reglesSession.dureeJetonRefreshSecondes * 1000,
+        session.expireLe.getTime()
+      )
     )
     const expirationAcces = new Date(
-      maintenant.getTime() + this.configurationSecurite.dureeJetonAccesSecondes() * 1000
+      Math.min(
+        maintenant.getTime() + reglesSession.timeoutInactiviteSecondes * 1000,
+        session.expireLe.getTime()
+      )
     )
     const nouveauRefresh = this.utilitairesSecurite.tokenAleatoire(48)
     const nouveauRefreshHash = this.utilitairesSecurite.hachageSha256(nouveauRefresh)
     const nouveauJti = this.utilitairesSecurite.tokenAleatoire(18)
     const nouveauCsrf = this.utilitairesSecurite.tokenAleatoire(24)
+
+    if (expirationRefresh.getTime() <= maintenant.getTime()) {
+      await this.repositoryAuthentification.revoquerSessionEtJetonsRefresh(session.id, maintenant)
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_SESSION_EXPIREE))
+    }
 
     // Rotation stricte: nouveau refresh + invalidation de l'ancien + mise a jour JTI/CSRF/IP/UA.
     const sessionApresRotation = this.fabriqueSessionAuthentification.creerSessionApresRotation({

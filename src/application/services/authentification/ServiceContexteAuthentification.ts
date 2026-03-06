@@ -37,6 +37,12 @@ export class ServiceContexteAuthentification {
       throw new ExceptionAuthentification(t(ERRORS.AUTH_SESSION_EXPIREE))
     }
 
+    const maintenant = Date.now()
+    if (session.jetonAccesExpireLe.getTime() <= maintenant) {
+      await this.repositoryAuthentification.revoquerSessionEtJetonsRefresh(session.id, new Date())
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_SESSION_EXPIREE))
+    }
+
     if (!session.jetonAccesCorrespond(charge.jti)) {
       throw new ExceptionAuthentification(t(ERRORS.AUTH_JETON_ACCES_OBSOLETE))
     }

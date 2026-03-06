@@ -8,21 +8,66 @@ import { t } from '@/src/messages'
 import { ERRORS } from '@/src/messages/app/errors'
 import { ExceptionAuthentificationLimiteTentatives } from '@/src/application/exceptions'
 
+type TypeReglesBlocageConnexion = {
+  maxFailedLogins: number
+  lockoutMinutes: number
+}
+
 export class ServiceSecuriteSessionAuthentification {
   constructor(
     private readonly repositoryAuthentification: InterfaceRepositoryAuthentification,
     private readonly configurationSecurite: ConfigurationSecurite,
-    private readonly serviceAudit: InterfaceServiceAuditSecurite
+    private readonly serviceAudit: InterfaceServiceAuditSecurite,
+    private readonly lireReglesBlocageConnexion?: () => Promise<TypeReglesBlocageConnexion>
   ) {}
+
+  private async lireParametresBlocage(): Promise<{
+    limite: number
+    fenetreSecondes: number
+    dureeBlocageSecondes: number
+  }> {
+    const limiteParDefaut = Math.max(1, this.configurationSecurite.limiteEchecsConnexion())
+    const fenetreParDefaut = Math.max(60, this.configurationSecurite.fenetreEchecsSecondes())
+    const dureeBlocageParDefaut = Math.max(60, this.configurationSecurite.dureeBlocageSecondes())
+
+    if (!this.lireReglesBlocageConnexion) {
+      return {
+        limite: limiteParDefaut,
+        fenetreSecondes: fenetreParDefaut,
+        dureeBlocageSecondes: dureeBlocageParDefaut,
+      }
+    }
+
+    try {
+      const regles = await this.lireReglesBlocageConnexion()
+      const limite = Math.max(1, Math.floor(Number(regles.maxFailedLogins || limiteParDefaut)))
+      const dureeBlocageSecondes = Math.max(
+        60,
+        Math.floor(Number(regles.lockoutMinutes || 0) * 60) || dureeBlocageParDefaut
+      )
+      return {
+        limite,
+        fenetreSecondes: Math.max(fenetreParDefaut, dureeBlocageSecondes),
+        dureeBlocageSecondes,
+      }
+    } catch {
+      return {
+        limite: limiteParDefaut,
+        fenetreSecondes: fenetreParDefaut,
+        dureeBlocageSecondes: dureeBlocageParDefaut,
+      }
+    }
+  }
 
   public async verifierBlocage(
     identifiant: string,
     adresseIp: string,
     type: TypeTentativeConnexionAuthentification
   ): Promise<void> {
-    const limite = this.configurationSecurite.limiteEchecsConnexion()
-    const fenetre = this.configurationSecurite.fenetreEchecsSecondes()
-    const dureeBlocage = this.configurationSecurite.dureeBlocageSecondes()
+    const reglesBlocage = await this.lireParametresBlocage()
+    const limite = reglesBlocage.limite
+    const fenetre = reglesBlocage.fenetreSecondes
+    const dureeBlocage = reglesBlocage.dureeBlocageSecondes
     const maintenant = Date.now()
     const dateDebutFenetre = new Date(maintenant - fenetre * 1000)
 

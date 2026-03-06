@@ -2,10 +2,11 @@ import { createHash } from 'node:crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import type { PrismaClient } from '@prisma/client'
 import type { DtoEtatImpersonation } from '@/src/application/dtos/authentification/DtoAuthentification'
-import type { ServiceAuthentification } from '@/src/application/services/authentification/ServiceAuthentification'
 import { ErreurHttp } from '@/src/coeur/erreurs/ErreurHttp'
 import { CODE_HTTP } from '@/src/messages'
 import { verifierMaintenanceGlobaleMutation } from '@/src/infrastructure/http/verifierMaintenanceGlobale'
+import { verifierBlocageAbonnementMutation } from '@/src/infrastructure/http/verifierBlocageAbonnementGlobal'
+import { appliquerRetentionsDepuisPolitique } from '@/src/infrastructure/http/politiquePlateforme'
 
 const LONGUEUR_MAX_CLE = 190
 const DUREE_DEFAUT_IDEMPOTENCE_MS = 24 * 60 * 60 * 1000
@@ -30,10 +31,11 @@ export type TypeOptionsMutationIdempotente<TCorps extends Record<string, unknown
   executerMutation: () => Promise<NextResponse>
 }
 
-type TypeServiceAuthentificationIdempotence = Pick<
-  ServiceAuthentification,
-  'obtenirContexteDepuisJetonAcces'
->
+type TypeServiceAuthentificationIdempotence = {
+  obtenirContexteDepuisJetonAcces: (
+    jetonAcces: string
+  ) => Promise<{ utilisateur: { id: string | null | undefined } }>
+}
 
 type TypeOptionsMutationIdempotenteRequete<TCorps extends Record<string, unknown>> = {
   prisma: PrismaClient
@@ -276,7 +278,16 @@ export async function executerMutationIdempotenteSiDemandee<
 >(options: TypeOptionsMutationIdempotenteRequete<TCorps>): Promise<NextResponse> {
   const methode = String(options.methode || options.requete.method || 'POST').toUpperCase()
   const chemin = String(options.chemin || new URL(options.requete.url).pathname || '').trim()
+  await appliquerRetentionsDepuisPolitique(options.prisma)
   await verifierMaintenanceGlobaleMutation(options.prisma, methode, chemin)
+  await verifierBlocageAbonnementMutation({
+    prisma: options.prisma,
+    serviceAuthentification: options.serviceAuthentification,
+    jetonAcces: options.jetonAcces,
+    impersonation: options.impersonation,
+    methode,
+    chemin,
+  })
 
   const cleIdempotence =
     options.cleIdempotence ?? lireCleIdempotenceDepuisRequete(options.requete)

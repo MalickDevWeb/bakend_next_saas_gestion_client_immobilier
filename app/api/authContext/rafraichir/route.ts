@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances'
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
 import { adapterUtilisateurAuthentifieFrontend } from '@/src/infrastructure/http/adapterUtilisateurAuthentifieFrontend'
+import { lirePolitiquePlateforme } from '@/src/infrastructure/http/politiquePlateforme'
 
 /**
  * @swagger
@@ -47,13 +48,25 @@ export const POST = executerAvecGestionErreurs(
       user: adapterUtilisateurAuthentifieFrontend(resultat.user),
     })
 
+    const politique = await lirePolitiquePlateforme(conteneurDependances.prisma)
+    const dureeJetonAccesSecondes = conteneurDependances.configurationSecurite.dureeJetonAccesSecondes()
+    const dureeSessionSecondes = Math.max(
+      60,
+      Math.floor(Number(politique.sessionSecurity.sessionDurationMinutes || 0) * 60) ||
+        conteneurDependances.configurationSecurite.dureeSessionSecondes()
+    )
+    const dureeJetonRefreshSecondes = Math.min(
+      conteneurDependances.configurationSecurite.dureeJetonRefreshSecondes(),
+      dureeSessionSecondes
+    )
+
     conteneurDependances.serviceCookiesAuthentification.ecrireCookiesRafraichissement(
       reponse,
       resultat.jetonAcces,
       resultat.jetonRefresh,
       resultat.csrfToken,
-      conteneurDependances.configurationSecurite.dureeJetonAccesSecondes(),
-      conteneurDependances.configurationSecurite.dureeJetonRefreshSecondes()
+      dureeJetonAccesSecondes,
+      dureeJetonRefreshSecondes
     )
 
     return reponse
