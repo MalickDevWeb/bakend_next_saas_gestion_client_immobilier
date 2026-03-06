@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { conteneurDependances } from '@/src/coeur/conteneur/ConteneurDependances'
 import { executerAvecGestionErreurs } from '@/src/infrastructure/http/executerAvecGestionErreurs'
+import { verifierMaintenanceGlobaleMutation } from '@/src/infrastructure/http/verifierMaintenanceGlobale'
 
 function extraireChampsAlerteDemandeAdmin(donnees: Record<string, unknown>): Record<string, unknown> {
   return {
@@ -71,6 +72,11 @@ export const GET = executerAvecGestionErreurs(
 export const POST = executerAvecGestionErreurs(
   conteneurDependances.reponseHttp,
   async (requete: NextRequest) => {
+    await verifierMaintenanceGlobaleMutation(
+      conteneurDependances.prisma,
+      requete.method,
+      new URL(requete.url).pathname
+    )
     const corps = (await requete.json().catch(() => ({}))) as Record<string, unknown>
     const donnees = await conteneurDependances.controleurAdministrationAdmin.creerDemandeAdminPublique(
       corps

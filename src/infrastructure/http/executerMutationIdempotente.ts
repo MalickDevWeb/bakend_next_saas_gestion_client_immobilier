@@ -5,6 +5,7 @@ import type { DtoEtatImpersonation } from '@/src/application/dtos/authentificati
 import type { ServiceAuthentification } from '@/src/application/services/authentification/ServiceAuthentification'
 import { ErreurHttp } from '@/src/coeur/erreurs/ErreurHttp'
 import { CODE_HTTP } from '@/src/messages'
+import { verifierMaintenanceGlobaleMutation } from '@/src/infrastructure/http/verifierMaintenanceGlobale'
 
 const LONGUEUR_MAX_CLE = 190
 const DUREE_DEFAUT_IDEMPOTENCE_MS = 24 * 60 * 60 * 1000
@@ -273,6 +274,10 @@ export async function executerMutationIdempotente<TCorps extends Record<string, 
 export async function executerMutationIdempotenteSiDemandee<
   TCorps extends Record<string, unknown>
 >(options: TypeOptionsMutationIdempotenteRequete<TCorps>): Promise<NextResponse> {
+  const methode = String(options.methode || options.requete.method || 'POST').toUpperCase()
+  const chemin = String(options.chemin || new URL(options.requete.url).pathname || '').trim()
+  await verifierMaintenanceGlobaleMutation(options.prisma, methode, chemin)
+
   const cleIdempotence =
     options.cleIdempotence ?? lireCleIdempotenceDepuisRequete(options.requete)
   if (!cleIdempotence) {
@@ -288,8 +293,8 @@ export async function executerMutationIdempotenteSiDemandee<
   ].join('|')
 
   return executerMutationIdempotente(options.prisma, {
-    chemin: String(options.chemin || new URL(options.requete.url).pathname || '').trim(),
-    methode: String(options.methode || options.requete.method || 'POST').toUpperCase(),
+    chemin,
+    methode,
     cleIdempotence,
     scope: scopeIdempotence,
     corps: options.corps,
