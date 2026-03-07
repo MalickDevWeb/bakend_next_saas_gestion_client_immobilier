@@ -28,8 +28,9 @@ const INCLUSIONS_CLIENT = {
 export class DaoClientPrisma implements InterfaceDaoClient {
   constructor(private readonly prisma: PrismaClient) {}
 
-  public async lister(): Promise<EntiteClient[]> {
+  public async lister(adminId?: string): Promise<EntiteClient[]> {
     const elements = await this.prisma.client.findMany({
+      where: adminId ? { adminId: String(adminId || '').trim() } : undefined,
       orderBy: { creeLe: 'desc' },
       include: INCLUSIONS_CLIENT,
     })

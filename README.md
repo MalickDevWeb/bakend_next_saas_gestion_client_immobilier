@@ -26,6 +26,8 @@ npm run dev
   - [`docs/GUIDE_DOSSIER_PAR_DOSSIER.md`](docs/GUIDE_DOSSIER_PAR_DOSSIER.md)
 - Guide seeders:
   - [`docs/SEEDERS_GUIDE_COMPLET.md`](docs/SEEDERS_GUIDE_COMPLET.md)
+- Protocole tests extremes (seed massif, charge, securite, chaos, rapport):
+  - [`docs/PROTOCOLE_TESTS_EXTREMES.md`](docs/PROTOCOLE_TESTS_EXTREMES.md)
 - Modele de table configuration:
   - [`docs/MODELE_CONFIGURATION_SYSTEME.md`](docs/MODELE_CONFIGURATION_SYSTEME.md)
 - Guide deploiement Render:
@@ -77,6 +79,24 @@ Equivalent curl:
 ```bash
 curl -H "x-cron-secret: $AUDIT_AUTO_EXPORT_CRON_SECRET" https://votre-domaine.tld/api/audit_logs/auto-export
 ```
+
+## Suite de tests extremes
+
+Execution complete :
+
+```bash
+npm run test:extreme:all -- --tag=preprod-extreme
+```
+
+Execution par etapes :
+
+```bash
+npm run test:extreme:seed -- --tag=preprod-extreme
+npm run test:extreme:load -- --tag=preprod-extreme --active-users=250 --stress-concurrency=400
+npm run test:extreme:report -- --tag=preprod-extreme
+```
+
+Rapports ecrits dans `reports/`.
 
 ## Variables d environnement utiles (notifications Brevo)
 

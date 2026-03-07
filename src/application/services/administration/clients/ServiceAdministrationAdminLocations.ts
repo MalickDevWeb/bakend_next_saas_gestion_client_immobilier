@@ -17,8 +17,7 @@ export class ServiceAdministrationAdminLocations {
     ordreTri?: string | null
   ): Promise<Record<string, unknown>[]> {
     const contexte = await this.dependances.securite.obtenirContexteAcces(jetonAcces, impersonation, 'locations')
-    const elements = (await this.dependances.daoClient.lister())
-      .filter((client) => this.estClientVisibleParAdmin(client, contexte.adminId))
+    const elements = (await this.dependances.daoClient.lister(contexte.adminId))
       .flatMap((client) =>
         client.locations.map((location) => this.dependances.mappeur.mapperLocationEnDto(location, client))
       )
@@ -166,9 +165,8 @@ export class ServiceAdministrationAdminLocations {
     locationId: string,
     adminId: string
   ): Promise<{ client: EntiteClient; location: EntiteLocation } | null> {
-    const clients = await this.dependances.daoClient.lister()
+    const clients = await this.dependances.daoClient.lister(adminId)
     for (const client of clients) {
-      if (!this.estClientVisibleParAdmin(client, adminId)) continue
       const location = client.locations.find((item) => item.id === locationId)
       if (!location) continue
       return { client, location }

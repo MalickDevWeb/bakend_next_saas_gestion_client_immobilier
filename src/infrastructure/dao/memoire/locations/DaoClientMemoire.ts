@@ -4,8 +4,16 @@ import { InterfaceDaoClient } from '@/src/domaine/interfaces/dao/locations/Inter
 export class DaoClientMemoire implements InterfaceDaoClient {
   private readonly elements = new Map<string, EntiteClient>()
 
-  public async lister(): Promise<EntiteClient[]> {
-    return Array.from(this.elements.values())
+  public async lister(adminId?: string): Promise<EntiteClient[]> {
+    const elements = Array.from(this.elements.values())
+    if (!adminId) {
+      return elements
+    }
+
+    const adminIdNormalise = String(adminId || '').trim()
+    return elements.filter(
+      (element) => String(element.adminId || '').trim() === adminIdNormalise
+    )
   }
 
   public async rechercherParId(id: string): Promise<EntiteClient | null> {

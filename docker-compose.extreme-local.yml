@@ -1,0 +1,20 @@
+services:
+  postgres-extreme-test:
+    image: postgres:16-alpine
+    container_name: kya-postgres-extreme-test
+    environment:
+      POSTGRES_DB: kya_extreme_test
+      POSTGRES_USER: kya_extreme
+      POSTGRES_PASSWORD: kya_extreme_password
+    ports:
+      - "55432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kya_extreme -d kya_extreme_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - kya_extreme_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  kya_extreme_postgres_data:

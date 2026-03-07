@@ -1,0 +1,2362 @@
+{
+  "version": 1,
+  "scenarioType": "extreme-consolidated-report",
+  "tag": "neon-smoke-20260307204557",
+  "generatedAt": "2026-03-07T20:47:05.602Z",
+  "seedManifest": {
+    "version": 1,
+    "scenarioType": "extreme-test-seed",
+    "tag": "neon-smoke-20260307204557",
+    "startedAt": "2026-03-07T20:45:58.116Z",
+    "config": {
+      "tag": "neon-smoke-20260307204557",
+      "phoneBase": 782149248,
+      "adminCount": 1,
+      "clientsPerAdmin": 12,
+      "locationsPerClient": 1,
+      "documentsPerLocation": 2,
+      "paymentsPerLocation": 2,
+      "sessionsPerClient": 1,
+      "attemptsPerClient": 2,
+      "userAuditsPerClient": 3,
+      "adminAuditsPerClient": 2,
+      "notificationsPerClient": 1,
+      "suspiciousIpsPerAdmin": 3,
+      "globalSystemLogs": 30,
+      "batchSize": 50,
+      "cleanup": false,
+      "cleanupOnly": false,
+      "planOnly": false,
+      "adminPassword": "ExtremeAdmin@123456",
+      "clientPassword": "ExtremeClient@123456",
+      "superAdminPassword": "ExtremeSuperAdmin@123456"
+    },
+    "superAdmin": {
+      "userId": "neon-smoke-20260307204557-user-super-admin",
+      "phone": "782149249",
+      "email": "neon-smoke-20260307204557.superadmin@kya.local",
+      "password": "ExtremeSuperAdmin@123456"
+    },
+    "admins": [
+      {
+        "adminId": "neon-smoke-20260307204557-admin-1",
+        "userId": "neon-smoke-20260307204557-user-admin-1",
+        "entrepriseId": "neon-smoke-20260307204557-entreprise-1",
+        "phone": "782149349",
+        "email": "neon-smoke-20260307204557.admin1@kya.local",
+        "password": "ExtremeAdmin@123456",
+        "sampleLocationId": "neon-smoke-20260307204557-location-1-1-1",
+        "sampleClientId": "neon-smoke-20260307204557-client-1-1"
+      }
+    ],
+    "counters": {
+      "utilisateurs": 14,
+      "permissions_utilisateur": 18,
+      "entreprises": 1,
+      "admins": 1,
+      "demandes_admin": 1,
+      "admin_payment_statuses": 1,
+      "admin_payments": 2,
+      "notifications": 14,
+      "clients": 12,
+      "locations": 12,
+      "documents": 24,
+      "location_monthly_payments": 24,
+      "payments": 22,
+      "deposits": 12,
+      "sessions_authentification": 12,
+      "jetons_refresh": 12,
+      "tentatives_connexion": 24,
+      "journaux_audit": 36,
+      "audit_logs": 78,
+      "blocked_ips": 3
+    },
+    "samples": {
+      "clientIds": [
+        "neon-smoke-20260307204557-client-1-1",
+        "neon-smoke-20260307204557-client-1-2",
+        "neon-smoke-20260307204557-client-1-3",
+        "neon-smoke-20260307204557-client-1-4",
+        "neon-smoke-20260307204557-client-1-5",
+        "neon-smoke-20260307204557-client-1-6",
+        "neon-smoke-20260307204557-client-1-7",
+        "neon-smoke-20260307204557-client-1-8",
+        "neon-smoke-20260307204557-client-1-9",
+        "neon-smoke-20260307204557-client-1-10",
+        "neon-smoke-20260307204557-client-1-11",
+        "neon-smoke-20260307204557-client-1-12"
+      ],
+      "locationIds": [
+        "neon-smoke-20260307204557-location-1-1-1",
+        "neon-smoke-20260307204557-location-1-2-1",
+        "neon-smoke-20260307204557-location-1-3-1",
+        "neon-smoke-20260307204557-location-1-4-1",
+        "neon-smoke-20260307204557-location-1-5-1",
+        "neon-smoke-20260307204557-location-1-6-1",
+        "neon-smoke-20260307204557-location-1-7-1",
+        "neon-smoke-20260307204557-location-1-8-1",
+        "neon-smoke-20260307204557-location-1-9-1",
+        "neon-smoke-20260307204557-location-1-10-1",
+        "neon-smoke-20260307204557-location-1-11-1",
+        "neon-smoke-20260307204557-location-1-12-1"
+      ],
+      "documentIds": [
+        "neon-smoke-20260307204557-document-1-1-1-1",
+        "neon-smoke-20260307204557-document-1-1-1-2",
+        "neon-smoke-20260307204557-document-1-2-1-1",
+        "neon-smoke-20260307204557-document-1-2-1-2",
+        "neon-smoke-20260307204557-document-1-3-1-1",
+        "neon-smoke-20260307204557-document-1-3-1-2",
+        "neon-smoke-20260307204557-document-1-4-1-1",
+        "neon-smoke-20260307204557-document-1-4-1-2",
+        "neon-smoke-20260307204557-document-1-5-1-1",
+        "neon-smoke-20260307204557-document-1-5-1-2",
+        "neon-smoke-20260307204557-document-1-6-1-1",
+        "neon-smoke-20260307204557-document-1-6-1-2",
+        "neon-smoke-20260307204557-document-1-7-1-1",
+        "neon-smoke-20260307204557-document-1-7-1-2",
+        "neon-smoke-20260307204557-document-1-8-1-1",
+        "neon-smoke-20260307204557-document-1-8-1-2",
+        "neon-smoke-20260307204557-document-1-9-1-1",
+        "neon-smoke-20260307204557-document-1-9-1-2",
+        "neon-smoke-20260307204557-document-1-10-1-1",
+        "neon-smoke-20260307204557-document-1-10-1-2",
+        "neon-smoke-20260307204557-document-1-11-1-1",
+        "neon-smoke-20260307204557-document-1-11-1-2",
+        "neon-smoke-20260307204557-document-1-12-1-1",
+        "neon-smoke-20260307204557-document-1-12-1-2"
+      ],
+      "monthlyPaymentIds": [
+        "neon-smoke-20260307204557-monthly-payment-1-1-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-1-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-2-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-2-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-3-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-3-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-4-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-4-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-5-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-5-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-6-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-6-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-7-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-7-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-8-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-8-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-9-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-9-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-10-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-10-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-11-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-11-1-2",
+        "neon-smoke-20260307204557-monthly-payment-1-12-1-1",
+        "neon-smoke-20260307204557-monthly-payment-1-12-1-2"
+      ]
+    },
+    "finishedAt": "2026-03-07T20:46:19.367Z",
+    "durationMs": 21252
+  },
+  "loadReport": {
+    "version": 1,
+    "scenarioType": "extreme-load-security",
+    "tag": "neon-smoke-20260307204557",
+    "startedAt": "2026-03-07T20:46:19.576Z",
+    "baseUrl": "http://localhost:3100",
+    "config": {
+      "activeUsers": 4,
+      "readRequests": 30,
+      "writeRequests": 6,
+      "securityAttempts": 12,
+      "stressRequests": 40,
+      "readConcurrency": 4,
+      "writeConcurrency": 2,
+      "stressConcurrency": 8
+    },
+    "host": {
+      "before": {
+        "label": "before-load-suite",
+        "at": "2026-03-07T20:46:19.576Z",
+        "hostname": "pmt-HP-Laptop-14-ep0xxx",
+        "platform": "linux 6.14.0-37-generic",
+        "cpuCount": 12,
+        "loadAverage": [
+          2.53,
+          2.78,
+          3.11
+        ],
+        "totalMemoryMb": 15704,
+        "freeMemoryMb": 4236,
+        "processRssMb": 48,
+        "processHeapUsedMb": 4,
+        "processHeapTotalMb": 8
+      },
+      "after": {
+        "label": "after-load-suite",
+        "at": "2026-03-07T20:47:01.794Z",
+        "hostname": "pmt-HP-Laptop-14-ep0xxx",
+        "platform": "linux 6.14.0-37-generic",
+        "cpuCount": 12,
+        "loadAverage": [
+          3.83,
+          3.05,
+          3.18
+        ],
+        "totalMemoryMb": 15704,
+        "freeMemoryMb": 3644,
+        "processRssMb": 75,
+        "processHeapUsedMb": 11,
+        "processHeapTotalMb": 11
+      }
+    },
+    "bootstrap": {
+      "requestedSessions": 4,
+      "createdSessions": 4,
+      "failures": []
+    },
+    "healthChecks": {
+      "before": {
+        "ok": true,
+        "status": 200,
+        "durationMs": 510.01,
+        "body": {
+          "statut": "ok",
+          "baseDeDonnees": "disponible",
+          "uptime": 70.971977662,
+          "horodatage": "2026-03-07T20:46:20.083Z",
+          "environnement": "development",
+          "application": "Backend KYA API"
+        }
+      },
+      "after": {
+        "ok": true,
+        "status": 200,
+        "durationMs": 289.25,
+        "body": {
+          "statut": "ok",
+          "baseDeDonnees": "disponible",
+          "uptime": 112.679970317,
+          "horodatage": "2026-03-07T20:47:01.791Z",
+          "environnement": "development",
+          "application": "Backend KYA API"
+        }
+      }
+    },
+    "scenarios": {
+      "read_mix": {
+        "name": "read_mix",
+        "startedAt": "2026-03-07T20:46:26.750Z",
+        "completedAt": "2026-03-07T20:46:35.815Z",
+        "totalRequests": 30,
+        "successCount": 26,
+        "errorCount": 4,
+        "statusCounts": {
+          "200": 26,
+          "500": 4
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 3462.05,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2598.06,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 2361.54,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2352.55,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1537.28,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"7fd66699-517a-4303-b646-083b96738ca3\",\"amount\":100000,\"date\":\"2026-03-07T00:00:00.000Z\",\"receiptNumber\":\"REC-1772850614996\",\"description\":\"\",\"status\":\"completed\"},{\"id\":\"a7"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1530.36,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"4701257f-1b26-4aef-9943-70656eb515c6\",\"name\":\"Contrat Test MAJ\",\"type\":\"contract\",\"url\":\"https://example.com/contrat-test\",\"uploadedAt\":\"2026-03-05T08:15:25.398Z\",\"signed\":"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1526.87,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1334.01,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1042.33,
+            "success": true,
+            "bodySnippet": "[]"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 928.66,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"4701257f-1b26-4aef-9943-70656eb515c6\",\"name\":\"Contrat Test MAJ\",\"type\":\"contract\",\"url\":\"https://example.com/contrat-test\",\"uploadedAt\":\"2026-03-05T08:15:25.398Z\",\"signed\":"
+          },
+          {
+            "endpoint": "/api/deposits",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 886.32,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8758a230-e9dc-425a-a7c1-0d46e3a59ffc\",\"amount\":197445,\"date\":\"2026-03-07T01:52:53.721Z\",\"receiptNumber\":\"69048FD6-AA2B-49C3-B7D3-392F699E7782\",\"description\":\"\",\"status\":\"co"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 853.36,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 799.09,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 744.2,
+            "success": true,
+            "bodySnippet": "[]"
+          },
+          {
+            "endpoint": "/api/payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 731.43,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"7fd66699-517a-4303-b646-083b96738ca3\",\"amount\":100000,\"date\":\"2026-03-07T00:00:00.000Z\",\"receiptNumber\":\"REC-1772850614996\",\"description\":\"\",\"status\":\"completed\"},{\"id\":\"a7"
+          },
+          {
+            "endpoint": "/api/deposits",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 718.99,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8758a230-e9dc-425a-a7c1-0d46e3a59ffc\",\"amount\":197445,\"date\":\"2026-03-07T01:52:53.721Z\",\"receiptNumber\":\"69048FD6-AA2B-49C3-B7D3-392F699E7782\",\"description\":\"\",\"status\":\"co"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 716.7,
+            "success": true,
+            "bodySnippet": "[]"
+          },
+          {
+            "endpoint": "/api/payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 715.08,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"7fd66699-517a-4303-b646-083b96738ca3\",\"amount\":100000,\"date\":\"2026-03-07T00:00:00.000Z\",\"receiptNumber\":\"REC-1772850614996\",\"description\":\"\",\"status\":\"completed\"},{\"id\":\"a7"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 713.14,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 712.03,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1334.01,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1530.36,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"4701257f-1b26-4aef-9943-70656eb515c6\",\"name\":\"Contrat Test MAJ\",\"type\":\"contract\",\"url\":\"https://example.com/contrat-test\",\"uploadedAt\":\"2026-03-05T08:15:25.398Z\",\"signed\":"
+          },
+          {
+            "endpoint": "/api/payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1537.28,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"7fd66699-517a-4303-b646-083b96738ca3\",\"amount\":100000,\"date\":\"2026-03-07T00:00:00.000Z\",\"receiptNumber\":\"REC-1772850614996\",\"description\":\"\",\"status\":\"completed\"},{\"id\":\"a7"
+          },
+          {
+            "endpoint": "/api/deposits",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 886.32,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8758a230-e9dc-425a-a7c1-0d46e3a59ffc\",\"amount\":197445,\"date\":\"2026-03-07T01:52:53.721Z\",\"receiptNumber\":\"69048FD6-AA2B-49C3-B7D3-392F699E7782\",\"description\":\"\",\"status\":\"co"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 853.36,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1042.33,
+            "success": true,
+            "bodySnippet": "[]"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 429.39,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 3462.05,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 928.66,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"4701257f-1b26-4aef-9943-70656eb515c6\",\"name\":\"Contrat Test MAJ\",\"type\":\"contract\",\"url\":\"https://example.com/contrat-test\",\"uploadedAt\":\"2026-03-05T08:15:25.398Z\",\"signed\":"
+          },
+          {
+            "endpoint": "/api/payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 731.43,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"7fd66699-517a-4303-b646-083b96738ca3\",\"amount\":100000,\"date\":\"2026-03-07T00:00:00.000Z\",\"receiptNumber\":\"REC-1772850614996\",\"description\":\"\",\"status\":\"completed\"},{\"id\":\"a7"
+          },
+          {
+            "endpoint": "/api/deposits",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 697.13,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8758a230-e9dc-425a-a7c1-0d46e3a59ffc\",\"amount\":197445,\"date\":\"2026-03-07T01:52:53.721Z\",\"receiptNumber\":\"69048FD6-AA2B-49C3-B7D3-392F699E7782\",\"description\":\"\",\"status\":\"co"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 2361.54,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 712.03,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2598.06,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 744.2,
+            "success": true,
+            "bodySnippet": "[]"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 713.14,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 436.71,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 570.15,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"4701257f-1b26-4aef-9943-70656eb515c6\",\"name\":\"Contrat Test MAJ\",\"type\":\"contract\",\"url\":\"https://example.com/contrat-test\",\"uploadedAt\":\"2026-03-05T08:15:25.398Z\",\"signed\":"
+          },
+          {
+            "endpoint": "/api/payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 715.08,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"7fd66699-517a-4303-b646-083b96738ca3\",\"amount\":100000,\"date\":\"2026-03-07T00:00:00.000Z\",\"receiptNumber\":\"REC-1772850614996\",\"description\":\"\",\"status\":\"completed\"},{\"id\":\"a7"
+          },
+          {
+            "endpoint": "/api/deposits",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 718.99,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8758a230-e9dc-425a-a7c1-0d46e3a59ffc\",\"amount\":197445,\"date\":\"2026-03-07T01:52:53.721Z\",\"receiptNumber\":\"69048FD6-AA2B-49C3-B7D3-392F699E7782\",\"description\":\"\",\"status\":\"co"
+          }
+        ],
+        "latency": {
+          "count": 30,
+          "minMs": 429.39,
+          "maxMs": 3462.05,
+          "avgMs": 1056.81,
+          "p50Ms": 718.99,
+          "p95Ms": 2598.06,
+          "p99Ms": 3462.05
+        }
+      },
+      "document_write_mix": {
+        "name": "document_write_mix",
+        "startedAt": "2026-03-07T20:46:35.815Z",
+        "completedAt": "2026-03-07T20:46:42.724Z",
+        "totalRequests": 6,
+        "successCount": 6,
+        "errorCount": 0,
+        "statusCounts": {
+          "200": 6
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 3084.67,
+            "success": true,
+            "bodySnippet": "{\"id\":\"73ebf4b7-5187-43c2-bc15-0aeb6d0c733d\",\"name\":\"extreme-upload-neon-smoke-20260307204557-1.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 2929.05,
+            "success": true,
+            "bodySnippet": "{\"id\":\"c4916d17-61e9-4739-bae1-f2ae4b721830\",\"name\":\"extreme-upload-neon-smoke-20260307204557-2.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 2012.88,
+            "success": true,
+            "bodySnippet": "{\"id\":\"8ab85d15-77c5-4685-9ccf-58bf7f16ee9c\",\"name\":\"extreme-upload-neon-smoke-20260307204557-6.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1948.58,
+            "success": true,
+            "bodySnippet": "{\"id\":\"3c0ea37d-a810-45c2-abae-7d3adcbeffa9\",\"name\":\"extreme-upload-neon-smoke-20260307204557-5.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1824.21,
+            "success": true,
+            "bodySnippet": "{\"id\":\"3db12083-99bd-41c3-b4ad-9d4a46f657b3\",\"name\":\"extreme-upload-neon-smoke-20260307204557-3.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1811.39,
+            "success": true,
+            "bodySnippet": "{\"id\":\"1cd629b3-8096-4f0f-992d-32ee1715da0d\",\"name\":\"extreme-upload-neon-smoke-20260307204557-4.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 2929.05,
+            "success": true,
+            "bodySnippet": "{\"id\":\"c4916d17-61e9-4739-bae1-f2ae4b721830\",\"name\":\"extreme-upload-neon-smoke-20260307204557-2.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 3084.67,
+            "success": true,
+            "bodySnippet": "{\"id\":\"73ebf4b7-5187-43c2-bc15-0aeb6d0c733d\",\"name\":\"extreme-upload-neon-smoke-20260307204557-1.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1824.21,
+            "success": true,
+            "bodySnippet": "{\"id\":\"3db12083-99bd-41c3-b4ad-9d4a46f657b3\",\"name\":\"extreme-upload-neon-smoke-20260307204557-3.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1811.39,
+            "success": true,
+            "bodySnippet": "{\"id\":\"1cd629b3-8096-4f0f-992d-32ee1715da0d\",\"name\":\"extreme-upload-neon-smoke-20260307204557-4.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1948.58,
+            "success": true,
+            "bodySnippet": "{\"id\":\"3c0ea37d-a810-45c2-abae-7d3adcbeffa9\",\"name\":\"extreme-upload-neon-smoke-20260307204557-5.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 2012.88,
+            "success": true,
+            "bodySnippet": "{\"id\":\"8ab85d15-77c5-4685-9ccf-58bf7f16ee9c\",\"name\":\"extreme-upload-neon-smoke-20260307204557-6.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-smo"
+          }
+        ],
+        "latency": {
+          "count": 6,
+          "minMs": 1811.39,
+          "maxMs": 3084.67,
+          "avgMs": 2268.46,
+          "p50Ms": 1948.58,
+          "p95Ms": 3084.67,
+          "p99Ms": 3084.67
+        }
+      },
+      "protected_route_without_auth": {
+        "name": "protected_route_without_auth",
+        "startedAt": "2026-03-07T20:46:42.725Z",
+        "completedAt": "2026-03-07T20:46:43.150Z",
+        "totalRequests": 12,
+        "successCount": 12,
+        "errorCount": 0,
+        "statusCounts": {
+          "401": 12
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 399.82,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 383.54,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 370.97,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 363.2,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 321,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 285.28,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 233.31,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 195.12,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 194.16,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 193.47,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 75.73,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 59.99,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 59.99,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 75.73,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 193.47,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 233.31,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 194.16,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 195.12,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 285.28,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 321,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 363.2,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 370.97,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 383.54,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 399.82,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "latency": {
+          "count": 12,
+          "minMs": 59.99,
+          "maxMs": 399.82,
+          "avgMs": 256.3,
+          "p50Ms": 233.31,
+          "p95Ms": 399.82,
+          "p99Ms": 399.82
+        }
+      },
+      "bad_csrf_write": {
+        "name": "bad_csrf_write",
+        "startedAt": "2026-03-07T20:46:43.151Z",
+        "completedAt": "2026-03-07T20:46:43.417Z",
+        "totalRequests": 12,
+        "successCount": 12,
+        "errorCount": 0,
+        "statusCounts": {
+          "403": 12
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 255.27,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 254.89,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 248.06,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 247.88,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 247.42,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 247.15,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 246.17,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 241.5,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 241.23,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 240.91,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 240.55,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 240.26,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 241.5,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 241.23,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 240.91,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 240.55,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 240.26,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 246.17,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 247.42,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 247.88,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 248.06,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 247.15,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 255.27,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 254.89,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          }
+        ],
+        "latency": {
+          "count": 12,
+          "minMs": 240.26,
+          "maxMs": 255.27,
+          "avgMs": 245.94,
+          "p50Ms": 246.17,
+          "p95Ms": 255.27,
+          "p99Ms": 255.27
+        }
+      },
+      "tampered_payment": {
+        "name": "tampered_payment",
+        "startedAt": "2026-03-07T20:46:43.417Z",
+        "completedAt": "2026-03-07T20:46:46.781Z",
+        "totalRequests": 12,
+        "successCount": 12,
+        "errorCount": 0,
+        "statusCounts": {
+          "400": 12
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2437.73,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2435.63,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2392.12,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2381.74,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2379.72,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2370.17,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 1406.68,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 1208.89,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 1136.17,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 1016.93,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 619,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 607.67,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 1136.17,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 1406.68,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 619,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 1016.93,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2370.17,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2379.72,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2381.74,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2392.12,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2435.63,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 2437.73,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 607.67,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 400,
+            "durationMs": 1208.89,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Numéro bénéficiaire Wave non configuré.\",\"error\":\"Numéro bénéficiaire Wave non configuré.\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "latency": {
+          "count": 12,
+          "minMs": 607.67,
+          "maxMs": 2437.73,
+          "avgMs": 1699.37,
+          "p50Ms": 1406.68,
+          "p95Ms": 2437.73,
+          "p99Ms": 2437.73
+        }
+      },
+      "brute_force_login": {
+        "name": "brute_force_login",
+        "startedAt": "2026-03-07T20:46:46.782Z",
+        "completedAt": "2026-03-07T20:46:48.580Z",
+        "totalRequests": 12,
+        "successCount": 12,
+        "errorCount": 0,
+        "statusCounts": {
+          "401": 12
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1779.27,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1672.83,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1661.21,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1654.86,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1645.54,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1641.71,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1585.2,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1516.36,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1514.09,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1483.82,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1442.31,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1360.09,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1360.09,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1442.31,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1483.82,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1514.09,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1516.36,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1585.2,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1641.71,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1645.54,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1654.86,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1661.21,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1672.83,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 1779.27,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "latency": {
+          "count": 12,
+          "minMs": 1360.09,
+          "maxMs": 1779.27,
+          "avgMs": 1579.77,
+          "p50Ms": 1585.2,
+          "p95Ms": 1779.27,
+          "p99Ms": 1779.27
+        }
+      },
+      "logout_token_reuse": {
+        "name": "logout_token_reuse",
+        "startedAt": "2026-03-07T20:46:48.580Z",
+        "completedAt": "2026-03-07T20:46:53.385Z",
+        "totalRequests": 4,
+        "successCount": 4,
+        "errorCount": 0,
+        "statusCounts": {
+          "200": 3,
+          "401": 1
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/authContext/logout",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1937.88,
+            "success": true,
+            "bodySnippet": "{\"ok\":true}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1768.35,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1081.77,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 16.08,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1768.35,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1081.77,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/authContext/logout",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1937.88,
+            "success": true,
+            "bodySnippet": "{\"ok\":true}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 16.08,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "latency": {
+          "count": 4,
+          "minMs": 16.08,
+          "maxMs": 1937.88,
+          "avgMs": 1201.02,
+          "p50Ms": 1081.77,
+          "p95Ms": 1937.88,
+          "p99Ms": 1937.88
+        }
+      },
+      "super_admin_without_second_auth": {
+        "name": "super_admin_without_second_auth",
+        "startedAt": "2026-03-07T20:46:53.385Z",
+        "completedAt": "2026-03-07T20:46:55.318Z",
+        "totalRequests": 1,
+        "successCount": 1,
+        "errorCount": 0,
+        "statusCounts": {
+          "403": 1
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/payment-providers/config",
+            "method": "GET",
+            "status": 403,
+            "durationMs": 1933.29,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Seconde authentification Super Admin requise\",\"error\":\"Seconde authentification Super Admin requise\",\"details\":{\"code\":\"SUPER_ADMIN_SECOND_AUTH_REQUIRED\"},\"code\":\"SUPER"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/payment-providers/config",
+            "method": "GET",
+            "status": 403,
+            "durationMs": 1933.29,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Seconde authentification Super Admin requise\",\"error\":\"Seconde authentification Super Admin requise\",\"details\":{\"code\":\"SUPER_ADMIN_SECOND_AUTH_REQUIRED\"},\"code\":\"SUPER"
+          }
+        ],
+        "latency": {
+          "count": 1,
+          "minMs": 1933.29,
+          "maxMs": 1933.29,
+          "avgMs": 1933.29,
+          "p50Ms": 1933.29,
+          "p95Ms": 1933.29,
+          "p99Ms": 1933.29
+        }
+      },
+      "stress_mix": {
+        "name": "stress_mix",
+        "startedAt": "2026-03-07T20:46:55.319Z",
+        "completedAt": "2026-03-07T20:47:01.503Z",
+        "totalRequests": 40,
+        "successCount": 32,
+        "errorCount": 8,
+        "statusCounts": {
+          "200": 32,
+          "500": 8
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 3265.94,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2974.9,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2826.82,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2640.7,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2510.89,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2203.39,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1726.89,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1723.7,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1282.99,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1153.45,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8ab85d15-77c5-4685-9ccf-58bf7f16ee9c\",\"name\":\"extreme-upload-neon-smoke-20260307204557-6.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-sm"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1153.24,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8ab85d15-77c5-4685-9ccf-58bf7f16ee9c\",\"name\":\"extreme-upload-neon-smoke-20260307204557-6.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-sm"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1054.52,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1014.71,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 877.03,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 876.16,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 862.69,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 818.85,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 817.41,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 806.44,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 801.3,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8ab85d15-77c5-4685-9ccf-58bf7f16ee9c\",\"name\":\"extreme-upload-neon-smoke-20260307204557-6.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-sm"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 668.22,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 806.44,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1014.71,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1153.45,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8ab85d15-77c5-4685-9ccf-58bf7f16ee9c\",\"name\":\"extreme-upload-neon-smoke-20260307204557-6.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-sm"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1153.24,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8ab85d15-77c5-4685-9ccf-58bf7f16ee9c\",\"name\":\"extreme-upload-neon-smoke-20260307204557-6.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-sm"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 1282.99,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 789.08,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 610.03,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 818.85,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 749.52,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8ab85d15-77c5-4685-9ccf-58bf7f16ee9c\",\"name\":\"extreme-upload-neon-smoke-20260307204557-6.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-sm"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 633.29,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2203.39,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 583.89,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 877.03,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 601.62,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-smoke-20260307204557-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscriptionM"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 431.45,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-smoke-20260307204557-user-admin-1\",\"username\":\"782149349\",\"name\":\"782149349\",\"email\":\"neon-smoke-20260307204557.admin1@kya.local\",\"role\":\"ADMIN\",\"status\":\"ACTIF"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 740.08,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8ab85d15-77c5-4685-9ccf-58bf7f16ee9c\",\"name\":\"extreme-upload-neon-smoke-20260307204557-6.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-sm"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 723.19,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-smoke-20260307204557-notification-admin-1-2\",\"user_id\":\"neon-smoke-20260307204557-user-admin-1\",\"type\":\"performance\",\"message\":\"Rapport de charge pret pour admin 1\",\"i"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 583.35,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8ab85d15-77c5-4685-9ccf-58bf7f16ee9c\",\"name\":\"extreme-upload-neon-smoke-20260307204557-6.pdf\",\"type\":\"other\",\"url\":\"https://res.cloudinary.com/kya-extreme/upload/v1/neon-sm"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 3265.94,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          }
+        ],
+        "latency": {
+          "count": 40,
+          "minMs": 431.45,
+          "maxMs": 3265.94,
+          "avgMs": 1100.89,
+          "p50Ms": 789.08,
+          "p95Ms": 2826.82,
+          "p99Ms": 3265.94
+        }
+      }
+    },
+    "chaos": [
+      {
+        "name": "server_stop_restart",
+        "skipped": true,
+        "reason": "Chaos hook non configure"
+      },
+      {
+        "name": "database_break_restore",
+        "skipped": true,
+        "reason": "Chaos hook non configure"
+      }
+    ],
+    "totals": {
+      "scenarioCount": 16,
+      "totalRequests": 253,
+      "totalSuccess": 229,
+      "totalErrors": 24
+    },
+    "completedAt": "2026-03-07T20:47:01.794Z",
+    "durationMs": 42218
+  },
+  "database": {
+    "available": true,
+    "generatedAt": "2026-03-07T20:47:01.950Z",
+    "counts": {
+      "utilisateurs": 14,
+      "admins": 1,
+      "entreprises": 1,
+      "clients": 12,
+      "locations": 12,
+      "documents": 24,
+      "paiementsMensuels": 24,
+      "transactionsPaiement": 22,
+      "depots": 12,
+      "notifications": 14,
+      "journauxAuditUtilisateur": 36,
+      "journauxAuditAdmin": 78,
+      "blockedIps": 3,
+      "sessions": 12,
+      "refreshTokens": 12,
+      "tentativesConnexionEchouees": 0,
+      "tentativesConnexionReussies": 24,
+      "paiementsAbonnementAdmin": 2,
+      "statutsAbonnementAdmin": 2
+    },
+    "distributions": {
+      "clientStatuses": [
+        {
+          "value": "active",
+          "count": 7
+        },
+        {
+          "value": "suspended",
+          "count": 3
+        },
+        {
+          "value": "blocked",
+          "count": 1
+        },
+        {
+          "value": "pending_validation",
+          "count": 1
+        }
+      ],
+      "monthlyPaymentStatuses": [
+        {
+          "value": "paid",
+          "count": 11
+        },
+        {
+          "value": "partial",
+          "count": 3
+        },
+        {
+          "value": "processing",
+          "count": 3
+        },
+        {
+          "value": "unpaid",
+          "count": 2
+        },
+        {
+          "value": "cancelled",
+          "count": 2
+        },
+        {
+          "value": "refunded",
+          "count": 2
+        },
+        {
+          "value": "late",
+          "count": 1
+        }
+      ],
+      "documentTypes": [
+        {
+          "value": "proof",
+          "count": 6
+        },
+        {
+          "value": "invoice",
+          "count": 5
+        },
+        {
+          "value": "administrative",
+          "count": 5
+        },
+        {
+          "value": "identity",
+          "count": 4
+        },
+        {
+          "value": "contract",
+          "count": 4
+        }
+      ],
+      "userRoles": [
+        {
+          "value": "UTILISATEUR",
+          "count": 12
+        },
+        {
+          "value": "SUPER_ADMIN",
+          "count": 1
+        },
+        {
+          "value": "ADMIN",
+          "count": 1
+        }
+      ],
+      "userStatuses": [
+        {
+          "value": "ACTIF",
+          "count": 9
+        },
+        {
+          "value": "SUSPENDU",
+          "count": 4
+        },
+        {
+          "value": "EN_ATTENTE",
+          "count": 1
+        }
+      ],
+      "topUserActions": [
+        {
+          "value": "DOCUMENT_DOWNLOADED",
+          "count": 6
+        },
+        {
+          "value": "PAYMENT_VIEWED",
+          "count": 6
+        },
+        {
+          "value": "DOCUMENT_UPLOADED",
+          "count": 5
+        },
+        {
+          "value": "SESSION_REFRESHED",
+          "count": 5
+        },
+        {
+          "value": "SECURITY_CHALLENGE_PASSED",
+          "count": 4
+        },
+        {
+          "value": "PROFILE_UPDATED",
+          "count": 4
+        },
+        {
+          "value": "LOGOUT",
+          "count": 3
+        },
+        {
+          "value": "LOGIN_SUCCESS",
+          "count": 3
+        }
+      ],
+      "topAdminActions": [
+        {
+          "value": "PAYMENT_STATUS_CHANGED",
+          "count": 28
+        },
+        {
+          "value": "SERVER_STOP",
+          "count": 5
+        },
+        {
+          "value": "SERVER_RECOVERY",
+          "count": 5
+        },
+        {
+          "value": "QUEUE_BACKPRESSURE",
+          "count": 4
+        },
+        {
+          "value": "SLOW_REQUEST",
+          "count": 4
+        },
+        {
+          "value": "PROFILE_SUSPENDED",
+          "count": 4
+        },
+        {
+          "value": "SECURITY_ALERT",
+          "count": 4
+        },
+        {
+          "value": "SYSTEM_ERROR",
+          "count": 4
+        },
+        {
+          "value": "SECURITY_ALERT_REVIEWED",
+          "count": 4
+        },
+        {
+          "value": "DOCUMENT_VALIDATED",
+          "count": 4
+        }
+      ]
+    },
+    "samples": {
+      "latestBlockedIps": [
+        {
+          "adresseIp": "11.10.11.30",
+          "raison": "scenario=neon-smoke-20260307204557;admin=neon-smoke-20260307204557-admin-1;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T20:46:17.728Z"
+        },
+        {
+          "adresseIp": "11.10.12.30",
+          "raison": "scenario=neon-smoke-20260307204557;admin=neon-smoke-20260307204557-admin-1;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T20:46:17.728Z"
+        },
+        {
+          "adresseIp": "11.10.13.30",
+          "raison": "scenario=neon-smoke-20260307204557;admin=neon-smoke-20260307204557-admin-1;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T20:46:17.728Z"
+        }
+      ],
+      "latestAdminAudits": [
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-smoke-20260307204557-monthly-payment-1-1-1-2",
+          "message": "scenario=neon-smoke-20260307204557;payment=neon-smoke-20260307204557-monthly-payment-1-1-1-2;status=late;penalty=15",
+          "creeLe": "2026-05-06T20:46:07.183Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-smoke-20260307204557-monthly-payment-1-2-1-2",
+          "message": "scenario=neon-smoke-20260307204557;payment=neon-smoke-20260307204557-monthly-payment-1-2-1-2;status=partial;penalty=0",
+          "creeLe": "2026-05-05T20:46:07.184Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-smoke-20260307204557-monthly-payment-1-3-1-2",
+          "message": "scenario=neon-smoke-20260307204557;payment=neon-smoke-20260307204557-monthly-payment-1-3-1-2;status=cancelled;penalty=0",
+          "creeLe": "2026-05-04T20:46:07.185Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-smoke-20260307204557-monthly-payment-1-4-1-2",
+          "message": "scenario=neon-smoke-20260307204557;payment=neon-smoke-20260307204557-monthly-payment-1-4-1-2;status=partial;penalty=0",
+          "creeLe": "2026-05-03T20:46:07.185Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-smoke-20260307204557-monthly-payment-1-5-1-2",
+          "message": "scenario=neon-smoke-20260307204557;payment=neon-smoke-20260307204557-monthly-payment-1-5-1-2;status=paid;penalty=0",
+          "creeLe": "2026-05-02T20:46:07.186Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-smoke-20260307204557-monthly-payment-1-6-1-2",
+          "message": "scenario=neon-smoke-20260307204557;payment=neon-smoke-20260307204557-monthly-payment-1-6-1-2;status=paid;penalty=0",
+          "creeLe": "2026-05-01T20:46:07.186Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-smoke-20260307204557-monthly-payment-1-7-1-2",
+          "message": "scenario=neon-smoke-20260307204557;payment=neon-smoke-20260307204557-monthly-payment-1-7-1-2;status=unpaid;penalty=0",
+          "creeLe": "2026-04-30T20:46:07.186Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-smoke-20260307204557-monthly-payment-1-8-1-2",
+          "message": "scenario=neon-smoke-20260307204557;payment=neon-smoke-20260307204557-monthly-payment-1-8-1-2;status=paid;penalty=0",
+          "creeLe": "2026-04-29T20:46:07.186Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-smoke-20260307204557-monthly-payment-1-9-1-2",
+          "message": "scenario=neon-smoke-20260307204557;payment=neon-smoke-20260307204557-monthly-payment-1-9-1-2;status=paid;penalty=0",
+          "creeLe": "2026-04-28T20:46:07.187Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-smoke-20260307204557-monthly-payment-1-10-1-2",
+          "message": "scenario=neon-smoke-20260307204557;payment=neon-smoke-20260307204557-monthly-payment-1-10-1-2;status=paid;penalty=0",
+          "creeLe": "2026-04-27T20:46:07.187Z"
+        }
+      ]
+    }
+  }
+}

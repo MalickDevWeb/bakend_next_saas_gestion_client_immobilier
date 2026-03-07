@@ -22,8 +22,7 @@ export class ServiceAdministrationAdminClientsLocations {
     ordreTri?: string | null
   ): Promise<Record<string, unknown>[]> {
     const contexte = await this.dependances.securite.obtenirContexteAcces(jetonAcces, impersonation, 'clients')
-    const clients = (await this.dependances.daoClient.lister())
-      .filter((client) => this.estClientVisibleParAdmin(client, contexte.adminId))
+    const clients = (await this.dependances.daoClient.lister(contexte.adminId))
       .map((client) => this.dependances.mappeur.mapperClientEnDto(client))
 
     return ServiceAdministrationAdminUtilitaires.trierElements(clients, champTri, ordreTri)
@@ -205,10 +204,9 @@ export class ServiceAdministrationAdminClientsLocations {
     const emailNormalise = this.normaliserTexte(entite.email)
     if (!telephoneNormalise && !emailNormalise) return
 
-    const elements = await this.dependances.daoClient.lister()
+    const elements = await this.dependances.daoClient.lister(adminId)
     for (const client of elements) {
       if (selfId && String(client.id || '').trim() === String(selfId || '').trim()) continue
-      if (!this.estClientVisibleParAdmin(client, adminId)) continue
 
       const telephoneClient = this.normaliserTelephone(client.telephone)
       const emailClient = this.normaliserTexte(client.email)
