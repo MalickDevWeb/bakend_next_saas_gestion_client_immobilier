@@ -495,6 +495,18 @@ export class ControleurAdministrationAdmin {
     )
   }
 
+  public async appliquerRetentionJournauxAudit(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    retentionDays: number
+  ) {
+    return this.serviceAdministrationAdmin.appliquerRetentionJournauxAudit(
+      jetonAcces,
+      impersonation,
+      retentionDays
+    )
+  }
+
   public async listerIpsBloquees(
     jetonAcces: string,
     impersonation: DtoEtatImpersonation,

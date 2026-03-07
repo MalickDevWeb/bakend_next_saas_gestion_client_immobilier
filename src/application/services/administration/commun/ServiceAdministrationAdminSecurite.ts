@@ -10,7 +10,7 @@ import { CODES_PERMISSIONS_RESSOURCES_ADMIN, ERRORS, t } from '@/src/messages'
 const RESSOURCES_SUPER_ADMIN_DIRECTES: ReadonlySet<TypeRessourceAdministrationAdmin> =
   new Set(['admins', 'admin_requests', 'entreprises', 'users'])
 const RESSOURCES_SUPER_ADMIN_SANS_IMPERSONATION: ReadonlySet<TypeRessourceAdministrationAdmin> =
-  new Set([...RESSOURCES_SUPER_ADMIN_DIRECTES, 'settings'])
+  new Set([...RESSOURCES_SUPER_ADMIN_DIRECTES, 'settings', 'audit_logs', 'blocked_ips'])
 
 export class ServiceAdministrationAdminSecurite {
   constructor(private readonly serviceAuthentification: ServiceAuthentification) {}

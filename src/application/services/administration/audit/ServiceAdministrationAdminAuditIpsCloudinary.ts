@@ -81,6 +81,26 @@ export class ServiceAdministrationAdminAuditIpsCloudinary {
     return { donnees: { ok: true }, annulation }
   }
 
+  public async appliquerRetentionJournauxAudit(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    retentionDays: number
+  ): Promise<{ ok: true; deletedCount: number }> {
+    await this.dependances.securite.obtenirContexteAcces(jetonAcces, impersonation, 'audit_logs')
+    const retentionProtegee = Math.max(1, Math.floor(Number(retentionDays || 1)))
+    const cutoff = Date.now() - retentionProtegee * 24 * 60 * 60 * 1000
+    const journaux = await this.dependances.daoJournalAudit.lister()
+    let deletedCount = 0
+
+    for (const journal of journaux) {
+      if (journal.creeLe.getTime() >= cutoff) continue
+      await this.dependances.daoJournalAudit.supprimerParId(journal.id)
+      deletedCount += 1
+    }
+
+    return { ok: true, deletedCount }
+  }
+
   public async listerIpsBloquees(
     jetonAcces: string,
     impersonation: DtoEtatImpersonation,

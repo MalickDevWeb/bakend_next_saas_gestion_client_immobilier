@@ -78,6 +78,7 @@ export class ServiceAdministrationAdmin {
   public readonly obtenirJournalAudit: ServiceAdministrationAdminAuditIpsCloudinary['obtenirJournalAudit']
   public readonly creerJournalAudit: ServiceAdministrationAdminAuditIpsCloudinary['creerJournalAudit']
   public readonly supprimerJournalAudit: ServiceAdministrationAdminAuditIpsCloudinary['supprimerJournalAudit']
+  public readonly appliquerRetentionJournauxAudit: ServiceAdministrationAdminAuditIpsCloudinary['appliquerRetentionJournauxAudit']
   public readonly listerIpsBloquees: ServiceAdministrationAdminAuditIpsCloudinary['listerIpsBloquees']
   public readonly obtenirIpBloquee: ServiceAdministrationAdminAuditIpsCloudinary['obtenirIpBloquee']
   public readonly bloquerIp: ServiceAdministrationAdminAuditIpsCloudinary['bloquerIp']
@@ -204,6 +205,10 @@ export class ServiceAdministrationAdmin {
     this.obtenirJournalAudit = this.lierMethode(this.serviceAuditIpsCloudinary, 'obtenirJournalAudit')
     this.creerJournalAudit = this.lierMethode(this.serviceAuditIpsCloudinary, 'creerJournalAudit')
     this.supprimerJournalAudit = this.lierMethode(this.serviceAuditIpsCloudinary, 'supprimerJournalAudit')
+    this.appliquerRetentionJournauxAudit = this.lierMethode(
+      this.serviceAuditIpsCloudinary,
+      'appliquerRetentionJournauxAudit'
+    )
     this.listerIpsBloquees = this.lierMethode(this.serviceAuditIpsCloudinary, 'listerIpsBloquees')
     this.obtenirIpBloquee = this.lierMethode(this.serviceAuditIpsCloudinary, 'obtenirIpBloquee')
     this.bloquerIp = this.lierMethode(this.serviceAuditIpsCloudinary, 'bloquerIp')
