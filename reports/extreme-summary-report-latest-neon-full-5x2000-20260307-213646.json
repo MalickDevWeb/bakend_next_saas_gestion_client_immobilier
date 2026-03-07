@@ -1,0 +1,3203 @@
+{
+  "version": 1,
+  "scenarioType": "extreme-consolidated-report",
+  "tag": "neon-full-5x2000-20260307-213646",
+  "generatedAt": "2026-03-07T22:48:37.863Z",
+  "seedManifest": {
+    "version": 1,
+    "scenarioType": "extreme-test-seed",
+    "tag": "neon-full-5x2000-20260307-213646",
+    "startedAt": "2026-03-07T21:37:02.547Z",
+    "config": {
+      "tag": "neon-full-5x2000-20260307-213646",
+      "phoneBase": 798822547,
+      "adminCount": 5,
+      "clientsPerAdmin": 2000,
+      "locationsPerClient": 1,
+      "documentsPerLocation": 3,
+      "paymentsPerLocation": 4,
+      "sessionsPerClient": 2,
+      "attemptsPerClient": 4,
+      "userAuditsPerClient": 8,
+      "adminAuditsPerClient": 5,
+      "notificationsPerClient": 1,
+      "suspiciousIpsPerAdmin": 20,
+      "globalSystemLogs": 5000,
+      "batchSize": 250,
+      "cleanup": true,
+      "cleanupOnly": false,
+      "planOnly": false,
+      "adminPassword": "ExtremeAdmin@123456",
+      "clientPassword": "ExtremeClient@123456",
+      "superAdminPassword": "ExtremeSuperAdmin@123456"
+    },
+    "superAdmin": {
+      "userId": "neon-full-5x2000-20260307-213646-user-super-admin",
+      "phone": "798822548",
+      "email": "neon-full-5x2000-20260307-213646.superadmin@kya.local",
+      "password": "ExtremeSuperAdmin@123456"
+    },
+    "admins": [
+      {
+        "adminId": "neon-full-5x2000-20260307-213646-admin-1",
+        "userId": "neon-full-5x2000-20260307-213646-user-admin-1",
+        "entrepriseId": "neon-full-5x2000-20260307-213646-entreprise-1",
+        "phone": "798822648",
+        "email": "neon-full-5x2000-20260307-213646.admin1@kya.local",
+        "password": "ExtremeAdmin@123456",
+        "sampleLocationId": "neon-full-5x2000-20260307-213646-location-1-1-1",
+        "sampleClientId": "neon-full-5x2000-20260307-213646-client-1-1"
+      },
+      {
+        "adminId": "neon-full-5x2000-20260307-213646-admin-2",
+        "userId": "neon-full-5x2000-20260307-213646-user-admin-2",
+        "entrepriseId": "neon-full-5x2000-20260307-213646-entreprise-2",
+        "phone": "798822649",
+        "email": "neon-full-5x2000-20260307-213646.admin2@kya.local",
+        "password": "ExtremeAdmin@123456",
+        "sampleLocationId": "neon-full-5x2000-20260307-213646-location-2-1-1",
+        "sampleClientId": "neon-full-5x2000-20260307-213646-client-2-1"
+      },
+      {
+        "adminId": "neon-full-5x2000-20260307-213646-admin-3",
+        "userId": "neon-full-5x2000-20260307-213646-user-admin-3",
+        "entrepriseId": "neon-full-5x2000-20260307-213646-entreprise-3",
+        "phone": "798822650",
+        "email": "neon-full-5x2000-20260307-213646.admin3@kya.local",
+        "password": "ExtremeAdmin@123456",
+        "sampleLocationId": "neon-full-5x2000-20260307-213646-location-3-1-1",
+        "sampleClientId": "neon-full-5x2000-20260307-213646-client-3-1"
+      },
+      {
+        "adminId": "neon-full-5x2000-20260307-213646-admin-4",
+        "userId": "neon-full-5x2000-20260307-213646-user-admin-4",
+        "entrepriseId": "neon-full-5x2000-20260307-213646-entreprise-4",
+        "phone": "798822651",
+        "email": "neon-full-5x2000-20260307-213646.admin4@kya.local",
+        "password": "ExtremeAdmin@123456",
+        "sampleLocationId": "neon-full-5x2000-20260307-213646-location-4-1-1",
+        "sampleClientId": "neon-full-5x2000-20260307-213646-client-4-1"
+      },
+      {
+        "adminId": "neon-full-5x2000-20260307-213646-admin-5",
+        "userId": "neon-full-5x2000-20260307-213646-user-admin-5",
+        "entrepriseId": "neon-full-5x2000-20260307-213646-entreprise-5",
+        "phone": "798822652",
+        "email": "neon-full-5x2000-20260307-213646.admin5@kya.local",
+        "password": "ExtremeAdmin@123456",
+        "sampleLocationId": "neon-full-5x2000-20260307-213646-location-5-1-1",
+        "sampleClientId": "neon-full-5x2000-20260307-213646-client-5-1"
+      }
+    ],
+    "counters": {
+      "utilisateurs": 10006,
+      "permissions_utilisateur": 58,
+      "entreprises": 5,
+      "admins": 5,
+      "demandes_admin": 5,
+      "admin_payment_statuses": 5,
+      "admin_payments": 10,
+      "notifications": 10010,
+      "clients": 10000,
+      "locations": 10000,
+      "documents": 30000,
+      "location_monthly_payments": 40000,
+      "payments": 34427,
+      "deposits": 10000,
+      "sessions_authentification": 20000,
+      "jetons_refresh": 20000,
+      "tentatives_connexion": 40000,
+      "journaux_audit": 80000,
+      "audit_logs": 95000,
+      "blocked_ips": 100
+    },
+    "samples": {
+      "clientIds": [
+        "neon-full-5x2000-20260307-213646-client-1-1",
+        "neon-full-5x2000-20260307-213646-client-1-2",
+        "neon-full-5x2000-20260307-213646-client-1-3",
+        "neon-full-5x2000-20260307-213646-client-1-4",
+        "neon-full-5x2000-20260307-213646-client-1-5",
+        "neon-full-5x2000-20260307-213646-client-1-6",
+        "neon-full-5x2000-20260307-213646-client-1-7",
+        "neon-full-5x2000-20260307-213646-client-1-8",
+        "neon-full-5x2000-20260307-213646-client-1-9",
+        "neon-full-5x2000-20260307-213646-client-1-10",
+        "neon-full-5x2000-20260307-213646-client-1-11",
+        "neon-full-5x2000-20260307-213646-client-1-12",
+        "neon-full-5x2000-20260307-213646-client-1-13",
+        "neon-full-5x2000-20260307-213646-client-1-14",
+        "neon-full-5x2000-20260307-213646-client-1-15",
+        "neon-full-5x2000-20260307-213646-client-1-16",
+        "neon-full-5x2000-20260307-213646-client-1-17",
+        "neon-full-5x2000-20260307-213646-client-1-18",
+        "neon-full-5x2000-20260307-213646-client-1-19",
+        "neon-full-5x2000-20260307-213646-client-1-20",
+        "neon-full-5x2000-20260307-213646-client-1-21",
+        "neon-full-5x2000-20260307-213646-client-1-22",
+        "neon-full-5x2000-20260307-213646-client-1-23",
+        "neon-full-5x2000-20260307-213646-client-1-24",
+        "neon-full-5x2000-20260307-213646-client-1-25"
+      ],
+      "locationIds": [
+        "neon-full-5x2000-20260307-213646-location-1-1-1",
+        "neon-full-5x2000-20260307-213646-location-1-2-1",
+        "neon-full-5x2000-20260307-213646-location-1-3-1",
+        "neon-full-5x2000-20260307-213646-location-1-4-1",
+        "neon-full-5x2000-20260307-213646-location-1-5-1",
+        "neon-full-5x2000-20260307-213646-location-1-6-1",
+        "neon-full-5x2000-20260307-213646-location-1-7-1",
+        "neon-full-5x2000-20260307-213646-location-1-8-1",
+        "neon-full-5x2000-20260307-213646-location-1-9-1",
+        "neon-full-5x2000-20260307-213646-location-1-10-1",
+        "neon-full-5x2000-20260307-213646-location-1-11-1",
+        "neon-full-5x2000-20260307-213646-location-1-12-1",
+        "neon-full-5x2000-20260307-213646-location-1-13-1",
+        "neon-full-5x2000-20260307-213646-location-1-14-1",
+        "neon-full-5x2000-20260307-213646-location-1-15-1",
+        "neon-full-5x2000-20260307-213646-location-1-16-1",
+        "neon-full-5x2000-20260307-213646-location-1-17-1",
+        "neon-full-5x2000-20260307-213646-location-1-18-1",
+        "neon-full-5x2000-20260307-213646-location-1-19-1",
+        "neon-full-5x2000-20260307-213646-location-1-20-1",
+        "neon-full-5x2000-20260307-213646-location-1-21-1",
+        "neon-full-5x2000-20260307-213646-location-1-22-1",
+        "neon-full-5x2000-20260307-213646-location-1-23-1",
+        "neon-full-5x2000-20260307-213646-location-1-24-1",
+        "neon-full-5x2000-20260307-213646-location-1-25-1"
+      ],
+      "documentIds": [
+        "neon-full-5x2000-20260307-213646-document-1-1-1-1",
+        "neon-full-5x2000-20260307-213646-document-1-1-1-2",
+        "neon-full-5x2000-20260307-213646-document-1-1-1-3",
+        "neon-full-5x2000-20260307-213646-document-1-2-1-1",
+        "neon-full-5x2000-20260307-213646-document-1-2-1-2",
+        "neon-full-5x2000-20260307-213646-document-1-2-1-3",
+        "neon-full-5x2000-20260307-213646-document-1-3-1-1",
+        "neon-full-5x2000-20260307-213646-document-1-3-1-2",
+        "neon-full-5x2000-20260307-213646-document-1-3-1-3",
+        "neon-full-5x2000-20260307-213646-document-1-4-1-1",
+        "neon-full-5x2000-20260307-213646-document-1-4-1-2",
+        "neon-full-5x2000-20260307-213646-document-1-4-1-3",
+        "neon-full-5x2000-20260307-213646-document-1-5-1-1",
+        "neon-full-5x2000-20260307-213646-document-1-5-1-2",
+        "neon-full-5x2000-20260307-213646-document-1-5-1-3",
+        "neon-full-5x2000-20260307-213646-document-1-6-1-1",
+        "neon-full-5x2000-20260307-213646-document-1-6-1-2",
+        "neon-full-5x2000-20260307-213646-document-1-6-1-3",
+        "neon-full-5x2000-20260307-213646-document-1-7-1-1",
+        "neon-full-5x2000-20260307-213646-document-1-7-1-2",
+        "neon-full-5x2000-20260307-213646-document-1-7-1-3",
+        "neon-full-5x2000-20260307-213646-document-1-8-1-1",
+        "neon-full-5x2000-20260307-213646-document-1-8-1-2",
+        "neon-full-5x2000-20260307-213646-document-1-8-1-3",
+        "neon-full-5x2000-20260307-213646-document-1-9-1-1"
+      ],
+      "monthlyPaymentIds": [
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-1-1-1",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-1-1-2",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-1-1-3",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-1-1-4",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-2-1-1",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-2-1-2",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-2-1-3",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-2-1-4",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-3-1-1",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-3-1-2",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-3-1-3",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-3-1-4",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-4-1-1",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-4-1-2",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-4-1-3",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-4-1-4",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-5-1-1",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-5-1-2",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-5-1-3",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-5-1-4",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-6-1-1",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-6-1-2",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-6-1-3",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-6-1-4",
+        "neon-full-5x2000-20260307-213646-monthly-payment-1-7-1-1"
+      ]
+    },
+    "finishedAt": "2026-03-07T21:46:55.909Z",
+    "durationMs": 593362
+  },
+  "loadReport": {
+    "version": 1,
+    "scenarioType": "extreme-load-security",
+    "tag": "neon-full-5x2000-20260307-213646",
+    "startedAt": "2026-03-07T22:23:24.864Z",
+    "baseUrl": "http://127.0.0.1:3100",
+    "config": {
+      "activeUsers": 120,
+      "readRequests": 2400,
+      "writeRequests": 480,
+      "securityAttempts": 250,
+      "stressRequests": 3600,
+      "readConcurrency": 60,
+      "writeConcurrency": 24,
+      "stressConcurrency": 180
+    },
+    "host": {
+      "before": {
+        "label": "before-load-suite",
+        "at": "2026-03-07T22:23:24.865Z",
+        "hostname": "pmt-HP-Laptop-14-ep0xxx",
+        "platform": "linux 6.14.0-37-generic",
+        "cpuCount": 12,
+        "loadAverage": [
+          3.74,
+          2.61,
+          3.14
+        ],
+        "totalMemoryMb": 15704,
+        "freeMemoryMb": 3357,
+        "processRssMb": 42,
+        "processHeapUsedMb": 4,
+        "processHeapTotalMb": 5
+      },
+      "after": {
+        "label": "after-load-suite",
+        "at": "2026-03-07T22:48:33.297Z",
+        "hostname": "pmt-HP-Laptop-14-ep0xxx",
+        "platform": "linux 6.14.0-37-generic",
+        "cpuCount": 12,
+        "loadAverage": [
+          3.58,
+          3.82,
+          3.92
+        ],
+        "totalMemoryMb": 15704,
+        "freeMemoryMb": 1497,
+        "processRssMb": 311,
+        "processHeapUsedMb": 205,
+        "processHeapTotalMb": 208
+      }
+    },
+    "bootstrap": {
+      "requestedSessions": 120,
+      "createdSessions": 120,
+      "failures": []
+    },
+    "healthChecks": {
+      "before": {
+        "ok": true,
+        "status": 200,
+        "durationMs": 448.04,
+        "body": {
+          "statut": "ok",
+          "baseDeDonnees": "disponible",
+          "uptime": 6.207889276,
+          "horodatage": "2026-03-07T22:23:25.291Z",
+          "environnement": "development",
+          "application": "Backend KYA API"
+        }
+      },
+      "after": {
+        "ok": true,
+        "status": 200,
+        "durationMs": 1873.1,
+        "body": {
+          "statut": "ok",
+          "baseDeDonnees": "disponible",
+          "uptime": 1514.20999807,
+          "horodatage": "2026-03-07T22:48:33.293Z",
+          "environnement": "development",
+          "application": "Backend KYA API"
+        }
+      }
+    },
+    "scenarios": {
+      "read_mix": {
+        "name": "read_mix",
+        "startedAt": "2026-03-07T22:23:41.984Z",
+        "completedAt": "2026-03-07T22:39:58.176Z",
+        "totalRequests": 2400,
+        "successCount": 1670,
+        "errorCount": 730,
+        "statusCounts": {
+          "0": 70,
+          "200": 1670,
+          "500": 660
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 272879.04,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-5-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-5\",\"firstName\":\"Prenom5_1840\",\"lastName\":\"Nom5_1840\",\"phone\":\"7988333"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 267204.21,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-2-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"firstName\":\"Prenom2_1840\",\"lastName\":\"Nom2_1840\",\"phone\":\"7988273"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 257364.79,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-3-2000\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-3\",\"firstName\":\"Prenom3_2000\",\"lastName\":\"Nom3_2000\",\"phone\":\"7988295"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 256341.4,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-1-1920\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-1\",\"firstName\":\"Prenom1_1920\",\"lastName\":\"Nom1_1920\",\"phone\":\"7988254"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 255622.75,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-2-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"firstName\":\"Prenom2_1840\",\"lastName\":\"Nom2_1840\",\"phone\":\"7988273"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 249111.35,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-2-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"firstName\":\"Prenom2_1840\",\"lastName\":\"Nom2_1840\",\"phone\":\"7988273"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 248539.82,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-4-1920\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-4\",\"firstName\":\"Prenom4_1920\",\"lastName\":\"Nom4_1920\",\"phone\":\"7988314"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 247995.84,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-2-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"firstName\":\"Prenom2_1840\",\"lastName\":\"Nom2_1840\",\"phone\":\"7988273"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 243857.16,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-5-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-5\",\"firstName\":\"Prenom5_1840\",\"lastName\":\"Nom5_1840\",\"phone\":\"7988333"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 235064.05,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-1-1920\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-1\",\"firstName\":\"Prenom1_1920\",\"lastName\":\"Nom1_1920\",\"phone\":\"7988254"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 232477.19,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-4-1920\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-4\",\"firstName\":\"Prenom4_1920\",\"lastName\":\"Nom4_1920\",\"phone\":\"7988314"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 232456.77,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-2-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"firstName\":\"Prenom2_1840\",\"lastName\":\"Nom2_1840\",\"phone\":\"7988273"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 226395.38,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-2-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"firstName\":\"Prenom2_1840\",\"lastName\":\"Nom2_1840\",\"phone\":\"7988273"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 220659.2,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-2-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"firstName\":\"Prenom2_1840\",\"lastName\":\"Nom2_1840\",\"phone\":\"7988273"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 218203.44,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-5-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-5\",\"firstName\":\"Prenom5_1840\",\"lastName\":\"Nom5_1840\",\"phone\":\"7988333"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 217354.67,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-2-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"firstName\":\"Prenom2_1840\",\"lastName\":\"Nom2_1840\",\"phone\":\"7988273"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 212267.49,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-5-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-5\",\"firstName\":\"Prenom5_1840\",\"lastName\":\"Nom5_1840\",\"phone\":\"7988333"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 211662.47,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-2-1840\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"firstName\":\"Prenom2_1840\",\"lastName\":\"Nom2_1840\",\"phone\":\"7988273"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 210354.68,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-4-1920\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-4\",\"firstName\":\"Prenom4_1920\",\"lastName\":\"Nom4_1920\",\"phone\":\"7988314"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 206927.95,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"neon-full-5x2000-20260307-213646-client-3-2000\",\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-3\",\"firstName\":\"Prenom3_2000\",\"lastName\":\"Nom3_2000\",\"phone\":\"7988295"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 2183.71,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-4\",\"username\":\"798822651\",\"name\":\"798822651\",\"email\":\"neon-full-5x2000-20260307-213646.admin4@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 2219.84,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-5\",\"username\":\"798822652\",\"name\":\"798822652\",\"email\":\"neon-full-5x2000-20260307-213646.admin5@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 2372.01,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-1\",\"username\":\"798822648\",\"name\":\"798822648\",\"email\":\"neon-full-5x2000-20260307-213646.admin1@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 2659.65,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-3\",\"username\":\"798822650\",\"name\":\"798822650\",\"email\":\"neon-full-5x2000-20260307-213646.admin3@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 2684.07,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-5\",\"username\":\"798822652\",\"name\":\"798822652\",\"email\":\"neon-full-5x2000-20260307-213646.admin5@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3079.71,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-4\",\"username\":\"798822651\",\"name\":\"798822651\",\"email\":\"neon-full-5x2000-20260307-213646.admin4@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3240.87,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"username\":\"798822649\",\"name\":\"798822649\",\"email\":\"neon-full-5x2000-20260307-213646.admin2@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3257.95,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-1\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscr"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3367.26,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-2\",\"username\":\"798822649\",\"name\":\"798822649\",\"email\":\"neon-full-5x2000-20260307-213646.admin2@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3384.73,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-4\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscr"
+          },
+          {
+            "endpoint": "/api/payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3400.24,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"7fd66699-517a-4303-b646-083b96738ca3\",\"amount\":100000,\"date\":\"2026-03-07T00:00:00.000Z\",\"receiptNumber\":\"REC-1772850614996\",\"description\":\"\",\"status\":\"completed\"},{\"id\":\"a7"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3406.99,
+            "success": true,
+            "bodySnippet": "{\"adminId\":\"neon-full-5x2000-20260307-213646-user-admin-4\",\"blocked\":false,\"overdueMonth\":null,\"dueAt\":null,\"requiredMonth\":\"2026-03\",\"currentMonth\":\"2026-03\",\"graceDays\":5,\"subscr"
+          },
+          {
+            "endpoint": "/api/deposits",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3593.28,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8758a230-e9dc-425a-a7c1-0d46e3a59ffc\",\"amount\":197445,\"date\":\"2026-03-07T01:52:53.721Z\",\"receiptNumber\":\"69048FD6-AA2B-49C3-B7D3-392F699E7782\",\"description\":\"\",\"status\":\"co"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3612.36,
+            "success": true,
+            "bodySnippet": "[]"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3616.53,
+            "success": true,
+            "bodySnippet": "[]"
+          },
+          {
+            "endpoint": "/api/deposits",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3685.25,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8758a230-e9dc-425a-a7c1-0d46e3a59ffc\",\"amount\":197445,\"date\":\"2026-03-07T01:52:53.721Z\",\"receiptNumber\":\"69048FD6-AA2B-49C3-B7D3-392F699E7782\",\"description\":\"\",\"status\":\"co"
+          },
+          {
+            "endpoint": "/api/payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3696.84,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"7fd66699-517a-4303-b646-083b96738ca3\",\"amount\":100000,\"date\":\"2026-03-07T00:00:00.000Z\",\"receiptNumber\":\"REC-1772850614996\",\"description\":\"\",\"status\":\"completed\"},{\"id\":\"a7"
+          },
+          {
+            "endpoint": "/api/deposits",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3804.56,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"8758a230-e9dc-425a-a7c1-0d46e3a59ffc\",\"amount\":197445,\"date\":\"2026-03-07T01:52:53.721Z\",\"receiptNumber\":\"69048FD6-AA2B-49C3-B7D3-392F699E7782\",\"description\":\"\",\"status\":\"co"
+          },
+          {
+            "endpoint": "/api/payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3820.52,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"7fd66699-517a-4303-b646-083b96738ca3\",\"amount\":100000,\"date\":\"2026-03-07T00:00:00.000Z\",\"receiptNumber\":\"REC-1772850614996\",\"description\":\"\",\"status\":\"completed\"},{\"id\":\"a7"
+          },
+          {
+            "endpoint": "/api/payments",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 3830.34,
+            "success": true,
+            "bodySnippet": "[{\"id\":\"7fd66699-517a-4303-b646-083b96738ca3\",\"amount\":100000,\"date\":\"2026-03-07T00:00:00.000Z\",\"receiptNumber\":\"REC-1772850614996\",\"description\":\"\",\"status\":\"completed\"},{\"id\":\"a7"
+          }
+        ],
+        "latency": {
+          "count": 2400,
+          "minMs": 0,
+          "maxMs": 272879.04,
+          "avgMs": 22310.46,
+          "p50Ms": 13212.56,
+          "p95Ms": 93557.87,
+          "p99Ms": 192468.47
+        }
+      },
+      "document_write_mix": {
+        "name": "document_write_mix",
+        "startedAt": "2026-03-07T22:39:58.184Z",
+        "completedAt": "2026-03-07T22:41:32.377Z",
+        "totalRequests": 480,
+        "successCount": 0,
+        "errorCount": 480,
+        "statusCounts": {
+          "500": 480
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 14277.32,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 14273.22,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 12549.58,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 12369.71,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 11878.6,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 11505.93,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 11240.46,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 11114.21,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 10841,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 10723.71,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 10562.55,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 10476.37,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 10377.86,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 10269.48,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 9709,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 9692.73,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 9610.17,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 9531.75,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 9489.33,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 9378.76,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5552.27,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5554.86,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5555.85,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5556.77,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5557.68,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5558.44,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5560.42,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5561.83,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5563.08,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5564.23,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5575.5,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5570.18,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5576.13,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5576.5,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5577.08,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5578.3,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5578.7,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5579.38,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5580.24,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 5581.27,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          }
+        ],
+        "latency": {
+          "count": 480,
+          "minMs": 217.85,
+          "maxMs": 14277.32,
+          "avgMs": 4587.54,
+          "p50Ms": 4121.98,
+          "p95Ms": 8945.26,
+          "p99Ms": 11878.6
+        }
+      },
+      "protected_route_without_auth": {
+        "name": "protected_route_without_auth",
+        "startedAt": "2026-03-07T22:41:32.378Z",
+        "completedAt": "2026-03-07T22:41:33.211Z",
+        "totalRequests": 50,
+        "successCount": 50,
+        "errorCount": 0,
+        "statusCounts": {
+          "401": 50
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 264.08,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 224.23,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 201.75,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 200.32,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 199.29,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 187.5,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 180.43,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 180.25,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 178.25,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 174.4,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 174.27,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 174.08,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 173.98,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 173.95,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 173.81,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 172.61,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 171.57,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 170.97,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 169.62,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 168.62,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 69.77,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 77.23,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 85.59,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 95.31,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 101.8,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 111.41,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 118.43,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 131.48,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 180.43,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 187.5,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 173.81,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 174.08,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 171.57,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 174.27,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 174.4,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 173.95,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 170.97,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 264.08,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 159.79,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 161.85,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "latency": {
+          "count": 50,
+          "minMs": 69.77,
+          "maxMs": 264.08,
+          "avgMs": 157.42,
+          "p50Ms": 161.85,
+          "p95Ms": 201.75,
+          "p99Ms": 264.08
+        }
+      },
+      "bad_csrf_write": {
+        "name": "bad_csrf_write",
+        "startedAt": "2026-03-07T22:41:33.211Z",
+        "completedAt": "2026-03-07T22:41:33.713Z",
+        "totalRequests": 50,
+        "successCount": 50,
+        "errorCount": 0,
+        "statusCounts": {
+          "403": 50
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 198.19,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 184.01,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 183.73,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 182.69,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 181.6,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 180.19,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 179.28,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 178.7,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 178.02,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 174.52,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 172.58,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 148.41,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 135.42,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 119.39,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 119.1,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 119.1,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 118.89,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 118.42,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 118,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 116.29,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 148.41,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 172.58,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 174.52,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 178.02,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 178.7,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 179.28,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 180.19,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 181.6,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 182.69,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 183.73,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 184.01,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 198.19,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 135.42,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 119.39,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 119.1,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 116.29,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 116.22,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 116.04,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 119.1,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "POST",
+            "status": 403,
+            "durationMs": 118.89,
+            "success": true,
+            "bodySnippet": "{\"message\":\"CSRF token invalide ou absent\",\"code\":\"CSRF_INVALID\"}"
+          }
+        ],
+        "latency": {
+          "count": 50,
+          "minMs": 17.79,
+          "maxMs": 198.19,
+          "avgMs": 117.26,
+          "p50Ms": 100.82,
+          "p95Ms": 183.73,
+          "p99Ms": 198.19
+        }
+      },
+      "tampered_payment": {
+        "name": "tampered_payment",
+        "startedAt": "2026-03-07T22:41:33.715Z",
+        "completedAt": "2026-03-07T22:41:42.378Z",
+        "totalRequests": 40,
+        "successCount": 0,
+        "errorCount": 40,
+        "statusCounts": {
+          "500": 40
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 3573.62,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2912.27,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2910.99,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2909.93,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2909.06,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2907.43,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2906.25,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2900.97,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1507.07,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1440.71,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1435.94,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1424.68,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1423.53,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1395.12,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1394.38,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1391.2,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1388.71,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1383.96,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1383.76,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1374.31,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2900.97,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2906.25,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2907.43,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2909.06,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2909.93,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2910.99,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 2912.27,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 229.29,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 454.45,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 3573.62,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 852.19,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 994.71,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1171.62,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1336.52,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1507.07,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1435.94,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1361.38,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1319.3,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1312.57,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments",
+            "method": "POST",
+            "status": 500,
+            "durationMs": 1369.93,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          }
+        ],
+        "latency": {
+          "count": 40,
+          "minMs": 229.29,
+          "maxMs": 3573.62,
+          "avgMs": 1615.41,
+          "p50Ms": 1369.93,
+          "p95Ms": 2910.99,
+          "p99Ms": 3573.62
+        }
+      },
+      "brute_force_login": {
+        "name": "brute_force_login",
+        "startedAt": "2026-03-07T22:41:42.378Z",
+        "completedAt": "2026-03-07T22:41:57.726Z",
+        "totalRequests": 250,
+        "successCount": 250,
+        "errorCount": 0,
+        "statusCounts": {
+          "401": 100,
+          "429": 150
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5767.48,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5766.01,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5726.87,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5665.88,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5656.71,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5655.76,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5654.68,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5602.41,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5599.13,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5593.45,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5592.08,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5587.38,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5579.89,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5524.38,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5523.32,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5521.63,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5516.89,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5438.99,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5435.81,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5430.96,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5189.39,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5196.57,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5281.94,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5292.08,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5299.95,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5314.41,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5346.61,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5349.58,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5397.31,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5398.01,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5430.96,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5435.81,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5438.99,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5516.89,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5523.32,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5521.63,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5524.38,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5579.89,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5587.38,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          },
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 401,
+            "durationMs": 5592.08,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Identifiants invalides\",\"error\":\"Identifiants invalides\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "latency": {
+          "count": 250,
+          "minMs": 436.12,
+          "maxMs": 5767.48,
+          "avgMs": 1697.84,
+          "p50Ms": 1259.58,
+          "p95Ms": 5579.89,
+          "p99Ms": 5726.87
+        }
+      },
+      "logout_token_reuse": {
+        "name": "logout_token_reuse",
+        "startedAt": "2026-03-07T22:41:57.726Z",
+        "completedAt": "2026-03-07T22:42:04.849Z",
+        "totalRequests": 4,
+        "successCount": 4,
+        "errorCount": 0,
+        "statusCounts": {
+          "200": 3,
+          "401": 1
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 2831.52,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-1\",\"username\":\"798822648\",\"name\":\"798822648\",\"email\":\"neon-full-5x2000-20260307-213646.admin1@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 2424.86,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-1\",\"username\":\"798822648\",\"name\":\"798822648\",\"email\":\"neon-full-5x2000-20260307-213646.admin1@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/authContext/logout",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1845.73,
+            "success": true,
+            "bodySnippet": "{\"ok\":true}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 19.97,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/authContext/login",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 2831.52,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-1\",\"username\":\"798822648\",\"name\":\"798822648\",\"email\":\"neon-full-5x2000-20260307-213646.admin1@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 200,
+            "durationMs": 2424.86,
+            "success": true,
+            "bodySnippet": "{\"user\":{\"id\":\"neon-full-5x2000-20260307-213646-user-admin-1\",\"username\":\"798822648\",\"name\":\"798822648\",\"email\":\"neon-full-5x2000-20260307-213646.admin1@kya.local\",\"role\":\"ADMIN\",\""
+          },
+          {
+            "endpoint": "/api/authContext/logout",
+            "method": "POST",
+            "status": 200,
+            "durationMs": 1845.73,
+            "success": true,
+            "bodySnippet": "{\"ok\":true}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 401,
+            "durationMs": 19.97,
+            "success": true,
+            "bodySnippet": "{\"message\":\"Jeton acces manquant\",\"error\":\"Jeton acces manquant\",\"details\":null,\"code\":null}"
+          }
+        ],
+        "latency": {
+          "count": 4,
+          "minMs": 19.97,
+          "maxMs": 2831.52,
+          "avgMs": 1780.52,
+          "p50Ms": 1845.73,
+          "p95Ms": 2831.52,
+          "p99Ms": 2831.52
+        }
+      },
+      "super_admin_without_second_auth": {
+        "name": "super_admin_without_second_auth",
+        "startedAt": "2026-03-07T22:42:04.849Z",
+        "completedAt": "2026-03-07T22:42:05.194Z",
+        "totalRequests": 1,
+        "successCount": 0,
+        "errorCount": 1,
+        "statusCounts": {
+          "500": 1
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/payment-providers/config",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 344.84,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/payment-providers/config",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 344.84,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          }
+        ],
+        "latency": {
+          "count": 1,
+          "minMs": 344.84,
+          "maxMs": 344.84,
+          "avgMs": 344.84,
+          "p50Ms": 344.84,
+          "p95Ms": 344.84,
+          "p99Ms": 344.84
+        }
+      },
+      "stress_mix": {
+        "name": "stress_mix",
+        "startedAt": "2026-03-07T22:42:05.194Z",
+        "completedAt": "2026-03-07T22:48:31.417Z",
+        "totalRequests": 3600,
+        "successCount": 0,
+        "errorCount": 3600,
+        "statusCounts": {
+          "0": 26,
+          "500": 3574
+        },
+        "slowestRequests": [
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 299065.84,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 296830.4,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 294512.93,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 292270.4,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 290411.12,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 287842.75,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 285412.01,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 283160.89,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 281181.02,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 278993.55,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 276674.71,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 274186.43,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 271819.65,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 269588.78,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 266858.59,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 264746.11,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 262591.33,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 260171.23,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 257889.17,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 255555.22,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          }
+        ],
+        "samples": [
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 215.67,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 187.78,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 571.02,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 707.11,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 916.68,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1130.38,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1415.34,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1269.21,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1990.75,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1626.92,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1661.03,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2534.78,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1776.96,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2845.74,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 1929.81,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/notifications",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 3308.33,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/clients",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2148.26,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/authContext",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 3743.37,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/documents",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2310.72,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          },
+          {
+            "endpoint": "/api/admin_payments/status",
+            "method": "GET",
+            "status": 500,
+            "durationMs": 2136.49,
+            "success": false,
+            "bodySnippet": "{\"message\":\"Erreur interne serveur\",\"error\":\"Erreur interne serveur\"}"
+          }
+        ],
+        "latency": {
+          "count": 3600,
+          "minMs": 0,
+          "maxMs": 299065.84,
+          "avgMs": 16784.34,
+          "p50Ms": 11420.64,
+          "p95Ms": 18358.44,
+          "p99Ms": 221542.63
+        }
+      }
+    },
+    "chaos": [
+      {
+        "name": "server_stop_restart",
+        "skipped": true,
+        "reason": "Chaos hook non configure"
+      },
+      {
+        "name": "database_break_restore",
+        "skipped": true,
+        "reason": "Chaos hook non configure"
+      }
+    ],
+    "totals": {
+      "scenarioCount": 16,
+      "totalRequests": 13745,
+      "totalSuccess": 4044,
+      "totalErrors": 9701
+    },
+    "completedAt": "2026-03-07T22:48:33.298Z",
+    "durationMs": 1508434
+  },
+  "database": {
+    "available": true,
+    "generatedAt": "2026-03-07T22:48:33.611Z",
+    "counts": {
+      "utilisateurs": 10006,
+      "admins": 0,
+      "entreprises": 5,
+      "clients": 9904,
+      "locations": 9904,
+      "documents": 29862,
+      "paiementsMensuels": 39616,
+      "transactionsPaiement": 34096,
+      "depots": 9904,
+      "notifications": 10010,
+      "journauxAuditUtilisateur": 80000,
+      "journauxAuditAdmin": 94982,
+      "blockedIps": 52,
+      "sessions": 20000,
+      "refreshTokens": 20000,
+      "tentativesConnexionEchouees": 10000,
+      "tentativesConnexionReussies": 30000,
+      "paiementsAbonnementAdmin": 0,
+      "statutsAbonnementAdmin": 0
+    },
+    "distributions": {
+      "clientStatuses": [
+        {
+          "value": "active",
+          "count": 5712
+        },
+        {
+          "value": "pending_validation",
+          "count": 1565
+        },
+        {
+          "value": "suspended",
+          "count": 1434
+        },
+        {
+          "value": "blocked",
+          "count": 1193
+        }
+      ],
+      "monthlyPaymentStatuses": [
+        {
+          "value": "paid",
+          "count": 14221
+        },
+        {
+          "value": "unpaid",
+          "count": 5520
+        },
+        {
+          "value": "late",
+          "count": 4810
+        },
+        {
+          "value": "partial",
+          "count": 4678
+        },
+        {
+          "value": "processing",
+          "count": 3995
+        },
+        {
+          "value": "refunded",
+          "count": 3225
+        },
+        {
+          "value": "cancelled",
+          "count": 3167
+        }
+      ],
+      "documentTypes": [
+        {
+          "value": "identity",
+          "count": 5944
+        },
+        {
+          "value": "contract",
+          "count": 5943
+        },
+        {
+          "value": "invoice",
+          "count": 5942
+        },
+        {
+          "value": "administrative",
+          "count": 5942
+        },
+        {
+          "value": "proof",
+          "count": 5941
+        }
+      ],
+      "userRoles": [
+        {
+          "value": "UTILISATEUR",
+          "count": 10000
+        },
+        {
+          "value": "ADMIN",
+          "count": 5
+        },
+        {
+          "value": "SUPER_ADMIN",
+          "count": 1
+        }
+      ],
+      "userStatuses": [
+        {
+          "value": "ACTIF",
+          "count": 5772
+        },
+        {
+          "value": "SUSPENDU",
+          "count": 2650
+        },
+        {
+          "value": "EN_ATTENTE",
+          "count": 1584
+        }
+      ],
+      "topUserActions": [
+        {
+          "value": "SECURITY_CHALLENGE_PASSED",
+          "count": 10000
+        },
+        {
+          "value": "DOCUMENT_UPLOADED",
+          "count": 10000
+        },
+        {
+          "value": "LOGOUT",
+          "count": 10000
+        },
+        {
+          "value": "DOCUMENT_DOWNLOADED",
+          "count": 10000
+        },
+        {
+          "value": "SESSION_REFRESHED",
+          "count": 10000
+        },
+        {
+          "value": "LOGIN_SUCCESS",
+          "count": 10000
+        },
+        {
+          "value": "PAYMENT_VIEWED",
+          "count": 10000
+        },
+        {
+          "value": "PROFILE_UPDATED",
+          "count": 10000
+        }
+      ],
+      "topAdminActions": [
+        {
+          "value": "PAYMENT_STATUS_CHANGED",
+          "count": 47140
+        },
+        {
+          "value": "PROFILE_SUSPENDED",
+          "count": 7141
+        },
+        {
+          "value": "SECURITY_ALERT_REVIEWED",
+          "count": 7141
+        },
+        {
+          "value": "CLIENT_BLOCKED",
+          "count": 7140
+        },
+        {
+          "value": "CLIENT_UPDATED",
+          "count": 7140
+        },
+        {
+          "value": "CLIENT_CREATED",
+          "count": 7140
+        },
+        {
+          "value": "DOCUMENT_VALIDATED",
+          "count": 7140
+        },
+        {
+          "value": "SERVER_STOP",
+          "count": 715
+        },
+        {
+          "value": "SERVER_RECOVERY",
+          "count": 715
+        },
+        {
+          "value": "QUEUE_BACKPRESSURE",
+          "count": 714
+        }
+      ]
+    },
+    "samples": {
+      "latestBlockedIps": [
+        {
+          "adresseIp": "15.10.30.30",
+          "raison": "scenario=neon-full-5x2000-20260307-213646;admin=neon-full-5x2000-20260307-213646-admin-5;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T21:46:47.356Z"
+        },
+        {
+          "adresseIp": "15.10.29.30",
+          "raison": "scenario=neon-full-5x2000-20260307-213646;admin=neon-full-5x2000-20260307-213646-admin-5;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T21:46:47.356Z"
+        },
+        {
+          "adresseIp": "15.10.28.30",
+          "raison": "scenario=neon-full-5x2000-20260307-213646;admin=neon-full-5x2000-20260307-213646-admin-5;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T21:46:47.356Z"
+        },
+        {
+          "adresseIp": "15.10.27.30",
+          "raison": "scenario=neon-full-5x2000-20260307-213646;admin=neon-full-5x2000-20260307-213646-admin-5;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T21:46:47.356Z"
+        },
+        {
+          "adresseIp": "15.10.26.30",
+          "raison": "scenario=neon-full-5x2000-20260307-213646;admin=neon-full-5x2000-20260307-213646-admin-5;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T21:46:47.356Z"
+        },
+        {
+          "adresseIp": "15.10.25.30",
+          "raison": "scenario=neon-full-5x2000-20260307-213646;admin=neon-full-5x2000-20260307-213646-admin-5;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T21:46:47.356Z"
+        },
+        {
+          "adresseIp": "15.10.24.30",
+          "raison": "scenario=neon-full-5x2000-20260307-213646;admin=neon-full-5x2000-20260307-213646-admin-5;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T21:46:47.356Z"
+        },
+        {
+          "adresseIp": "15.10.23.30",
+          "raison": "scenario=neon-full-5x2000-20260307-213646;admin=neon-full-5x2000-20260307-213646-admin-5;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T21:46:47.356Z"
+        },
+        {
+          "adresseIp": "15.10.22.30",
+          "raison": "scenario=neon-full-5x2000-20260307-213646;admin=neon-full-5x2000-20260307-213646-admin-5;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T21:46:47.356Z"
+        },
+        {
+          "adresseIp": "15.10.21.30",
+          "raison": "scenario=neon-full-5x2000-20260307-213646;admin=neon-full-5x2000-20260307-213646-admin-5;reason=bruteforce_or_suspicious_activity",
+          "creeLe": "2026-03-07T21:46:47.356Z"
+        }
+      ],
+      "latestAdminAudits": [
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-full-5x2000-20260307-213646-monthly-payment-5-1840-1-4",
+          "message": "scenario=neon-full-5x2000-20260307-213646;payment=neon-full-5x2000-20260307-213646-monthly-payment-5-1840-1-4;status=paid;penalty=0",
+          "creeLe": "2026-07-08T21:46:34.470Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-full-5x2000-20260307-213646-monthly-payment-5-1600-1-4",
+          "message": "scenario=neon-full-5x2000-20260307-213646;payment=neon-full-5x2000-20260307-213646-monthly-payment-5-1600-1-4;status=partial;penalty=0",
+          "creeLe": "2026-07-08T21:46:22.800Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-full-5x2000-20260307-213646-monthly-payment-5-1360-1-4",
+          "message": "scenario=neon-full-5x2000-20260307-213646;payment=neon-full-5x2000-20260307-213646-monthly-payment-5-1360-1-4;status=paid;penalty=0",
+          "creeLe": "2026-07-08T21:46:10.387Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-full-5x2000-20260307-213646-monthly-payment-5-1120-1-4",
+          "message": "scenario=neon-full-5x2000-20260307-213646;payment=neon-full-5x2000-20260307-213646-monthly-payment-5-1120-1-4;status=processing;penalty=0",
+          "creeLe": "2026-07-08T21:45:57.737Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-full-5x2000-20260307-213646-monthly-payment-5-880-1-4",
+          "message": "scenario=neon-full-5x2000-20260307-213646;payment=neon-full-5x2000-20260307-213646-monthly-payment-5-880-1-4;status=refunded;penalty=0",
+          "creeLe": "2026-07-08T21:45:45.094Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-full-5x2000-20260307-213646-monthly-payment-5-640-1-4",
+          "message": "scenario=neon-full-5x2000-20260307-213646;payment=neon-full-5x2000-20260307-213646-monthly-payment-5-640-1-4;status=late;penalty=15",
+          "creeLe": "2026-07-08T21:45:30.396Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-full-5x2000-20260307-213646-monthly-payment-5-400-1-4",
+          "message": "scenario=neon-full-5x2000-20260307-213646;payment=neon-full-5x2000-20260307-213646-monthly-payment-5-400-1-4;status=unpaid;penalty=0",
+          "creeLe": "2026-07-08T21:45:18.086Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-full-5x2000-20260307-213646-monthly-payment-5-160-1-4",
+          "message": "scenario=neon-full-5x2000-20260307-213646;payment=neon-full-5x2000-20260307-213646-monthly-payment-5-160-1-4;status=processing;penalty=0",
+          "creeLe": "2026-07-08T21:45:03.392Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-full-5x2000-20260307-213646-monthly-payment-4-1920-1-4",
+          "message": "scenario=neon-full-5x2000-20260307-213646;payment=neon-full-5x2000-20260307-213646-monthly-payment-4-1920-1-4;status=partial;penalty=0",
+          "creeLe": "2026-07-08T21:44:46.622Z"
+        },
+        {
+          "action": "PAYMENT_STATUS_CHANGED",
+          "typeCible": "payment",
+          "idCible": "neon-full-5x2000-20260307-213646-monthly-payment-4-1680-1-4",
+          "message": "scenario=neon-full-5x2000-20260307-213646;payment=neon-full-5x2000-20260307-213646-monthly-payment-4-1680-1-4;status=unpaid;penalty=0",
+          "creeLe": "2026-07-08T21:44:32.814Z"
+        }
+      ]
+    }
+  }
+}

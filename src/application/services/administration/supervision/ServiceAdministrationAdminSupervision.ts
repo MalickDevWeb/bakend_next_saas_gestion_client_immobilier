@@ -7,12 +7,14 @@ import { ServiceAdministrationAdminSupervisionEntreprises } from '@/src/applicat
 import { ServiceAdministrationAdminSupervisionUtilisateurs } from '@/src/application/services/administration/supervision/ServiceAdministrationAdminSupervisionUtilisateurs'
 
 export class ServiceAdministrationAdminSupervision {
+  private readonly dependances: TypeDependancesServiceAdministrationAdminSupervision
   private readonly serviceAdmins: ServiceAdministrationAdminSupervisionAdmins
   private readonly serviceDemandes: ServiceAdministrationAdminSupervisionDemandes
   private readonly serviceEntreprises: ServiceAdministrationAdminSupervisionEntreprises
   private readonly serviceUtilisateurs: ServiceAdministrationAdminSupervisionUtilisateurs
 
   constructor(dependances: TypeDependancesServiceAdministrationAdminSupervision) {
+    this.dependances = dependances
     this.serviceAdmins = new ServiceAdministrationAdminSupervisionAdmins(dependances)
     this.serviceDemandes = new ServiceAdministrationAdminSupervisionDemandes(dependances)
     this.serviceEntreprises = new ServiceAdministrationAdminSupervisionEntreprises(dependances)
@@ -88,13 +90,45 @@ export class ServiceAdministrationAdminSupervision {
     return this.serviceDemandes.creerDemandeAdminPublique(corps)
   }
 
-  public mettreAJourDemandeAdmin(
+  public async mettreAJourDemandeAdmin(
     jetonAcces: string,
     impersonation: DtoEtatImpersonation,
     demandeId: string,
     corps: Record<string, unknown>
   ): Promise<TypeResultatMutationAdministrationAdmin<Record<string, unknown>>> {
-    return this.serviceDemandes.mettreAJourDemandeAdmin(jetonAcces, impersonation, demandeId, corps)
+    const demandeAvant = await this.serviceDemandes.obtenirDemandeAdmin(
+      jetonAcces,
+      impersonation,
+      demandeId
+    )
+    const resultat = await this.serviceDemandes.mettreAJourDemandeAdmin(
+      jetonAcces,
+      impersonation,
+      demandeId,
+      corps
+    )
+
+    const statutAvant = this.normaliserStatut(demandeAvant.status)
+    const statutApres = this.normaliserStatut(resultat.donnees.status)
+
+    if (statutAvant !== 'ACTIF' && statutApres === 'ACTIF') {
+      try {
+        await this.provisionnerDemandeAdminApprouvee(
+          jetonAcces,
+          impersonation,
+          resultat.donnees
+        )
+      } catch (error) {
+        await this.annulerMiseAJourDemandeAdmin(
+          jetonAcces,
+          impersonation,
+          resultat.annulation.id
+        )
+        throw error
+      }
+    }
+
+    return resultat
   }
 
   public supprimerDemandeAdmin(
@@ -181,5 +215,104 @@ export class ServiceAdministrationAdminSupervision {
     utilisateurId: string
   ): Promise<TypeResultatMutationAdministrationAdmin<{ ok: true }>> {
     return this.serviceUtilisateurs.supprimerUtilisateur(jetonAcces, impersonation, utilisateurId)
+  }
+
+  private async provisionnerDemandeAdminApprouvee(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    demande: Record<string, unknown>
+  ): Promise<void> {
+    const demandeId = String(demande.id || '').trim()
+    if (!demandeId) return
+
+    const username = this.resoudreNomUtilisateurDemande(demande)
+    const adminResultat = await this.serviceAdmins.creerAdmin(jetonAcces, impersonation, {
+      id: demandeId,
+      userId: demandeId,
+      adminRequestId: demandeId,
+      username,
+      name: String(demande.name || username).trim() || username,
+      email: this.resoudreEmailDemande(demande, username),
+      phone: this.texteOptionnel(demande.phone) || undefined,
+      status: 'ACTIF',
+      createdAt: this.texteOptionnel(demande.createdAt) || new Date().toISOString(),
+    })
+
+    const entrepriseName = this.texteOptionnel(demande.entrepriseName)
+    if (!entrepriseName) return
+
+    try {
+      const adminId = String(adminResultat.donnees.id || demandeId).trim()
+      await this.serviceEntreprises.creerEntreprise(jetonAcces, impersonation, {
+        id: `${adminId}-entreprise`,
+        name: entrepriseName,
+        adminId,
+        createdAt: this.texteOptionnel(demande.createdAt) || new Date().toISOString(),
+      })
+    } catch (error) {
+      await this.annulerCreationAdmin(jetonAcces, impersonation, adminResultat.annulation.id)
+      throw error
+    }
+  }
+
+  private async annulerMiseAJourDemandeAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    actionId: string
+  ): Promise<void> {
+    const contexte = await this.dependances.securite.obtenirContexteAcces(
+      jetonAcces,
+      impersonation,
+      'admin_requests'
+    )
+    await this.dependances.annulation.annulerAction(contexte.utilisateurId, actionId)
+  }
+
+  private async annulerCreationAdmin(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    actionId: string
+  ): Promise<void> {
+    const contexte = await this.dependances.securite.obtenirContexteAcces(
+      jetonAcces,
+      impersonation,
+      'admins'
+    )
+    await this.dependances.annulation.annulerAction(contexte.utilisateurId, actionId)
+  }
+
+  private normaliserStatut(valeur: unknown): string {
+    return String(valeur || '').trim().toUpperCase()
+  }
+
+  private texteOptionnel(valeur: unknown): string | null {
+    const texte = String(valeur || '').trim()
+    return texte || null
+  }
+
+  private resoudreNomUtilisateurDemande(demande: Record<string, unknown>): string {
+    const username = this.texteOptionnel(demande.username)
+    if (username) return username
+
+    const phone = this.texteOptionnel(demande.phone)
+    if (phone) return phone.replace(/\D/g, '')
+
+    const name = this.texteOptionnel(demande.name)
+    if (name) {
+      const compact = name
+        .toLowerCase()
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '')
+      if (compact) return compact
+    }
+
+    return `admin-${Date.now()}`
+  }
+
+  private resoudreEmailDemande(demande: Record<string, unknown>, username: string): string {
+    const email = this.texteOptionnel(demande.email)
+    if (email) return email
+    return `${username}@kya.local`
   }
 }

@@ -299,6 +299,14 @@ test_api "Supervision admin_request get" GET "/api/admin_requests/${SUPER_REQ_ID
 reauth_super_admin
 test_api "Supervision admin_request put" PUT "/api/admin_requests/${SUPER_REQ_ID}" "$SUPER_COOKIE" "{\"status\":\"ACTIF\"}" "$SUPER_CSRF" 200
 reauth_super_admin
+test_api "Supervision admin auto-provision list" GET "/api/admins" "$SUPER_COOKIE" "" "" 200
+PROVISIONED_ADMIN_ID="$(node -e 'const fs=require("node:fs");const data=JSON.parse(fs.readFileSync(process.argv[1],"utf8")||"[]");const requestId=process.argv[2];const username=process.argv[3];const found=Array.isArray(data)?data.find((item)=>String(item.id||"").trim()===requestId||String(item.username||"").trim()===username):null;process.stdout.write(found?String(found.id||"").trim():"")' "$LAST_BODY" "$SUPER_REQ_ID" "$REQ_PHONE")"
+[[ -n "$PROVISIONED_ADMIN_ID" ]] || fail "Validation demande admin sans provision du compte admin"
+reauth_super_admin
+test_api "Supervision entreprise auto-provision list" GET "/api/entreprises" "$SUPER_COOKIE" "" "" 200
+PROVISIONED_ENTREPRISE_ID="$(node -e 'const fs=require("node:fs");const data=JSON.parse(fs.readFileSync(process.argv[1],"utf8")||"[]");const adminId=process.argv[2];const expectedName=process.argv[3];const found=Array.isArray(data)?data.find((item)=>String(item.adminId||"").trim()===adminId&&String(item.name||"").trim()===expectedName):null;process.stdout.write(found?String(found.id||"").trim():"")' "$LAST_BODY" "$PROVISIONED_ADMIN_ID" "Entreprise Supervision")"
+[[ -n "$PROVISIONED_ENTREPRISE_ID" ]] || fail "Validation demande admin sans provision de l'entreprise"
+reauth_super_admin
 test_api "Supervision admin_request patch" PATCH "/api/admin_requests/${SUPER_REQ_ID}" "$SUPER_COOKIE" "{\"status\":\"SUSPENDU\"}" "$SUPER_CSRF" 200
 
 ENT_BODY="$(node -e 'console.log(JSON.stringify({name: process.argv[1]}))' "Entreprise Supervision $(date +%s)")"
