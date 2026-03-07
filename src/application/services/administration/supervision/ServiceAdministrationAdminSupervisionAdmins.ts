@@ -12,6 +12,7 @@ type TypeDependancesSupervisionAdmins = Pick<
   | 'securite'
   | 'annulation'
   | 'daoAdmin'
+  | 'daoDemandeAdmin'
   | 'daoUtilisateur'
   | 'serviceHachageMotDePasse'
   | 'serviceEvenementsNotification'
@@ -198,10 +199,33 @@ export class ServiceAdministrationAdminSupervisionAdmins {
       return this.dependances.serviceHachageMotDePasse.hacher(motDePasseBrut)
     }
     if (fallbackHash) return fallbackHash
+    const hashDepuisDemandeAdmin = await this.resoudreMotDePasseHashDepuisDemandeAdmin(corps)
+    if (hashDepuisDemandeAdmin) return hashDepuisDemandeAdmin
     if (requis) {
       throw new ErreurHttp(CODE_HTTP.MAUVAISE_REQUETE, 'Mot de passe admin requis.')
     }
     return ''
+  }
+
+  private async resoudreMotDePasseHashDepuisDemandeAdmin(
+    corps: Record<string, unknown>
+  ): Promise<string | null> {
+    const adminRequestId = ServiceAdministrationAdminUtilitaires.versTexteOptionnel(corps.adminRequestId)
+    if (!adminRequestId) return null
+
+    const demandeAdmin = await this.dependances.daoDemandeAdmin.rechercherParId(adminRequestId)
+    const motDePasseStocke = String(demandeAdmin?.motDePasse || '').trim()
+    if (!motDePasseStocke) return null
+
+    if (this.estHashMotDePasse(motDePasseStocke)) {
+      return motDePasseStocke
+    }
+
+    return this.dependances.serviceHachageMotDePasse.hacher(motDePasseStocke)
+  }
+
+  private estHashMotDePasse(valeur: string): boolean {
+    return /^\$argon2/i.test(String(valeur || '').trim())
   }
 
   private construireEntiteUtilisateurAdmin({
