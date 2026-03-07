@@ -25,6 +25,32 @@ const INCLUSIONS_CLIENT = {
   },
 } as const
 
+const INCLUSIONS_CLIENT_RESUME = {
+  locations: {
+    select: {
+      id: true,
+      clientId: true,
+      typeBien: true,
+      nomBien: true,
+      loyerMensuel: true,
+      dateDebut: true,
+      cautionMontantTotal: true,
+      cautionMontantPaye: true,
+      paiementsMensuels: {
+        select: {
+          id: true,
+          periodeDebut: true,
+          periodeFin: true,
+          dateEcheance: true,
+          montantDu: true,
+          montantPaye: true,
+          statut: true,
+        },
+      },
+    },
+  },
+} as const
+
 export class DaoClientPrisma implements InterfaceDaoClient {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -36,6 +62,29 @@ export class DaoClientPrisma implements InterfaceDaoClient {
     })
 
     return elements.map((element) => mapperClientDepuisPrisma(element))
+  }
+
+  public async listerResume(adminId?: string): Promise<EntiteClient[]> {
+    const elements = await this.prisma.client.findMany({
+      where: adminId ? { adminId: String(adminId || '').trim() } : undefined,
+      orderBy: { creeLe: 'desc' },
+      include: INCLUSIONS_CLIENT_RESUME,
+    })
+
+    return elements.map((element) =>
+      mapperClientDepuisPrisma({
+        ...element,
+        locations: element.locations.map((location) => ({
+          ...location,
+          documents: [],
+          depots: [],
+          paiementsMensuels: location.paiementsMensuels.map((paiement) => ({
+            ...paiement,
+            transactions: [],
+          })),
+        })),
+      })
+    )
   }
 
   public async rechercherParId(id: string): Promise<EntiteClient | null> {

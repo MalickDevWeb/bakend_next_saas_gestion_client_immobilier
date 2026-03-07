@@ -19,10 +19,16 @@ export class ServiceAdministrationAdminClientsLocations {
     jetonAcces: string,
     impersonation: DtoEtatImpersonation,
     champTri?: string | null,
-    ordreTri?: string | null
+    ordreTri?: string | null,
+    vue?: string | null
   ): Promise<Record<string, unknown>[]> {
     const contexte = await this.dependances.securite.obtenirContexteAcces(jetonAcces, impersonation, 'clients')
-    const clients = (await this.dependances.daoClient.lister(contexte.adminId))
+    const vueNormalisee = String(vue || '').trim().toLowerCase()
+    const clients = (await (
+      vueNormalisee === 'summary'
+        ? this.dependances.daoClient.listerResume(contexte.adminId)
+        : this.dependances.daoClient.lister(contexte.adminId)
+    ))
       .map((client) => this.dependances.mappeur.mapperClientEnDto(client))
 
     return ServiceAdministrationAdminUtilitaires.trierElements(clients, champTri, ordreTri)

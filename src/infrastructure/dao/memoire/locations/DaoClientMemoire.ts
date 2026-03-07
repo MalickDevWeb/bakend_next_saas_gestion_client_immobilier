@@ -16,6 +16,10 @@ export class DaoClientMemoire implements InterfaceDaoClient {
     )
   }
 
+  public async listerResume(adminId?: string): Promise<EntiteClient[]> {
+    return this.lister(adminId)
+  }
+
   public async rechercherParId(id: string): Promise<EntiteClient | null> {
     return this.elements.get(id) ?? null
   }

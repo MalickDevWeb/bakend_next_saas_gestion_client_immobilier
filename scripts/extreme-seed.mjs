@@ -140,9 +140,7 @@ function buildConfig(args) {
   const tag = String(args.tag || process.env.EXTREME_TAG || `extreme-${timestampToken()}`).trim()
   const phoneBase = toInt(
     args['phone-base'] ?? process.env.EXTREME_PHONE_BASE,
-    770000000 +
-      (Math.abs(Array.from(tag).reduce((acc, char) => acc * 33 + char.charCodeAt(0), 7)) %
-        18000000),
+    770000000 + (Date.now() % 29_900_000),
     700000000,
     799900000
   )
@@ -800,7 +798,7 @@ async function seed() {
 
         clients.push({
           id: clientId,
-          adminId,
+          adminId: adminUserId,
           prenom: `Prenom${adminIndex}_${clientIndex}`,
           nom: `Nom${adminIndex}_${clientIndex}`,
           telephone: clientPhone,

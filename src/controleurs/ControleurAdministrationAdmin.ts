@@ -17,7 +17,8 @@ export class ControleurAdministrationAdmin {
       jetonAcces,
       impersonation,
       requeteUrl.searchParams.get('_sort') || requeteUrl.searchParams.get('sortBy'),
-      requeteUrl.searchParams.get('_order') || requeteUrl.searchParams.get('order')
+      requeteUrl.searchParams.get('_order') || requeteUrl.searchParams.get('order'),
+      requeteUrl.searchParams.get('view')
     )
   }
 
