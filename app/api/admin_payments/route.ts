@@ -10,6 +10,12 @@ import {
   estPaiementAbonnementFinalise,
   publierEvenementPaiementAbonnementAdminSuperAdmin,
 } from '@/app/api/admin_payments/notificationPaiementsAdmin'
+import {
+  calculerDisponibiliteProvidersPaiement,
+  construireUrlWebhookPaiementProvider,
+  initierPaiementProvider,
+  lireConfigurationProvidersPaiement,
+} from '@/src/infrastructure/http/adminPaymentProviders'
 
 const MIN_AMOUNT_FCFA = 100
 const MAX_AMOUNT_FCFA = 10_000_000
@@ -66,14 +72,20 @@ export const POST = executerAvecGestionErreurs(
       corps,
       serviceAuthentification: conteneurDependances.serviceAuthentification,
       executerMutation: async () => {
-        const [statutPaiement, politique] = await Promise.all([
+        const [statutPaiement, politique, configurationProviders, contexteSession] = await Promise.all([
           conteneurDependances.controleurAdministrationAdmin.obtenirStatutPaiementAdmin(
             jetonAcces,
             impersonation,
             new URL(requete.url)
           ),
           lirePolitiquePlateforme(conteneurDependances.prisma),
+          lireConfigurationProvidersPaiement(
+            conteneurDependances.prisma,
+            conteneurDependances.serviceChiffrement
+          ),
+          conteneurDependances.serviceAuthentification.obtenirContexteDepuisJetonAcces(jetonAcces),
         ])
+        const disponibiliteProviders = calculerDisponibiliteProvidersPaiement(configurationProviders)
 
         const methode = normaliserMethodePaiement(corps.method || corps.methode)
         const montantAttendu = Number((statutPaiement as Record<string, unknown>).expectedAmount || 0)
@@ -125,14 +137,99 @@ export const POST = executerAvecGestionErreurs(
             ? `Compte: ${String(politique.paymentRules.recipientName || '').trim()}`
             : ''
         )
+        const utilisateurId = String(contexteSession.utilisateur.id || '').trim() || null
+        const modeWave = politique.paymentRules.waveMode || 'manual'
+        const modeOrangeMoney = politique.paymentRules.orangeMoneyMode || 'manual'
+        const validationManuelleActive = Boolean(politique.paymentRules.manualValidationEnabled)
+        const waveActive = Boolean(politique.paymentRules.waveEnabled)
+        const orangeMoneyActif = Boolean(politique.paymentRules.orangeMoneyEnabled)
+
+        if (methode === 'wave' && !waveActive) {
+          throw new ErreurHttp(CODE_HTTP.MAUVAISE_REQUETE, 'Le mode Wave est desactive par le Super Admin.')
+        }
+
+        if (methode === 'orange_money' && !orangeMoneyActif) {
+          throw new ErreurHttp(
+            CODE_HTTP.MAUVAISE_REQUETE,
+            'Le mode Orange Money est desactive par le Super Admin.'
+          )
+        }
+
+        const moisRequisNormalise = moisRequis || String((statutPaiement as Record<string, unknown>).requiredMonth || '').trim()
+        const noteProvider =
+          methode === 'wave'
+            ? `Mode Wave: ${modeWave === 'api' ? 'API provider' : 'validation manuelle'}`
+            : methode === 'orange_money'
+              ? `Mode Orange Money: ${modeOrangeMoney === 'api' ? 'API provider' : 'validation manuelle'}`
+              : 'Mode cash'
+
+        let statutNormalise: 'pending' | 'paid' | 'failed' | 'cancelled' =
+          methode === 'cash' ? 'paid' : 'pending'
+        let checkoutUrl = ''
+        let providerReference = ''
+        let transactionRef = String(corps.transactionRef || corps.referenceTransaction || '').trim()
+        let paidAt = methode === 'cash' ? new Date().toISOString() : null
+        let approvedAt = methode === 'cash' ? new Date().toISOString() : null
+        let approvedBy = methode === 'cash' ? utilisateurId : null
+
+        if (methode === 'wave' || methode === 'orange_money') {
+          const modeProvider = methode === 'wave' ? modeWave : modeOrangeMoney
+          const apiConfiguree =
+            methode === 'wave'
+              ? disponibiliteProviders.waveApiConfigured
+              : disponibiliteProviders.orangeMoneyApiConfigured
+
+          if (modeProvider === 'api') {
+            if (!apiConfiguree) {
+              throw new ErreurHttp(
+                CODE_HTTP.MAUVAISE_REQUETE,
+                `Le mode API ${methode === 'wave' ? 'Wave' : 'Orange Money'} est actif mais les credentials ne sont pas complets.`
+              )
+            }
+
+            const initiation = await initierPaiementProvider({
+              provider: methode,
+              amount: montantNormalise,
+              adminId: String((corps.adminId as string) || (statutPaiement as Record<string, unknown>).adminId || '').trim(),
+              entrepriseId: String(corps.entrepriseId || '').trim(),
+              month: moisRequisNormalise,
+              payerPhone: String(corps.payerPhone || corps.telephonePayeur || '').trim(),
+              recipientPhone: numeroBeneficiaire,
+              recipientName: String(politique.paymentRules.recipientName || '').trim(),
+              callbackUrl: construireUrlWebhookPaiementProvider(new URL(requete.url).origin, methode),
+              note: notePaiement,
+              config: configurationProviders,
+            })
+
+            statutNormalise = initiation.status
+            checkoutUrl = initiation.checkoutUrl
+            providerReference = initiation.providerReference
+            transactionRef = initiation.transactionRef || transactionRef
+            paidAt = initiation.status === 'paid' ? initiation.paidAt || new Date().toISOString() : null
+            approvedAt = null
+            approvedBy = null
+          } else if (!validationManuelleActive) {
+            throw new ErreurHttp(
+              CODE_HTTP.MAUVAISE_REQUETE,
+              'La validation manuelle des paiements Mobile Money est desactivee.'
+            )
+          }
+        }
 
         const corpsNormalise: Record<string, unknown> = {
           ...corps,
           amount: montantNormalise,
           method: methode,
           provider,
-          month: moisRequis,
-          note: notePaiement,
+          month: moisRequisNormalise,
+          note: joindreNotes(notePaiement, noteProvider, statutNormalise === 'pending' ? 'En attente de confirmation.' : ''),
+          status: statutNormalise,
+          checkoutUrl,
+          providerReference,
+          transactionRef,
+          paidAt,
+          approvedAt,
+          approvedBy,
         }
 
         const resultat = await conteneurDependances.controleurAdministrationAdmin.creerPaiementAdmin(

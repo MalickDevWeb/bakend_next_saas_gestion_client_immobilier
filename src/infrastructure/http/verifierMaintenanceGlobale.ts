@@ -22,10 +22,12 @@ type TypeEtatMaintenanceGlobale = {
 function estCheminExempteMaintenance(cheminNormalise: string): boolean {
   return (
     cheminNormalise.startsWith('/settings') ||
+    cheminNormalise.startsWith('/payment-providers') ||
     cheminNormalise.startsWith('/audit_logs') ||
     cheminNormalise.startsWith('/auth') ||
     cheminNormalise.startsWith('/authContext') ||
     cheminNormalise.startsWith('/undo-actions') ||
+    cheminNormalise.startsWith('/admin_payments/webhook') ||
     cheminNormalise === '/sign' ||
     cheminNormalise.startsWith('/cloudinary/open-url')
   )

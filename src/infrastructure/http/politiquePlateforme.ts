@@ -21,8 +21,13 @@ export type TypePolitiquePlateforme = {
     blockOnOverdue: boolean
     recipientName: string
     waveRecipientPhone: string
+    waveEnabled: boolean
+    waveMode: 'manual' | 'api'
     orangeRecipientPhone: string
+    orangeMoneyEnabled: boolean
+    orangeMoneyMode: 'manual' | 'api'
     orangeOtpEnabled: boolean
+    manualValidationEnabled: boolean
   }
   documents: {
     maxUploadMb: number
@@ -84,8 +89,13 @@ export const POLITIQUE_PLATEFORME_PAR_DEFAUT: TypePolitiquePlateforme = {
     blockOnOverdue: true,
     recipientName: 'Keur Ya Aicha',
     waveRecipientPhone: '771719013',
+    waveEnabled: true,
+    waveMode: 'manual',
     orangeRecipientPhone: '771719013',
+    orangeMoneyEnabled: true,
+    orangeMoneyMode: 'manual',
     orangeOtpEnabled: true,
+    manualValidationEnabled: true,
   },
   documents: {
     maxUploadMb: 10,
@@ -157,6 +167,10 @@ function versTexte(valeur: unknown, fallback: string): string {
 function versTexteOptionnel(valeur: unknown): string {
   const texte = typeof valeur === 'string' ? valeur : valeur == null ? '' : String(valeur)
   return texte.trim()
+}
+
+function versModePaiementProvider(valeur: unknown, fallback: 'manual' | 'api'): 'manual' | 'api' {
+  return String(valeur || '').trim().toLowerCase() === 'api' ? 'api' : fallback
 }
 
 function versTableauTexte(valeur: unknown, fallback: string[]): string[] {
@@ -239,10 +253,30 @@ function normaliserPolitique(brute: unknown): TypePolitiquePlateforme {
         POLITIQUE_PLATEFORME_PAR_DEFAUT.paymentRules.recipientName
       ),
       waveRecipientPhone: versTexteOptionnel(paymentRules.waveRecipientPhone),
+      waveEnabled: versBoolean(
+        paymentRules.waveEnabled,
+        POLITIQUE_PLATEFORME_PAR_DEFAUT.paymentRules.waveEnabled
+      ),
+      waveMode: versModePaiementProvider(
+        paymentRules.waveMode,
+        POLITIQUE_PLATEFORME_PAR_DEFAUT.paymentRules.waveMode
+      ),
       orangeRecipientPhone: versTexteOptionnel(paymentRules.orangeRecipientPhone),
+      orangeMoneyEnabled: versBoolean(
+        paymentRules.orangeMoneyEnabled,
+        POLITIQUE_PLATEFORME_PAR_DEFAUT.paymentRules.orangeMoneyEnabled
+      ),
+      orangeMoneyMode: versModePaiementProvider(
+        paymentRules.orangeMoneyMode,
+        POLITIQUE_PLATEFORME_PAR_DEFAUT.paymentRules.orangeMoneyMode
+      ),
       orangeOtpEnabled: versBoolean(
         paymentRules.orangeOtpEnabled,
         POLITIQUE_PLATEFORME_PAR_DEFAUT.paymentRules.orangeOtpEnabled
+      ),
+      manualValidationEnabled: versBoolean(
+        paymentRules.manualValidationEnabled,
+        POLITIQUE_PLATEFORME_PAR_DEFAUT.paymentRules.manualValidationEnabled
       ),
     },
     documents: {
