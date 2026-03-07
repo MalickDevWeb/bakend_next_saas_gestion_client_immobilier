@@ -108,6 +108,8 @@ export interface InterfaceDaoAuthentification {
     utilisateurId: string
   ): Promise<DonneesUtilisateurAuthentification | null>
 
+  mettreAJourMotDePasseUtilisateur(utilisateurId: string, motDePasseHache: string): Promise<void>
+
   creerSessionEtJetonRefresh(
     entree: EntreeCreationSessionAuthentification
   ): Promise<void>
@@ -125,6 +127,12 @@ export interface InterfaceDaoAuthentification {
   effectuerRotationJetonRefresh(entree: EntreeRotationJetonRefresh): Promise<void>
 
   revoquerSessionEtJetonsRefresh(sessionId: string, dateRevocation: Date): Promise<void>
+
+  revoquerAutresSessionsUtilisateur(
+    utilisateurId: string,
+    sessionCouranteId: string,
+    dateRevocation: Date
+  ): Promise<number>
 
   activerTotpSuperAdmin(utilisateurId: string, secretChiffre: string): Promise<void>
 

@@ -50,7 +50,8 @@ export class ServiceAdministrationAdminSupervisionDemandes {
     corps: Record<string, unknown>
   ): Promise<TypeResultatMutationAdministrationAdmin<Record<string, unknown>>> {
     const contexte = await this.dependances.securite.obtenirContexteAcces(jetonAcces, impersonation, 'admin_requests')
-    const entite = this.dependances.constructeur.construireEntiteDemandeAdminDepuisCorps(corps)
+    const corpsPrepare = await this.preparerCorpsDemandeAdmin(corps)
+    const entite = this.dependances.constructeur.construireEntiteDemandeAdminDepuisCorps(corpsPrepare)
     await this.dependances.daoDemandeAdmin.sauvegarder(entite)
     const dto = this.dependances.mappeur.mapperDemandeAdminEnDto(entite)
     this.publierEvenementDemandeAdminCreee(dto, contexte.utilisateurId ?? null)
@@ -68,7 +69,8 @@ export class ServiceAdministrationAdminSupervisionDemandes {
   public async creerDemandeAdminPublique(
     corps: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
-    const entite = this.dependances.constructeur.construireEntiteDemandeAdminDepuisCorps(corps)
+    const corpsPrepare = await this.preparerCorpsDemandeAdmin(corps)
+    const entite = this.dependances.constructeur.construireEntiteDemandeAdminDepuisCorps(corpsPrepare)
     await this.dependances.daoDemandeAdmin.sauvegarder(entite)
     const dto = this.dependances.mappeur.mapperDemandeAdminEnDto(entite)
     this.publierEvenementDemandeAdminCreee(dto, null)
@@ -87,7 +89,11 @@ export class ServiceAdministrationAdminSupervisionDemandes {
     const avantEntite = existant
     const statutAvant = String(avantEntite.statut || '').toUpperCase()
     const fusion = { ...this.dependances.mappeur.mapperDemandeAdminEnDto(existant), ...corps, id: demandeId }
-    const entite = this.dependances.constructeur.construireEntiteDemandeAdminDepuisCorps(fusion, demandeId)
+    const corpsPrepare = await this.preparerCorpsDemandeAdmin(fusion, existant.motDePasse || null)
+    const entite = this.dependances.constructeur.construireEntiteDemandeAdminDepuisCorps(
+      corpsPrepare,
+      demandeId
+    )
     await this.dependances.daoDemandeAdmin.sauvegarder(entite)
     const dto = this.dependances.mappeur.mapperDemandeAdminEnDto(entite)
     const statutApres = String(entite.statut || '').toUpperCase()
@@ -172,6 +178,26 @@ export class ServiceAdministrationAdminSupervisionDemandes {
 
   private normaliserTelephone(valeur: unknown): string {
     return String(valeur || '').replace(/\D/g, '')
+  }
+
+  private async preparerCorpsDemandeAdmin(
+    corps: Record<string, unknown>,
+    motDePasseExistant: string | null = null
+  ): Promise<Record<string, unknown>> {
+    const motDePasseBrut = ServiceAdministrationAdminUtilitaires.versTexteOptionnel(
+      corps.password || corps.motDePasse
+    )
+    const motDePasse = motDePasseBrut
+      ? await this.dependances.serviceHachageMotDePasse.hacher(motDePasseBrut)
+      : motDePasseExistant
+
+    if (!motDePasse) return { ...corps }
+
+    return {
+      ...corps,
+      password: motDePasse,
+      motDePasse,
+    }
   }
 
   private correspondIdentifiant(

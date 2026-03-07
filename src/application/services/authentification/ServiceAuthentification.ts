@@ -55,6 +55,20 @@ export class ServiceAuthentification {
     return this.serviceSessionAuthentification.deconnexion(jetonAcces, contexte)
   }
 
+  public async changerMotDePasse(
+    jetonAcces: string,
+    motDePasseActuel: string,
+    nouveauMotDePasse: string,
+    contexte: TypeContexteRequeteAuthentification
+  ): Promise<void> {
+    return this.serviceSessionAuthentification.changerMotDePasse(
+      jetonAcces,
+      motDePasseActuel,
+      nouveauMotDePasse,
+      contexte
+    )
+  }
+
   public async initialiserTotpSuperAdmin(
     jetonAcces: string
   ): Promise<TypeResultatTotpInitialisationAuthentification> {

@@ -17,6 +17,7 @@ import { ERRORS } from '@/src/messages/app/errors'
 import {
   ExceptionAuthentification,
   ExceptionAuthentificationAutorisation,
+  ExceptionAuthentificationValidation,
 } from '@/src/application/exceptions'
 
 type TypeReglesSessionRuntime = {
@@ -401,5 +402,117 @@ export class ServiceSessionAuthentification {
     } catch {
       // logout best effort
     }
+  }
+
+  public async changerMotDePasse(
+    jetonAcces: string,
+    motDePasseActuel: string,
+    nouveauMotDePasse: string,
+    contexte: TypeContexteRequeteAuthentification
+  ): Promise<void> {
+    const charge = await this.serviceJetonAcces.verifier(jetonAcces)
+    if (!charge.sous || !charge.sessionId || !charge.jti) {
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_JETON_ACCES_INVALIDE))
+    }
+
+    const session = await this.repositoryAuthentification.rechercherSessionParIdAvecUtilisateur(
+      charge.sessionId
+    )
+
+    if (!session?.utilisateur) {
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_SESSION_INTROUVABLE))
+    }
+
+    if (session.estRevoqueeOuCompromise()) {
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_SESSION_REVOQUEE))
+    }
+
+    if (session.estExpiree()) {
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_SESSION_EXPIREE))
+    }
+
+    if (session.jetonAccesExpireLe.getTime() <= Date.now()) {
+      await this.repositoryAuthentification.revoquerSessionEtJetonsRefresh(session.id, new Date())
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_SESSION_EXPIREE))
+    }
+
+    if (!session.jetonAccesCorrespond(charge.jti)) {
+      throw new ExceptionAuthentification(t(ERRORS.AUTH_JETON_ACCES_OBSOLETE))
+    }
+
+    const role = String(session.utilisateur.role || '').toUpperCase()
+    if (role !== 'ADMIN' && role !== 'SUPER_ADMIN') {
+      await this.serviceAudit.enregistrer({
+        utilisateurId: session.utilisateur.id,
+        action: 'AUTH_PASSWORD_CHANGE_DENIED',
+        statut: 'ECHEC',
+        details: `Role non autorise (${role || 'UNKNOWN'})`,
+        adresseIp: contexte.adresseIp,
+        agentUtilisateur: contexte.agentUtilisateur,
+      })
+      throw new ExceptionAuthentificationAutorisation(
+        t(ERRORS.AUTH_CHANGEMENT_MOT_DE_PASSE_RESERVE),
+        {
+          code: 'PASSWORD_CHANGE_ROLE_FORBIDDEN',
+        }
+      )
+    }
+
+    if (role === 'SUPER_ADMIN' && !session.secondeAuthValideeLe) {
+      throw new ExceptionAuthentificationAutorisation(
+        t(ERRORS.AUTH_SECONDE_AUTH_SUPER_ADMIN_REQUISE),
+        {
+          code: 'SUPER_ADMIN_SECOND_AUTH_REQUIRED',
+        }
+      )
+    }
+
+    const motDePasseActuelValide = await this.serviceHachage.verifier(
+      motDePasseActuel,
+      session.utilisateur.motDePasseHache
+    )
+
+    if (!motDePasseActuelValide) {
+      await this.serviceAudit.enregistrer({
+        utilisateurId: session.utilisateur.id,
+        action: 'AUTH_PASSWORD_CHANGE_FAILED',
+        statut: 'ECHEC',
+        details: 'Mot de passe actuel invalide',
+        adresseIp: contexte.adresseIp,
+        agentUtilisateur: contexte.agentUtilisateur,
+      })
+      throw new ExceptionAuthentification(
+        t(ERRORS.AUTH_MOT_DE_PASSE_ACTUEL_INVALIDE),
+        { code: 'CURRENT_PASSWORD_INVALID' }
+      )
+    }
+
+    if (motDePasseActuel === nouveauMotDePasse) {
+      throw new ExceptionAuthentificationValidation(
+        t(ERRORS.AUTH_NOUVEAU_MOT_DE_PASSE_IDENTIQUE),
+        { code: 'PASSWORD_UNCHANGED' }
+      )
+    }
+
+    const nouveauMotDePasseHache = await this.serviceHachage.hacher(nouveauMotDePasse)
+    await this.repositoryAuthentification.mettreAJourMotDePasseUtilisateur(
+      session.utilisateur.id,
+      nouveauMotDePasseHache
+    )
+
+    const sessionsRevoquees = await this.repositoryAuthentification.revoquerAutresSessionsUtilisateur(
+      session.utilisateur.id,
+      session.id,
+      new Date()
+    )
+
+    await this.serviceAudit.enregistrer({
+      utilisateurId: session.utilisateur.id,
+      action: 'AUTH_PASSWORD_CHANGED',
+      statut: 'SUCCES',
+      details: `Mot de passe mis a jour. Autres sessions revoquees: ${sessionsRevoquees}`,
+      adresseIp: contexte.adresseIp,
+      agentUtilisateur: contexte.agentUtilisateur,
+    })
   }
 }

@@ -38,6 +38,21 @@ export class ControleurAuthContext {
     return { ok: true }
   }
 
+  public async changerMotDePasse(
+    jetonAcces: string,
+    entree: unknown,
+    contexte: TypeContexteRequeteAuthentification
+  ) {
+    const valide = this.validateurAuthentification.validerChangementMotDePasse(entree)
+    await this.serviceAuthentification.changerMotDePasse(
+      jetonAcces,
+      valide.motDePasseActuel,
+      valide.nouveauMotDePasse,
+      contexte
+    )
+    return { ok: true }
+  }
+
   public async verifierSecondeAuthSuperAdmin(
     jetonAcces: string,
     entree: unknown,

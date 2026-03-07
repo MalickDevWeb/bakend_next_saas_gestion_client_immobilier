@@ -17,6 +17,10 @@ export class ValidateurAuthentification {
     return this.validateurInfrastructure.parserActivationTotp(entree)
   }
 
+  public validerChangementMotDePasse(entree: unknown) {
+    return this.validateurInfrastructure.parserChangementMotDePasse(entree)
+  }
+
   public validerImpersonation(entree: unknown) {
     return this.validateurInfrastructure.parserImpersonation(entree)
   }

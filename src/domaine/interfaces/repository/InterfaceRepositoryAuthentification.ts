@@ -17,6 +17,8 @@ export interface InterfaceRepositoryAuthentification {
     utilisateurId: string
   ): Promise<EntiteUtilisateurAuthentification | null>
 
+  mettreAJourMotDePasseUtilisateur(utilisateurId: string, motDePasseHache: string): Promise<void>
+
   creerSessionEtJetonRefresh(
     commande: TypeCommandeCreationSessionAuthentification
   ): Promise<void>
@@ -36,6 +38,12 @@ export interface InterfaceRepositoryAuthentification {
   ): Promise<void>
 
   revoquerSessionEtJetonsRefresh(sessionId: string, dateRevocation: Date): Promise<void>
+
+  revoquerAutresSessionsUtilisateur(
+    utilisateurId: string,
+    sessionCouranteId: string,
+    dateRevocation: Date
+  ): Promise<number>
 
   activerTotpSuperAdmin(utilisateurId: string, secretChiffre: string): Promise<void>
 

@@ -34,7 +34,6 @@ export class MappeurAdministrationSupervision {
       entrepriseName: demande.nomEntreprise,
       status: demande.statut,
       username: demande.nomUtilisateur,
-      password: demande.motDePasse,
       paid: demande.paye,
       paidAt: demande.payeLe ? demande.payeLe.toISOString() : undefined,
       createdAt: demande.creeLe.toISOString(),

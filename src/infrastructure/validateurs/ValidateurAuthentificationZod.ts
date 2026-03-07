@@ -2,6 +2,7 @@ import { z } from 'zod'
 import {
   InterfaceValidateurAuthentification,
   ParametresActivationTotpSuperAdmin,
+  ParametresChangementMotDePasseAuthentification,
   ParametresConnexionAuthentification,
   ParametresImpersonationAuthentification,
   ParametresSecondeAuthentification,
@@ -127,6 +128,22 @@ const schemaActivationTotp = z.object({
   secretTemporaire: z.string().trim().min(16).max(512),
 })
 
+const schemaChangementMotDePasse = z.union([
+  z
+    .object({
+      currentPassword: z.string().min(8).max(256),
+      newPassword: z.string().min(8).max(256),
+    })
+    .transform((donnees) => ({
+      motDePasseActuel: donnees.currentPassword,
+      nouveauMotDePasse: donnees.newPassword,
+    })),
+  z.object({
+    motDePasseActuel: z.string().min(8).max(256),
+    nouveauMotDePasse: z.string().min(8).max(256),
+  }),
+])
+
 const schemaImpersonation = z.object({
   adminId: z.string().trim().min(1).max(190),
   adminName: z.string().trim().min(1).max(190),
@@ -162,6 +179,19 @@ export class ValidateurAuthentificationZod
 
   public parserActivationTotp(entree: unknown): ParametresActivationTotpSuperAdmin {
     const resultat = schemaActivationTotp.safeParse(entree)
+    if (!resultat.success) {
+      throw new ExceptionAuthentificationValidation(
+        t(ERRORS.PARAMETRES_INVALIDES),
+        resultat.error.flatten()
+      )
+    }
+    return resultat.data
+  }
+
+  public parserChangementMotDePasse(
+    entree: unknown
+  ): ParametresChangementMotDePasseAuthentification {
+    const resultat = schemaChangementMotDePasse.safeParse(entree)
     if (!resultat.success) {
       throw new ExceptionAuthentificationValidation(
         t(ERRORS.PARAMETRES_INVALIDES),

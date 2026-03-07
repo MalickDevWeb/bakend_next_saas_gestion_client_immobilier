@@ -96,6 +96,18 @@ export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
     return this.mapperUtilisateur(utilisateur)
   }
 
+  public async mettreAJourMotDePasseUtilisateur(
+    utilisateurId: string,
+    motDePasseHache: string
+  ): Promise<void> {
+    await this.prisma.utilisateur.update({
+      where: { id: utilisateurId },
+      data: {
+        motDePasseHache,
+      },
+    })
+  }
+
   public async creerSessionEtJetonRefresh(
     entree: EntreeCreationSessionAuthentification
   ): Promise<void> {
@@ -234,6 +246,40 @@ export class DaoAuthentificationPrisma implements InterfaceDaoAuthentification {
           revoqueLe: dateRevocation,
         },
       })
+    })
+  }
+
+  public async revoquerAutresSessionsUtilisateur(
+    utilisateurId: string,
+    sessionCouranteId: string,
+    dateRevocation: Date
+  ): Promise<number> {
+    return this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      const resultat = await tx.sessionAuthentification.updateMany({
+        where: {
+          utilisateurId,
+          id: { not: sessionCouranteId },
+          revoqueeLe: null,
+        },
+        data: {
+          revoqueeLe: dateRevocation,
+        },
+      })
+
+      await tx.jetonRefresh.updateMany({
+        where: {
+          session: {
+            utilisateurId,
+            id: { not: sessionCouranteId },
+          },
+          revoqueLe: null,
+        },
+        data: {
+          revoqueLe: dateRevocation,
+        },
+      })
+
+      return resultat.count
     })
   }
 

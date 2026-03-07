@@ -46,6 +46,13 @@ export abstract class RepositoryAuthentificationAbstrait
     return this.mapperUtilisateur(donnees)
   }
 
+  public async mettreAJourMotDePasseUtilisateur(
+    utilisateurId: string,
+    motDePasseHache: string
+  ): Promise<void> {
+    await this.daoAuthentification.mettreAJourMotDePasseUtilisateur(utilisateurId, motDePasseHache)
+  }
+
   public async creerSessionEtJetonRefresh(
     commande: TypeCommandeCreationSessionAuthentification
   ): Promise<void> {
@@ -110,6 +117,18 @@ export abstract class RepositoryAuthentificationAbstrait
     dateRevocation: Date
   ): Promise<void> {
     await this.daoAuthentification.revoquerSessionEtJetonsRefresh(sessionId, dateRevocation)
+  }
+
+  public async revoquerAutresSessionsUtilisateur(
+    utilisateurId: string,
+    sessionCouranteId: string,
+    dateRevocation: Date
+  ): Promise<number> {
+    return this.daoAuthentification.revoquerAutresSessionsUtilisateur(
+      utilisateurId,
+      sessionCouranteId,
+      dateRevocation
+    )
   }
 
   public async activerTotpSuperAdmin(utilisateurId: string, secretChiffre: string): Promise<void> {

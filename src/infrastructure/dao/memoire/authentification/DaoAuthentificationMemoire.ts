@@ -98,6 +98,19 @@ export class DaoAuthentificationMemoire implements InterfaceDaoAuthentification 
     return this.clonerUtilisateur(utilisateur)
   }
 
+  public async mettreAJourMotDePasseUtilisateur(
+    utilisateurId: string,
+    motDePasseHache: string
+  ): Promise<void> {
+    const utilisateur = this.utilisateurs.get(utilisateurId)
+    if (!utilisateur) {
+      throw new Error('Utilisateur introuvable dans la memoire auth')
+    }
+
+    utilisateur.motDePasseHache = motDePasseHache
+    this.utilisateurs.set(utilisateurId, this.clonerUtilisateur(utilisateur))
+  }
+
   public async creerSessionEtJetonRefresh(
     entree: EntreeCreationSessionAuthentification
   ): Promise<void> {
@@ -233,6 +246,36 @@ export class DaoAuthentificationMemoire implements InterfaceDaoAuthentification 
         jeton.revoqueLe = new Date(dateRevocation)
       }
     }
+  }
+
+  public async revoquerAutresSessionsUtilisateur(
+    utilisateurId: string,
+    sessionCouranteId: string,
+    dateRevocation: Date
+  ): Promise<number> {
+    let total = 0
+
+    for (const session of this.sessions.values()) {
+      if (
+        session.utilisateurId !== utilisateurId ||
+        session.id === sessionCouranteId ||
+        session.revoqueeLe
+      ) {
+        continue
+      }
+
+      session.revoqueeLe = new Date(dateRevocation)
+      this.sessions.set(session.id, session)
+      total += 1
+
+      for (const jeton of this.jetonsRefreshParId.values()) {
+        if (jeton.sessionId === session.id && !jeton.revoqueLe) {
+          jeton.revoqueLe = new Date(dateRevocation)
+        }
+      }
+    }
+
+    return total
   }
 
   public async activerTotpSuperAdmin(utilisateurId: string, secretChiffre: string): Promise<void> {
