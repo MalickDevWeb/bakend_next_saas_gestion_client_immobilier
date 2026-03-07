@@ -22,6 +22,10 @@ export const GET = executerAvecGestionErreurs(
       graceDays: politique.paymentRules.graceDays,
       blockOnOverdue: politique.paymentRules.blockOnOverdue,
       latePenaltyPercent: politique.paymentRules.latePenaltyPercent,
+      recipientName: politique.paymentRules.recipientName,
+      waveRecipientPhone: politique.paymentRules.waveRecipientPhone,
+      orangeRecipientPhone: politique.paymentRules.orangeRecipientPhone,
+      orangeOtpEnabled: politique.paymentRules.orangeOtpEnabled,
     }
     return conteneurDependances.reponseHttp.succes(sortie)
   }

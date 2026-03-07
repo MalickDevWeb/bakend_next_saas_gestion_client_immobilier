@@ -19,6 +19,10 @@ export type TypePolitiquePlateforme = {
     graceDays: number
     latePenaltyPercent: number
     blockOnOverdue: boolean
+    recipientName: string
+    waveRecipientPhone: string
+    orangeRecipientPhone: string
+    orangeOtpEnabled: boolean
   }
   documents: {
     maxUploadMb: number
@@ -78,6 +82,10 @@ export const POLITIQUE_PLATEFORME_PAR_DEFAUT: TypePolitiquePlateforme = {
     graceDays: 5,
     latePenaltyPercent: 0,
     blockOnOverdue: true,
+    recipientName: 'Keur Ya Aicha',
+    waveRecipientPhone: '771719013',
+    orangeRecipientPhone: '771719013',
+    orangeOtpEnabled: true,
   },
   documents: {
     maxUploadMb: 10,
@@ -225,6 +233,16 @@ function normaliserPolitique(brute: unknown): TypePolitiquePlateforme {
       blockOnOverdue: versBoolean(
         paymentRules.blockOnOverdue,
         POLITIQUE_PLATEFORME_PAR_DEFAUT.paymentRules.blockOnOverdue
+      ),
+      recipientName: versTexte(
+        paymentRules.recipientName,
+        POLITIQUE_PLATEFORME_PAR_DEFAUT.paymentRules.recipientName
+      ),
+      waveRecipientPhone: versTexteOptionnel(paymentRules.waveRecipientPhone),
+      orangeRecipientPhone: versTexteOptionnel(paymentRules.orangeRecipientPhone),
+      orangeOtpEnabled: versBoolean(
+        paymentRules.orangeOtpEnabled,
+        POLITIQUE_PLATEFORME_PAR_DEFAUT.paymentRules.orangeOtpEnabled
       ),
     },
     documents: {
