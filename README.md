@@ -47,12 +47,36 @@ npm run dev
 - `GET /docs` (site web documentation)
 - `GET /api/securite/super-admin/rapport-hebdo` (rapport global + webhook super admin)
 - `GET /api/notifications/clients/impayes` (relances clients impayes + resume admin)
+- `GET /api/audit_logs/auto-export` (genere le snapshot auto-export backend)
+- `GET /api/audit_logs/auto-export/status` (etat du dernier auto-export)
+- `GET /api/audit_logs/auto-export/latest` (telecharge le dernier snapshot auto-export)
 
 ## Variables d environnement utiles (alertes super admin)
 
 - `ALERTE_SUPER_ADMIN_WEBHOOK_URL` (fallback sur `ALERTE_SECURITE_WEBHOOK_URL`)
 - `SUPER_ADMIN_SANTE_ALERT_COOLDOWN_MS` (anti-spam alertes sante, defaut 900000)
 - `SUPER_ADMIN_REPORT_CRON_SECRET` (header `x-cron-secret` pour cron)
+- `AUDIT_AUTO_EXPORT_CRON_SECRET` (secret dedie auto-export audit, fallback sur `SUPER_ADMIN_REPORT_CRON_SECRET`)
+
+## Cron auto-export audit backend
+
+Declenchement direct:
+
+```bash
+bash scripts/trigger-audit-auto-export.sh https://votre-domaine.tld
+```
+
+Commande cron exemple:
+
+```bash
+0 * * * * /bin/bash /app/scripts/trigger-audit-auto-export.sh https://votre-domaine.tld >> /tmp/kya-audit-auto-export.log 2>&1
+```
+
+Equivalent curl:
+
+```bash
+curl -H "x-cron-secret: $AUDIT_AUTO_EXPORT_CRON_SECRET" https://votre-domaine.tld/api/audit_logs/auto-export
+```
 
 ## Variables d environnement utiles (notifications Brevo)
 

@@ -94,6 +94,12 @@ export class ConfigurationSecurite {
     return String(process.env.SUPER_ADMIN_REPORT_CRON_SECRET || '').trim()
   }
 
+  public cleCronAutoExportAudit(): string {
+    const dedie = String(process.env.AUDIT_AUTO_EXPORT_CRON_SECRET || '').trim()
+    if (dedie) return dedie
+    return this.cleCronRapportHebdoSuperAdmin()
+  }
+
   public whatsappCloudApiToken(): string {
     return String(process.env.WHATSAPP_CLOUD_API_TOKEN || '').trim()
   }
