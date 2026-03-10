@@ -1,8 +1,10 @@
-import { PrismaClient, TypeRoleUtilisateur, TypeStatutUtilisateur } from '@prisma/client'
+import { PrismaClient, Prisma, TypeRoleUtilisateur, TypeStatutUtilisateur } from '@prisma/client'
 import { BuilderEntiteUtilisateur } from '@/src/domaine/builders'
 import { EntiteUtilisateur } from '@/src/domaine/entites/utilisateurs/EntiteUtilisateur'
 import { EnumerationRoleUtilisateur } from '@/src/domaine/enumerations/EnumerationRoleUtilisateur'
 import { InterfaceDaoUtilisateur } from '@/src/domaine/interfaces/dao/utilisateurs/InterfaceDaoUtilisateur'
+import { ErreurHttp } from '@/src/coeur/erreurs/ErreurHttp'
+import { CODE_HTTP } from '@/src/messages'
 
 export class DaoUtilisateurPrisma implements InterfaceDaoUtilisateur {
   constructor(private readonly prisma: PrismaClient) {}
@@ -24,26 +26,41 @@ export class DaoUtilisateurPrisma implements InterfaceDaoUtilisateur {
 
   public async sauvegarder(entite: EntiteUtilisateur): Promise<EntiteUtilisateur> {
     const telephone = this.resoudreTelephone(entite)
-    const element = await this.prisma.utilisateur.upsert({
-      where: { id: entite.id },
-      create: {
-        id: entite.id,
-        telephone,
-        email: entite.email.valeur,
-        motDePasseHache: entite.motDePasseHash,
-        role: this.mapperRoleVersPrisma(entite.role),
-        statut: this.mapperStatutVersPrisma(entite.statut),
-      },
-      update: {
-        telephone,
-        email: entite.email.valeur,
-        motDePasseHache: entite.motDePasseHash,
-        role: this.mapperRoleVersPrisma(entite.role),
-        statut: this.mapperStatutVersPrisma(entite.statut),
-      },
-    })
+    try {
+      const element = await this.prisma.utilisateur.upsert({
+        where: { id: entite.id },
+        create: {
+          id: entite.id,
+          telephone,
+          email: entite.email.valeur,
+          motDePasseHache: entite.motDePasseHash,
+          role: this.mapperRoleVersPrisma(entite.role),
+          statut: this.mapperStatutVersPrisma(entite.statut),
+        },
+        update: {
+          telephone,
+          email: entite.email.valeur,
+          motDePasseHache: entite.motDePasseHash,
+          role: this.mapperRoleVersPrisma(entite.role),
+          statut: this.mapperStatutVersPrisma(entite.statut),
+        },
+      })
 
-    return this.mapperVersEntite(element)
+      return this.mapperVersEntite(element)
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        const cible = Array.isArray(error.meta?.target) ? error.meta?.target : []
+        const champs = (cible as string[]).map((c) => c.toLowerCase())
+        if (champs.includes('email')) {
+          throw new ErreurHttp(CODE_HTTP.CONFLIT, 'Email déjà utilisé.')
+        }
+        if (champs.includes('telephone')) {
+          throw new ErreurHttp(CODE_HTTP.CONFLIT, 'Téléphone déjà utilisé.')
+        }
+        throw new ErreurHttp(CODE_HTTP.CONFLIT, 'Identifiant déjà utilisé.')
+      }
+      throw error
+    }
   }
 
   public async supprimerParId(id: string): Promise<void> {
