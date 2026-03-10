@@ -148,6 +148,26 @@ export class ConfigurationSecurite {
     return Array.from(new Set([...adresses, ...fallback]))
   }
 
+  public brevoTemplateIdGenerique(): number | null {
+    return this.templateIdDepuisEnv(process.env.BREVO_TEMPLATE_ID_GENERIC)
+  }
+
+  public brevoTemplateIdClientPaymentOverdue(): number | null {
+    return this.templateIdDepuisEnv(process.env.BREVO_TEMPLATE_ID_CLIENT_PAYMENT_OVERDUE)
+  }
+
+  public brevoTemplateIdAdminSubscriptionPaymentRecorded(): number | null {
+    return this.templateIdDepuisEnv(process.env.BREVO_TEMPLATE_ID_ADMIN_SUBSCRIPTION_PAYMENT_RECORDED)
+  }
+
+  public brevoTemplateIdAdminRequestCreated(): number | null {
+    return this.templateIdDepuisEnv(process.env.BREVO_TEMPLATE_ID_ADMIN_REQUEST_CREATED)
+  }
+
+  public brevoTemplateIdAdminRequestApproved(): number | null {
+    return this.templateIdDepuisEnv(process.env.BREVO_TEMPLATE_ID_ADMIN_REQUEST_APPROVED)
+  }
+
   private nombreEntier(valeurBrute: string | undefined, valeurParDefaut: number): number {
     const valeur = Number(valeurBrute)
     if (!Number.isFinite(valeur) || valeur <= 0) return valeurParDefaut
@@ -166,5 +186,11 @@ export class ConfigurationSecurite {
       uniques.add(email)
     }
     return Array.from(uniques.values())
+  }
+
+  private templateIdDepuisEnv(valeurBrute: string | undefined): number | null {
+    const valeur = Number(valeurBrute)
+    if (!Number.isFinite(valeur) || valeur <= 0) return null
+    return Math.floor(valeur)
   }
 }
