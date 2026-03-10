@@ -25,12 +25,13 @@ const SENDER_NAME = process.env.BREVO_SENDER_NAME || 'Keur Ya Aicha'
 const LOGO_URL = process.env.BREVO_LOGO_URL || ''
 
 const palette = {
-  bg: '#0b0f2a',
-  cardStart: '#3514b8',
-  cardEnd: '#6a7bff',
-  accent: '#00d2ff',
-  text: '#e8ecff',
-  muted: '#c6cbe6',
+  // Palette alignée sur l’app KYA (bleu profond + accent clair)
+  bg: '#0c122e',
+  cardStart: '#121B53',
+  cardEnd: '#4A7CFF',
+  accent: '#00c8ff',
+  text: '#e9f1ff',
+  muted: '#c6cee8',
 }
 
 const htmlBase = ({
@@ -46,7 +47,7 @@ body{margin:0;font-family:'Poppins',Arial;background:${palette.bg};color:${palet
 .logo{width:52px;height:52px;border-radius:14px;background:rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;font-weight:800;}
 .body{background:rgba(12,16,41,0.85);padding:24px;}
 .pill{display:inline-block;background:rgba(0,210,255,0.16);color:${palette.accent};padding:8px 14px;border-radius:999px;font-size:12px;letter-spacing:0.5px;}
-.cta{display:inline-block;margin-top:18px;background:${palette.accent};color:#0b0f2a;text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:800;box-shadow:0 12px 30px rgba(0,210,255,0.35);}
+.cta{display:inline-block;margin-top:18px;background:${palette.accent};color:${palette.bg};text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:800;box-shadow:0 12px 30px rgba(0,200,255,0.35);}
 .footer{padding:14px 20px;font-size:12px;color:${palette.muted};text-align:center;background:rgba(12,16,41,0.9);}
 .row{display:flex;justify-content:space-between;padding:8px 0;color:${palette.text};font-size:14px;border-bottom:1px solid rgba(255,255,255,0.06);}
 .label{opacity:0.75;}
