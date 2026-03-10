@@ -328,6 +328,13 @@ class ConteneurDependances {
   private construireDestinatairesNotificationParRole(): Partial<
     Record<TypeRoleDestinataireNotification, TypeDestinataireNotification[]>
   > {
+    const superAdmins =
+      this.configurationSecurite.brevoDestinatairesNotificationsSuperAdmins().length
+        ? this.configurationSecurite.brevoDestinatairesNotificationsSuperAdmins()
+        : this.configurationSecurite.brevoExpediteurEmail()
+          ? [this.configurationSecurite.brevoExpediteurEmail()]
+          : []
+
     return {
       CLIENT: this.mapperEmailsEnDestinataires(
         this.configurationSecurite.brevoDestinatairesNotificationsClients(),
@@ -337,10 +344,7 @@ class ConteneurDependances {
         this.configurationSecurite.brevoDestinatairesNotificationsAdmins(),
         'ADMIN'
       ),
-      SUPER_ADMIN: this.mapperEmailsEnDestinataires(
-        this.configurationSecurite.brevoDestinatairesNotificationsSuperAdmins(),
-        'SUPER_ADMIN'
-      ),
+      SUPER_ADMIN: this.mapperEmailsEnDestinataires(superAdmins, 'SUPER_ADMIN'),
     }
   }
 
