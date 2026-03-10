@@ -19,6 +19,8 @@ export class BuilderEntiteAdmin extends BuilderAbstrait<EntiteAdmin> {
   private montantMensuelAbonnement = 0
   private montantAnnuelAbonnement = 0
   private autoriserMontantPersonnalise = false
+  private notifierClientsRetard = false
+  private notifierAdminRetard = false
   private permissions: EntitePermissionsAdmin = new BuilderEntitePermissionsAdmin().construire()
   private creeLe?: Date
 
@@ -33,6 +35,8 @@ export class BuilderEntiteAdmin extends BuilderAbstrait<EntiteAdmin> {
   public avecMontantMensuelAbonnement(valeur: number): this { this.montantMensuelAbonnement = valeur; return this }
   public avecMontantAnnuelAbonnement(valeur: number): this { this.montantAnnuelAbonnement = valeur; return this }
   public avecAutoriserMontantPersonnalise(valeur: boolean): this { this.autoriserMontantPersonnalise = valeur; return this }
+  public avecNotifierClientsRetard(valeur: boolean): this { this.notifierClientsRetard = valeur; return this }
+  public avecNotifierAdminRetard(valeur: boolean): this { this.notifierAdminRetard = valeur; return this }
   public avecPermissions(valeur: EntitePermissionsAdmin): this { this.permissions = valeur; return this }
   public avecDateCreation(valeur: Date): this { this.creeLe = valeur; return this }
 
@@ -56,6 +60,8 @@ export class BuilderEntiteAdmin extends BuilderAbstrait<EntiteAdmin> {
       this.montantNonNegatif(this.montantMensuelAbonnement, 'montantMensuelAbonnement'),
       this.montantNonNegatif(this.montantAnnuelAbonnement, 'montantAnnuelAbonnement'),
       this.autoriserMontantPersonnalise,
+      this.notifierClientsRetard,
+      this.notifierAdminRetard,
       this.permissions,
       this.dateOuMaintenant(this.creeLe)
     )

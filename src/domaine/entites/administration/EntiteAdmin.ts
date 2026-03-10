@@ -31,6 +31,8 @@ export class EntiteAdmin extends ObjetDomaine {
     montantMensuelAbonnement = 0,
     montantAnnuelAbonnement = 0,
     public autoriserMontantPersonnalise = false,
+    public notifierClientsRetard = false,
+    public notifierAdminRetard = false,
     public permissions: EntitePermissionsAdmin = new EntitePermissionsAdmin(),
     public readonly creeLe: Date = new Date()
   ) {
@@ -134,6 +136,8 @@ export class EntiteAdmin extends ObjetDomaine {
       montantMensuelAbonnement: this.montantMensuelAbonnement,
       montantAnnuelAbonnement: this.montantAnnuelAbonnement,
       autoriserMontantPersonnalise: this.autoriserMontantPersonnalise,
+      notifyClientsOverdue: this.notifierClientsRetard,
+      notifyAdminOverdue: this.notifierAdminRetard,
       permissions: this.permissions,
       creeLe: this.creeLe,
     }

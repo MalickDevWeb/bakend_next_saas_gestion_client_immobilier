@@ -49,6 +49,8 @@ export class DaoAdminPrisma implements InterfaceDaoAdmin {
         montantMensuelAbonnement: entite.montantMensuelAbonnement,
         montantAnnuelAbonnement: entite.montantAnnuelAbonnement,
         autoriserMontantPersonnalise: entite.autoriserMontantPersonnalise,
+        notifyClientsOverdue: entite.notifierClientsRetard,
+        notifyAdminOverdue: entite.notifierAdminRetard,
         permissionTableauDeBord: entite.permissions.tableauDeBord,
         permissionClients: entite.permissions.clients,
         permissionLocations: entite.permissions.locations,
@@ -71,6 +73,8 @@ export class DaoAdminPrisma implements InterfaceDaoAdmin {
         montantMensuelAbonnement: entite.montantMensuelAbonnement,
         montantAnnuelAbonnement: entite.montantAnnuelAbonnement,
         autoriserMontantPersonnalise: entite.autoriserMontantPersonnalise,
+        notifyClientsOverdue: entite.notifierClientsRetard,
+        notifyAdminOverdue: entite.notifierAdminRetard,
         permissionTableauDeBord: entite.permissions.tableauDeBord,
         permissionClients: entite.permissions.clients,
         permissionLocations: entite.permissions.locations,
@@ -116,6 +120,8 @@ export class DaoAdminPrisma implements InterfaceDaoAdmin {
     permissionImports: boolean
     permissionNotifications: boolean
     permissionExportPdf: boolean
+    notifyClientsOverdue: boolean
+    notifyAdminOverdue: boolean
     creeLe: Date
   }): EntiteAdmin {
     const permissions = new BuilderEntitePermissionsAdmin()
@@ -142,6 +148,8 @@ export class DaoAdminPrisma implements InterfaceDaoAdmin {
       .avecMontantMensuelAbonnement(element.montantMensuelAbonnement)
       .avecMontantAnnuelAbonnement(element.montantAnnuelAbonnement)
       .avecAutoriserMontantPersonnalise(element.autoriserMontantPersonnalise)
+      .avecNotifierClientsRetard(element.notifyClientsOverdue)
+      .avecNotifierAdminRetard(element.notifyAdminOverdue)
       .avecPermissions(permissions)
       .avecDateCreation(element.creeLe)
 

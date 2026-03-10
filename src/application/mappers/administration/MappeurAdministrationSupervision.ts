@@ -21,6 +21,8 @@ export class MappeurAdministrationSupervision {
       subscriptionMonthlyAmount: admin.montantMensuelAbonnement,
       subscriptionAnnualAmount: admin.montantAnnuelAbonnement,
       subscriptionAllowCustomAmount: admin.autoriserMontantPersonnalise,
+      notifyClientsOverdue: admin.notifierClientsRetard,
+      notifyAdminOverdue: admin.notifierAdminRetard,
       permissions: this.mapperPermissionsAdmin(admin.permissions),
     }
   }

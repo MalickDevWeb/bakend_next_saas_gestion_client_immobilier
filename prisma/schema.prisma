@@ -61,6 +61,8 @@ model Admin {
   montantMensuelAbonnement     Float                   @default(0)
   montantAnnuelAbonnement      Float                   @default(0)
   autoriserMontantPersonnalise Boolean                 @default(false)
+  notifyClientsOverdue         Boolean                 @default(false)
+  notifyAdminOverdue           Boolean                 @default(false)
   permissionTableauDeBord      Boolean                 @default(true)
   permissionClients            Boolean                 @default(true)
   permissionLocations          Boolean                 @default(true)

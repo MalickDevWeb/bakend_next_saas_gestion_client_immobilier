@@ -52,6 +52,8 @@ export class ServiceAdministrationAdminConstructeursSupervision {
       .avecAutoriserMontantPersonnalise(
         Boolean(corps.subscriptionAllowCustomAmount ?? corps.autoriserMontantPersonnalise)
       )
+      .avecNotifierClientsRetard(Boolean(corps.notifyClientsOverdue))
+      .avecNotifierAdminRetard(Boolean(corps.notifyAdminOverdue))
       .avecPermissions(this.construirePermissions(corps.permissions))
       .avecDateCreation(
         ServiceAdministrationAdminUtilitaires.versDate(corps.createdAt || corps.creeLe)

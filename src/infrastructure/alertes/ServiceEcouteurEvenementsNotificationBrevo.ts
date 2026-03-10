@@ -8,6 +8,7 @@ import type { TypeEvenementNotification } from '@/src/infrastructure/alertes/Ser
 type TypeOptionsServiceEcouteurEvenementsNotificationBrevo = {
   serviceNotification: InterfaceNotification
   destinatairesParRole: Partial<Record<TypeRoleDestinataireNotification, TypeDestinataireNotification[]>>
+  daoAdmin?: { rechercherParId: (id: string) => Promise<{ id: string; statut: string; notifyClientsRetard?: boolean; notifyAdminRetard?: boolean } | null> }
 }
 
 export class ServiceEcouteurEvenementsNotificationBrevo {
@@ -16,7 +17,7 @@ export class ServiceEcouteurEvenementsNotificationBrevo {
   public async gerer(evenement: TypeEvenementNotification): Promise<void> {
     if (!this.options.serviceNotification.estConfigure()) return
 
-    const destinataires = this.resoudreDestinataires(evenement)
+    const destinataires = await this.resoudreDestinataires(evenement)
     if (!destinataires.length) return
 
     await this.options.serviceNotification.notifier({
@@ -29,9 +30,12 @@ export class ServiceEcouteurEvenementsNotificationBrevo {
     })
   }
 
-  private resoudreDestinataires(evenement: TypeEvenementNotification): TypeDestinataireNotification[] {
+  private async resoudreDestinataires(
+    evenement: TypeEvenementNotification
+  ): Promise<TypeDestinataireNotification[]> {
     const uniques = new Map<string, TypeDestinataireNotification>()
     const destinationsEvenement = evenement.destinataires || {}
+    const filtreRetard = await this.resoudreFiltreRetardPaiement(evenement)
 
     for (const role of evenement.rolesDestinataires || []) {
       for (const destinataire of this.options.destinatairesParRole[role] || []) {
@@ -51,7 +55,18 @@ export class ServiceEcouteurEvenementsNotificationBrevo {
       }
     }
 
-    return Array.from(uniques.values())
+    let resultat = Array.from(uniques.values())
+    if (filtreRetard) {
+      resultat = resultat.filter((dest) => {
+        const role = String(dest.role || '').toUpperCase()
+        if (role === 'CLIENT') return filtreRetard.allowClient
+        if (role === 'ADMIN') return filtreRetard.allowAdmin
+        if (role === 'SUPER_ADMIN') return filtreRetard.allowSuperAdmin
+        return true
+      })
+    }
+
+    return resultat
   }
 
   private ajouterDestinataireUnique(
@@ -78,5 +93,38 @@ export class ServiceEcouteurEvenementsNotificationBrevo {
 
   private normaliserTexte(valeur: unknown): string {
     return String(valeur || '').trim()
+  }
+
+  private async resoudreFiltreRetardPaiement(evenement: TypeEvenementNotification): Promise<{
+    allowClient: boolean
+    allowAdmin: boolean
+    allowSuperAdmin: boolean
+  } | null> {
+    if (String(evenement.code || '').toUpperCase() !== 'CLIENT_PAYMENT_OVERDUE') return null
+    const adminId =
+      String(
+        (evenement.details as Record<string, unknown> | undefined)?.adminId ||
+          (evenement.details as Record<string, unknown> | undefined)?.admin_id ||
+          ''
+      ).trim() || null
+
+    if (!adminId || !this.options.daoAdmin) {
+      return { allowClient: false, allowAdmin: false, allowSuperAdmin: true }
+    }
+
+    try {
+      const admin = await this.options.daoAdmin.rechercherParId(adminId)
+      if (!admin) return { allowClient: false, allowAdmin: false, allowSuperAdmin: true }
+      const actif = String(admin.statut || '').toUpperCase() === 'ACTIF'
+      const allowClient = Boolean(admin.notifyClientsRetard) && actif
+      const allowAdmin = Boolean(admin.notifyAdminRetard) && actif
+      return {
+        allowClient,
+        allowAdmin,
+        allowSuperAdmin: true,
+      }
+    } catch {
+      return { allowClient: false, allowAdmin: false, allowSuperAdmin: true }
+    }
   }
 }

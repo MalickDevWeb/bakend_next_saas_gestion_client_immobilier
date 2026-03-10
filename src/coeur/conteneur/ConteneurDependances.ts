@@ -66,6 +66,8 @@ import {
   DaoPaiementAbonnementAdminPrisma,
   DaoStatutAbonnementAdminPrisma,
 } from '@/src/infrastructure/dao/prisma/administration'
+import { DaoAdminPrisma } from '@/src/infrastructure/dao/prisma/administration/DaoAdminPrisma'
+import { DaoAdminMemoire } from '@/src/infrastructure/dao/memoire/administration/DaoAdminMemoire'
 import {
   DaoClientMemoire,
   DaoDocumentMemoire,
@@ -146,6 +148,7 @@ class ConteneurDependances {
     new ServiceEcouteurEvenementsNotificationBrevo({
       serviceNotification: this.serviceNotificationBrevo,
       destinatairesParRole: this.construireDestinatairesNotificationParRole(),
+      daoAdmin: this.daoAdmin,
     })
   public serviceEcouteurEvenementsNotificationWebhook =
     new ServiceEcouteurEvenementsNotificationWebhook(this.serviceAlerteSuperAdminWebhook)
@@ -280,6 +283,9 @@ class ConteneurDependances {
     this.utiliseMemoire
       ? this.daoStatutAbonnementAdminMemoire
       : this.daoStatutAbonnementAdminPrisma
+  public daoAdminMemoire = new DaoAdminMemoire()
+  public daoAdminPrisma = new DaoAdminPrisma(this.prisma)
+  public daoAdmin = this.utiliseMemoire ? this.daoAdminMemoire : this.daoAdminPrisma
   public daoParametreAdminPrisma = new DaoParametreAdminPrisma(this.prisma)
   public serviceAdministrationAdmin = new ServiceAdministrationAdmin({
     serviceAuthentification: this.serviceAuthentification,
