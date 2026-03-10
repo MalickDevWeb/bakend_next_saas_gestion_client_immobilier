@@ -22,7 +22,9 @@ if (!API_KEY) {
 
 const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'no-reply@brevosend.com'
 const SENDER_NAME = process.env.BREVO_SENDER_NAME || 'Keur Ya Aicha'
-const LOGO_URL = process.env.BREVO_LOGO_URL || ''
+const LOGO_URL =
+  process.env.BREVO_LOGO_URL ||
+  'https://raw.githubusercontent.com/MalickDevWeb/keur_ya_aicha_frontend/main/assets/icon.png'
 
 const palette = {
   // Palette alignée sur l’app KYA (bleu profond + accent clair)
