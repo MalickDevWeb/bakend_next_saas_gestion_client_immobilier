@@ -132,6 +132,14 @@ class ConteneurDependances {
     cleApi: this.configurationSecurite.brevoCleApi(),
     expediteurEmail: this.configurationSecurite.brevoExpediteurEmail(),
     expediteurNom: this.configurationSecurite.brevoExpediteurNom(),
+    templates: {
+      GENERIC: this.configurationSecurite.brevoTemplateIdGenerique(),
+      CLIENT_PAYMENT_OVERDUE: this.configurationSecurite.brevoTemplateIdClientPaymentOverdue(),
+      ADMIN_SUBSCRIPTION_PAYMENT_RECORDED:
+        this.configurationSecurite.brevoTemplateIdAdminSubscriptionPaymentRecorded(),
+      ADMIN_REQUEST_CREATED: this.configurationSecurite.brevoTemplateIdAdminRequestCreated(),
+      ADMIN_REQUEST_APPROVED: this.configurationSecurite.brevoTemplateIdAdminRequestApproved(),
+    },
   })
   public serviceEvenementsNotification = new ServiceEvenementsNotification()
   public serviceEcouteurEvenementsNotificationBrevo =

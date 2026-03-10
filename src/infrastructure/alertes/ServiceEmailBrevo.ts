@@ -22,6 +22,7 @@ type TypeOptionsServiceEmailBrevo = {
   expediteurEmail: string
   expediteurNom?: string
   destinatairesParDefaut?: string[]
+  templates?: Record<string, number | null>
 }
 
 type TypeLigneSectionNotification = {
@@ -135,16 +136,24 @@ export class ServiceEmailBrevo implements InterfaceNotification {
       }))
     if (!destinataires.length) return false
 
-    const charge = {
+    const templateId = this.resoudreTemplateId(entree)
+
+    const charge: Record<string, unknown> = {
       sender: {
         email: this.options.expediteurEmail,
         name: this.options.expediteurNom || 'Keur Ya Aicha',
       },
       to: destinataires,
       subject: entree.sujet,
-      textContent: entree.contenuTexte,
-      htmlContent: entree.contenuHtml || undefined,
       tags: entree.tags || [],
+    }
+
+    if (templateId) {
+      charge.templateId = templateId
+      charge.params = this.construireParamsTemplate(entree)
+    } else {
+      charge.textContent = entree.contenuTexte
+      charge.htmlContent = entree.contenuHtml || undefined
     }
 
     try {
@@ -170,6 +179,35 @@ export class ServiceEmailBrevo implements InterfaceNotification {
       console.error('[Brevo] Echec technique pendant l envoi email')
       return false
     }
+  }
+
+  private resoudreTemplateId(entree: TypeEntreeEnvoiEmailBrevo): number | null {
+    const map = this.options.templates || {}
+    const evenement = this.normaliserTexte((entree as unknown as TypeEntreeNotification).evenement || '')
+    const code = evenement ? evenement.toUpperCase() : ''
+    const candidates = [code, 'GENERIC']
+    for (const cle of candidates) {
+      const valeur = map[cle]
+      if (typeof valeur === 'number' && valeur > 0) return valeur
+    }
+    return null
+  }
+
+  private construireParamsTemplate(entree: TypeEntreeEnvoiEmailBrevo): Record<string, unknown> {
+    const payload: Record<string, unknown> = {
+      sujet: entree.sujet,
+      message: entree.contenuTexte,
+    }
+
+    if ((entree as unknown as TypeEntreeNotification).details) {
+      payload.details = this.versObjet((entree as unknown as TypeEntreeNotification).details)
+    }
+
+    if ((entree as unknown as TypeEntreeNotification).evenement) {
+      payload.evenement = (entree as unknown as TypeEntreeNotification).evenement
+    }
+
+    return payload
   }
 
   private construireContenuParEvenement(
