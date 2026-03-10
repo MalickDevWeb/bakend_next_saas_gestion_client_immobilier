@@ -27,13 +27,14 @@ const LOGO_URL =
   'https://raw.githubusercontent.com/MalickDevWeb/keur_ya_aicha_frontend/main/assets/icon.png'
 
 const palette = {
-  // Palette alignée sur l’app KYA (bleu profond + accent clair)
-  bg: '#0c122e',
-  cardStart: '#121B53',
-  cardEnd: '#4A7CFF',
-  accent: '#00c8ff',
-  text: '#e9f1ff',
-  muted: '#c6cee8',
+  // Palette claire alignée sur la page de login (bleu + blanc)
+  page: '#f5f8ff',
+  card: '#ffffff',
+  accent: '#2563eb',
+  accentSoft: '#e8f0ff',
+  text: '#0f172a',
+  muted: '#64748b',
+  border: '#dbe7ff',
 }
 
 const htmlBase = ({
@@ -42,34 +43,37 @@ const htmlBase = ({
   buttonHref = 'https://keur-ya-aicha-frontend.vercel.app/auth/login',
 }) => `<!doctype html><html><head><meta charset="UTF-8" />
 <style>
-body{margin:0;font-family:'Poppins',Arial;background:${palette.bg};color:${palette.text};}
-.wrap{max-width:720px;margin:28px auto;padding:24px;}
-.card{background:linear-gradient(135deg,${palette.cardStart},${palette.cardEnd});border-radius:20px;box-shadow:0 24px 80px rgba(59,31,224,0.35);overflow:hidden;}
-.header{padding:20px 24px;display:flex;align-items:center;gap:14px;color:#fff;border-bottom:1px solid rgba(255,255,255,0.08);}
-.logo{width:52px;height:52px;border-radius:14px;background:rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;font-weight:800;}
-.body{background:rgba(12,16,41,0.85);padding:24px;}
-.pill{display:inline-block;background:rgba(0,210,255,0.16);color:${palette.accent};padding:8px 14px;border-radius:999px;font-size:12px;letter-spacing:0.5px;}
-.cta{display:inline-block;margin-top:18px;background:${palette.accent};color:${palette.bg};text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:800;box-shadow:0 12px 30px rgba(0,200,255,0.35);}
-.footer{padding:14px 20px;font-size:12px;color:${palette.muted};text-align:center;background:rgba(12,16,41,0.9);}
-.row{display:flex;justify-content:space-between;padding:8px 0;color:${palette.text};font-size:14px;border-bottom:1px solid rgba(255,255,255,0.06);}
-.label{opacity:0.75;}
+body{margin:0;font-family:'Segoe UI',Arial;background:${palette.page};color:${palette.text};}
+.wrap{max-width:680px;margin:28px auto;padding:16px;}
+.card{background:${palette.card};border-radius:16px;border:1px solid ${palette.border};box-shadow:0 16px 40px rgba(37,99,235,0.08);overflow:hidden;}
+.header{padding:18px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid ${palette.border};background:#f9fbff;}
+.logo{width:44px;height:44px;border-radius:12px;background:#fff;border:1px solid ${palette.border};display:flex;align-items:center;justify-content:center;font-weight:800;color:${palette.accent};}
+.body{padding:20px;}
+.pill{display:inline-block;background:${palette.accentSoft};color:${palette.accent};padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700;}
+.cta{display:inline-block;margin-top:16px;background:${palette.accent};color:#fff;text-decoration:none;padding:11px 16px;border-radius:10px;font-weight:700;}
+.footer{padding:12px 18px;font-size:12px;color:${palette.muted};text-align:center;background:#f9fbff;border-top:1px solid ${palette.border};}
+.row{display:flex;justify-content:space-between;padding:8px 0;color:${palette.text};font-size:14px;border-bottom:1px solid #eef2ff;}
+.label{color:${palette.muted};}
 </style></head>
 <body><div class="wrap"><div class="card">
 <div class="header"><div class="logo">${
   LOGO_URL
-    ? `<img src="${LOGO_URL}" alt="KYA" style="max-width:100%;max-height:100%;border-radius:12px;" />`
+    ? `<img src="${LOGO_URL}" alt="KYA" style="max-width:100%;max-height:100%;border-radius:10px;" />`
     : 'KYA'
 }</div>
-  <div><div style="font-weight:800;">{{ params.sujet }}</div><div style="opacity:.85;font-size:13px;">{{ params.evenement }}</div></div>
+  <div>
+    <div style="font-weight:800;color:${palette.text};">{{ params.sujet }}</div>
+    <div style="color:${palette.muted};font-size:13px;">{{ params.evenement }}</div>
+  </div>
 </div>
 <div class="body">
   <span class="pill">${pill}</span>
-  <p style="margin:14px 0;color:#e7e8ff;">{{ params.message }}</p>
+  <p style="margin:12px 0;color:${palette.text};line-height:1.5;">{{ params.message }}</p>
   <div class="row"><span class="label">Nom</span><strong>{{ params.details.name }}</strong></div>
   <div class="row"><span class="label">Email</span><strong>{{ params.details.email }}</strong></div>
   <div class="row"><span class="label">Téléphone</span><strong>{{ params.details.phone }}</strong></div>
   <div class="row"><span class="label">Entreprise</span><strong>{{ params.details.entrepriseName }}</strong></div>
-  <a class="cta" href="${buttonHref}" style="color:#fff;text-decoration:none;">${buttonText}</a>
+  <a class="cta" href="${buttonHref}">${buttonText}</a>
 </div>
 <div class="footer">Keur Ya Aicha · Notifications sécurisées</div>
 </div></div></body></html>`
