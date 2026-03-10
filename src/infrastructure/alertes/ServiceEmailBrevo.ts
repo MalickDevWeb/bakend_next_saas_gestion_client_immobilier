@@ -54,7 +54,10 @@ export class ServiceEmailBrevo implements InterfaceNotification {
     const destinataires = (entree.destinataires || [])
       .map((item) => this.mapperDestinataireNotification(item))
       .filter((item): item is TypeDestinataireEmailBrevo => Boolean(item))
-    if (!destinataires.length) return false
+    if (!destinataires.length) {
+      console.warn('[Brevo][skip] Aucun destinataire', { evt: entree.evenement, sujet: entree.sujet })
+      return false
+    }
 
     const contenu = this.construireContenuParEvenement(entree, details)
     return this.envoyer({
@@ -156,6 +159,13 @@ export class ServiceEmailBrevo implements InterfaceNotification {
       charge.htmlContent = entree.contenuHtml || undefined
     }
 
+    console.log('[Brevo][try]', {
+      to: destinataires,
+      sujet: entree.sujet,
+      templateId,
+      tags: entree.tags,
+    })
+
     try {
       const reponse = await fetch(ServiceEmailBrevo.URL_BREVO, {
         method: 'POST',
@@ -174,9 +184,10 @@ export class ServiceEmailBrevo implements InterfaceNotification {
         })
         return false
       }
+      console.log('[Brevo][ok]', { to: destinataires, sujet: entree.sujet, templateId })
       return true
-    } catch {
-      console.error('[Brevo] Echec technique pendant l envoi email')
+    } catch (err) {
+      console.error('[Brevo] Echec technique pendant l envoi email', err)
       return false
     }
   }
