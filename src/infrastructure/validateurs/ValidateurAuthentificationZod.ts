@@ -48,13 +48,13 @@ const schemaConnexion = z.union([
   }),
   z
     .object({
-      telephone: schemaTelephoneConnexion,
+      telephone: schemaIdentifiantConnexion,
       motDePasse: z.string().min(8).max(256),
     })
     .transform((donnees) => ({ identifiant: donnees.telephone, motDePasse: donnees.motDePasse })),
   z
     .object({
-      numero: schemaTelephoneConnexion,
+      numero: schemaIdentifiantConnexion,
       motDePasse: z.string().min(8).max(256),
     })
     .transform((donnees) => ({ identifiant: donnees.numero, motDePasse: donnees.motDePasse })),
