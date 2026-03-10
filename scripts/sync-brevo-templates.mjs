@@ -22,6 +22,16 @@ if (!API_KEY) {
 
 const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || 'no-reply@brevosend.com'
 const SENDER_NAME = process.env.BREVO_SENDER_NAME || 'Keur Ya Aicha'
+const LOGO_URL = process.env.BREVO_LOGO_URL || ''
+
+const palette = {
+  bg: '#0b0f2a',
+  cardStart: '#3514b8',
+  cardEnd: '#6a7bff',
+  accent: '#00d2ff',
+  text: '#e8ecff',
+  muted: '#c6cbe6',
+}
 
 const htmlBase = ({
   pill,
@@ -29,28 +39,33 @@ const htmlBase = ({
   buttonHref = 'https://keur-ya-aicha-frontend.vercel.app/auth/login',
 }) => `<!doctype html><html><head><meta charset="UTF-8" />
 <style>
-body{margin:0;font-family:'Poppins',Arial;background:#0a1024;color:#e8f0ff;}
+body{margin:0;font-family:'Poppins',Arial;background:${palette.bg};color:${palette.text};}
 .wrap{max-width:720px;margin:28px auto;padding:24px;}
-.card{background:linear-gradient(135deg,#5b2cff,#7f5dff);border-radius:18px;box-shadow:0 18px 50px rgba(91,44,255,0.35);overflow:hidden;}
-.header{padding:22px 24px;display:flex;align-items:center;gap:12px;color:#fff;}
-.logo{width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;font-weight:800;}
-.body{background:#0f1536;padding:24px;}
-.pill{display:inline-block;background:rgba(255,255,255,0.14);color:#dcd7ff;padding:7px 14px;border-radius:999px;font-size:12px;letter-spacing:0.5px;}
-.cta{display:inline-block;margin-top:18px;background:#5b2cff;color:#fff;text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:700;}
-.footer{padding:16px 20px;font-size:12px;color:#c5c8e6;text-align:center;background:#0f1536;}
-.row{display:flex;justify-content:space-between;padding:6px 0;color:#dfe7ff;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.card{background:linear-gradient(135deg,${palette.cardStart},${palette.cardEnd});border-radius:20px;box-shadow:0 24px 80px rgba(59,31,224,0.35);overflow:hidden;}
+.header{padding:20px 24px;display:flex;align-items:center;gap:14px;color:#fff;border-bottom:1px solid rgba(255,255,255,0.08);}
+.logo{width:52px;height:52px;border-radius:14px;background:rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;font-weight:800;}
+.body{background:rgba(12,16,41,0.85);padding:24px;}
+.pill{display:inline-block;background:rgba(0,210,255,0.16);color:${palette.accent};padding:8px 14px;border-radius:999px;font-size:12px;letter-spacing:0.5px;}
+.cta{display:inline-block;margin-top:18px;background:${palette.accent};color:#0b0f2a;text-decoration:none;padding:12px 16px;border-radius:12px;font-weight:800;box-shadow:0 12px 30px rgba(0,210,255,0.35);}
+.footer{padding:14px 20px;font-size:12px;color:${palette.muted};text-align:center;background:rgba(12,16,41,0.9);}
+.row{display:flex;justify-content:space-between;padding:8px 0;color:${palette.text};font-size:14px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.label{opacity:0.75;}
 </style></head>
 <body><div class="wrap"><div class="card">
-<div class="header"><div class="logo">KYA</div>
+<div class="header"><div class="logo">${
+  LOGO_URL
+    ? `<img src="${LOGO_URL}" alt="KYA" style="max-width:100%;max-height:100%;border-radius:12px;" />`
+    : 'KYA'
+}</div>
   <div><div style="font-weight:800;">{{ params.sujet }}</div><div style="opacity:.85;font-size:13px;">{{ params.evenement }}</div></div>
 </div>
 <div class="body">
   <span class="pill">${pill}</span>
   <p style="margin:14px 0;color:#e7e8ff;">{{ params.message }}</p>
-  <div class="row"><span>Nom</span><strong>{{ params.details.name }}</strong></div>
-  <div class="row"><span>Email</span><strong>{{ params.details.email }}</strong></div>
-  <div class="row"><span>Téléphone</span><strong>{{ params.details.phone }}</strong></div>
-  <div class="row"><span>Entreprise</span><strong>{{ params.details.entrepriseName }}</strong></div>
+  <div class="row"><span class="label">Nom</span><strong>{{ params.details.name }}</strong></div>
+  <div class="row"><span class="label">Email</span><strong>{{ params.details.email }}</strong></div>
+  <div class="row"><span class="label">Téléphone</span><strong>{{ params.details.phone }}</strong></div>
+  <div class="row"><span class="label">Entreprise</span><strong>{{ params.details.entrepriseName }}</strong></div>
   <a class="cta" href="${buttonHref}" style="color:#fff;text-decoration:none;">${buttonText}</a>
 </div>
 <div class="footer">Keur Ya Aicha · Notifications sécurisées</div>
