@@ -15,10 +15,19 @@ export class ServiceEcouteurEvenementsNotificationBrevo {
   constructor(private readonly options: TypeOptionsServiceEcouteurEvenementsNotificationBrevo) {}
 
   public async gerer(evenement: TypeEvenementNotification): Promise<void> {
-    if (!this.options.serviceNotification.estConfigure()) return
+    if (!this.options.serviceNotification.estConfigure()) {
+      console.warn('[Brevo][skip] Service non configure', { evenement: evenement.code })
+      return
+    }
 
     const destinataires = await this.resoudreDestinataires(evenement)
-    if (!destinataires.length) return
+    if (!destinataires.length) {
+      console.warn('[Brevo][skip] Aucun destinataire resolu', {
+        evenement: evenement.code,
+        roles: evenement.rolesDestinataires || [],
+      })
+      return
+    }
 
     await this.options.serviceNotification.notifier({
       evenement: evenement.code,
