@@ -127,6 +127,9 @@ class ConteneurDependances {
   )
   public daoAuthentificationPrisma: InterfaceDaoAuthentification = new DaoAuthentificationPrisma(this.prisma)
   public daoAuthentificationMemoire = new DaoAuthentificationMemoire()
+  public daoAdminMemoire = new DaoAdminMemoire()
+  public daoAdminPrisma = new DaoAdminPrisma(this.prisma)
+  public daoAdmin = this.utiliseMemoire ? this.daoAdminMemoire : this.daoAdminPrisma
   public serviceAlerteSuperAdminWebhook = new ServiceAlerteSuperAdminWebhook(
     this.configurationSecurite.urlWebhookAlertesSuperAdmin()
   )
@@ -283,9 +286,6 @@ class ConteneurDependances {
     this.utiliseMemoire
       ? this.daoStatutAbonnementAdminMemoire
       : this.daoStatutAbonnementAdminPrisma
-  public daoAdminMemoire = new DaoAdminMemoire()
-  public daoAdminPrisma = new DaoAdminPrisma(this.prisma)
-  public daoAdmin = this.utiliseMemoire ? this.daoAdminMemoire : this.daoAdminPrisma
   public daoParametreAdminPrisma = new DaoParametreAdminPrisma(this.prisma)
   public serviceAdministrationAdmin = new ServiceAdministrationAdmin({
     serviceAuthentification: this.serviceAuthentification,
