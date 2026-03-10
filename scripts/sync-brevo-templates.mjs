@@ -73,6 +73,36 @@ const templates = [
       buttonHref: 'https://keur-ya-aicha-frontend.vercel.app/auth/login',
     }),
   },
+  {
+    code: 'CLIENT_PAYMENT_OVERDUE',
+    name: 'KYA - Paiement client en retard',
+    subject: 'Votre paiement est en retard',
+    htmlContent: htmlBase({
+      pill: 'CLIENT_PAYMENT_OVERDUE',
+      buttonText: 'Se connecter',
+      buttonHref: 'https://keur-ya-aicha-frontend.vercel.app/auth/login',
+    }),
+  },
+  {
+    code: 'ADMIN_SUBSCRIPTION_PAYMENT_RECORDED',
+    name: 'KYA - Paiement abonnement admin enregistré',
+    subject: 'Paiement abonnement enregistré',
+    htmlContent: htmlBase({
+      pill: 'ADMIN_SUBSCRIPTION_PAYMENT_RECORDED',
+      buttonText: 'Voir mon espace',
+      buttonHref: 'https://keur-ya-aicha-frontend.vercel.app/auth/login',
+    }),
+  },
+  {
+    code: 'GENERIC',
+    name: 'KYA - Notification générique',
+    subject: '{{ params.sujet }}',
+    htmlContent: htmlBase({
+      pill: 'NOTIFICATION',
+      buttonText: 'Ouvrir KYA',
+      buttonHref: 'https://keur-ya-aicha-frontend.vercel.app',
+    }),
+  },
 ]
 
 const brevoFetch = (path, options = {}) =>
@@ -109,8 +139,14 @@ async function upsertTemplate(tpl, existing) {
       body: JSON.stringify(payload),
     })
     if (!res.ok) throw new Error(`Update ${tpl.code} failed: ${res.status} ${await res.text()}`)
-    const json = await res.json()
-    return json.id || existing.id
+    const text = await res.text()
+    if (!text) return existing.id
+    try {
+      const json = JSON.parse(text)
+      return json.id || existing.id
+    } catch {
+      return existing.id
+    }
   }
 
   const res = await brevoFetch('/smtp/templates', {
@@ -140,6 +176,11 @@ async function main() {
   console.log('\nÀ mettre dans Render (.env) :')
   console.log(`BREVO_TEMPLATE_ID_ADMIN_REQUEST_CREATED=${results.ADMIN_REQUEST_CREATED}`)
   console.log(`BREVO_TEMPLATE_ID_ADMIN_REQUEST_APPROVED=${results.ADMIN_REQUEST_APPROVED}`)
+  console.log(`BREVO_TEMPLATE_ID_CLIENT_PAYMENT_OVERDUE=${results.CLIENT_PAYMENT_OVERDUE}`)
+  console.log(
+    `BREVO_TEMPLATE_ID_ADMIN_SUBSCRIPTION_PAYMENT_RECORDED=${results.ADMIN_SUBSCRIPTION_PAYMENT_RECORDED}`
+  )
+  console.log(`BREVO_TEMPLATE_ID_GENERIC=${results.GENERIC}`)
 }
 
 main().catch((err) => {
