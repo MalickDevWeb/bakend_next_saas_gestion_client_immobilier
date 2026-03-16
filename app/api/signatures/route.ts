@@ -54,10 +54,19 @@ async function uploadToCloudinary(buffer: Buffer, mime: string): Promise<string>
   return out
 }
 
-export const GET = executerAvecGestionErreurs(conteneurDependances.reponseHttp, async () => {
-  const auth = await conteneurDependances.serviceContexteAuthentification.lireContexteAuthentification()
-  const adminId = auth.adminId || null
-  const type = auth.role === 'SUPER_ADMIN' && !adminId ? 'SUPER_ADMIN' : 'ADMIN'
+export const GET = executerAvecGestionErreurs(conteneurDependances.reponseHttp, async (requete: NextRequest) => {
+  const jetonAcces = conteneurDependances.adaptateurRequeteSecurite.extraireJetonAcces(requete)
+  const impersonation = conteneurDependances.adaptateurRequeteSecurite.lireImpersonation(requete)
+  const contexte = await conteneurDependances.serviceContexteAuthentification.obtenirContexteDepuisJetonAcces(
+    jetonAcces
+  )
+  const role = String(contexte.utilisateur.role || '').toUpperCase()
+  const adminFromUser = await conteneurDependances.prisma.admin.findFirst({
+    where: { utilisateurId: contexte.utilisateur.id },
+    select: { id: true },
+  })
+  const adminId = impersonation?.adminId || adminFromUser?.id || null
+  const type = role === 'SUPER_ADMIN' && !adminId ? 'SUPER_ADMIN' : 'ADMIN'
 
   const signature = await conteneurDependances.prisma.signature.findFirst({
     where: { type, adminId },
@@ -67,9 +76,19 @@ export const GET = executerAvecGestionErreurs(conteneurDependances.reponseHttp, 
 })
 
 export const POST = executerAvecGestionErreurs(conteneurDependances.reponseHttp, async (req: NextRequest) => {
-  const auth = await conteneurDependances.serviceContexteAuthentification.lireContexteAuthentification()
-  const adminId = auth.adminId || null
-  const isSuper = auth.role === 'SUPER_ADMIN' && !adminId
+  conteneurDependances.adaptateurRequeteSecurite.exigerCsrf(req)
+  const jetonAcces = conteneurDependances.adaptateurRequeteSecurite.extraireJetonAcces(req)
+  const impersonation = conteneurDependances.adaptateurRequeteSecurite.lireImpersonation(req)
+  const contexte = await conteneurDependances.serviceContexteAuthentification.obtenirContexteDepuisJetonAcces(
+    jetonAcces
+  )
+  const role = String(contexte.utilisateur.role || '').toUpperCase()
+  const adminFromUser = await conteneurDependances.prisma.admin.findFirst({
+    where: { utilisateurId: contexte.utilisateur.id },
+    select: { id: true },
+  })
+  const adminId = impersonation?.adminId || adminFromUser?.id || null
+  const isSuper = role === 'SUPER_ADMIN' && !adminId
   const body = (await req.json().catch(() => ({}))) as Payload
   if (!body.dataUrl) {
     throw new ErreurHttp(CODE_HTTP.MAUVAISE_REQUETE, 'Signature manquante.')
