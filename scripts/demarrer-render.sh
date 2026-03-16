@@ -1,14 +1,15 @@
 #!/usr/bin/env sh
 set -eu
 
+PORT="${PORT:-10000}"
 echo "[RENDER] Demarrage du backend..."
+echo "[RENDER] PORT=${PORT}"
 
-echo "[RENDER] PORT=${PORT:-10000}"
-
-if [ "${APPLIQUER_PRISMA_PUSH:-true}" = "true" ]; then
-  echo "[RENDER] Application du schema Prisma (db push)..."
-  npx prisma db push
+# Appliquer les migrations en prod (idempotent) pour éviter les erreurs de schema
+if [ "${APPLIQUER_PRISMA_MIGRATE:-true}" = "true" ]; then
+  echo "[RENDER] prisma migrate deploy..."
+  npx prisma migrate deploy
 fi
 
 echo "[RENDER] Lancement Next.js..."
-exec npx next start -H 0.0.0.0 -p "${PORT:-10000}"
+exec npx next start -H 0.0.0.0 -p "${PORT}"

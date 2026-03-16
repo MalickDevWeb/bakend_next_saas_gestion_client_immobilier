@@ -13,5 +13,5 @@ services:
         sync: false
       - key: MAINTENANCE_ACTIVE
         value: "false"
-      - key: APPLIQUER_PRISMA_PUSH
+      - key: APPLIQUER_PRISMA_MIGRATE
         value: "true"

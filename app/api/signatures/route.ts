@@ -12,6 +12,13 @@ type Payload = {
   type?: 'ADMIN' | 'SUPER_ADMIN'
 }
 
+type CloudinaryConfig = {
+  cloudName: string
+  apiKey: string
+  apiSecret: string
+  uploadPreset: string
+}
+
 function parseDataUrl(dataUrl: string): { buffer: Buffer; mime: string } {
   const match = /^data:(.+);base64,(.+)$/i.exec(dataUrl || '')
   if (!match) {
@@ -26,29 +33,95 @@ function parseDataUrl(dataUrl: string): { buffer: Buffer; mime: string } {
   return { buffer, mime }
 }
 
-async function uploadToCloudinary(buffer: Buffer, mime: string): Promise<string> {
-  const cloudName = String(process.env.CLOUDINARY_CLOUD_NAME || '').trim()
-  const uploadPreset = String(process.env.CLOUDINARY_UPLOAD_PRESET || '').trim()
-  if (!cloudName) {
-    throw new ErreurHttp(CODE_HTTP.ERREUR_INTERNE, 'Cloudinary non configuré (CLOUDINARY_CLOUD_NAME).')
+function parserCloudinaryUrl(valeur: string): Partial<CloudinaryConfig> | null {
+  const brute = String(valeur || '').trim()
+  if (!brute || !brute.startsWith('cloudinary://')) return null
+
+  try {
+    const sansProtocole = brute.slice('cloudinary://'.length)
+    const [authPart, cloudNamePart] = sansProtocole.split('@')
+    const [apiKeyPart, apiSecretPart] = String(authPart || '').split(':')
+    return {
+      cloudName: String(cloudNamePart || '').trim(),
+      apiKey: String(apiKeyPart || '').trim(),
+      apiSecret: String(apiSecretPart || '').trim(),
+      uploadPreset: '',
+    }
+  } catch {
+    return null
+  }
+}
+
+function lireConfigCloudinary(): CloudinaryConfig {
+  const depuisUrl = parserCloudinaryUrl(String(process.env.CLOUDINARY_URL || '')) || {}
+  const config: CloudinaryConfig = {
+    cloudName: String(process.env.CLOUDINARY_CLOUD_NAME || depuisUrl.cloudName || '').trim(),
+    apiKey: String(process.env.CLOUDINARY_API_KEY || depuisUrl.apiKey || '').trim(),
+    apiSecret: String(process.env.CLOUDINARY_API_SECRET || depuisUrl.apiSecret || '').trim(),
+    uploadPreset: String(process.env.CLOUDINARY_UPLOAD_PRESET || '').trim(),
   }
 
-  // unsigned si preset disponible, sinon signé minimal (si clés)
+  if (!config.cloudName) {
+    throw new ErreurHttp(
+      CODE_HTTP.ERREUR_INTERNE,
+      'Cloudinary non configuré (CLOUDINARY_CLOUD_NAME manquant).'
+    )
+  }
+
+  if (!config.uploadPreset && (!config.apiKey || !config.apiSecret)) {
+    throw new ErreurHttp(
+      CODE_HTTP.ERREUR_INTERNE,
+      'Cloudinary non configuré (upload_preset ou paire API_KEY/API_SECRET requis).'
+    )
+  }
+
+  return config
+}
+
+async function uploadToCloudinary(buffer: Buffer, mime: string): Promise<string> {
+  const config = lireConfigCloudinary()
+  // DEBUG LOG (temporaire) : informations de config (sans secrets)
+  console.info('[signatures] upload config', {
+    cloudName: config.cloudName,
+    uploadPreset: config.uploadPreset,
+    hasApiKey: Boolean(config.apiKey),
+    hasApiSecret: Boolean(config.apiSecret),
+    mode: config.uploadPreset ? 'unsigned' : 'signed',
+    mime,
+    size: buffer.length,
+  })
+
   const form = new FormData()
   const uint = new Uint8Array(buffer)
   form.append('file', new Blob([uint.buffer], { type: mime }), `signature-${Date.now()}.png`)
-  if (uploadPreset) {
-    form.append('upload_preset', uploadPreset)
+
+  let mode: 'unsigned' | 'signed' = 'unsigned'
+  if (config.uploadPreset) {
+    form.append('upload_preset', config.uploadPreset)
+  } else {
+    const timestamp = Math.floor(Date.now() / 1000)
+    const toSign = `timestamp=${timestamp}`
+    const signature = createHash('sha1').update(`${toSign}${config.apiSecret}`).digest('hex')
+    form.append('timestamp', String(timestamp))
+    form.append('api_key', config.apiKey)
+    form.append('signature', signature)
+    mode = 'signed'
   }
-  const url = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`
+
+  const url = `https://api.cloudinary.com/v1_1/${config.cloudName}/auto/upload`
   const res = await fetch(url, { method: 'POST', body: form })
   if (!res.ok) {
     const txt = await res.text().catch(() => '')
-    throw new ErreurHttp(CODE_HTTP.ERREUR_INTERNE, `Upload signature échoué: ${txt || res.status}`)
+    console.error('[signatures] cloudinary upload failed', { status: res.status, statusText: res.statusText, txt })
+    throw new ErreurHttp(
+      CODE_HTTP.ERREUR_INTERNE,
+      `Upload signature échoué (${mode}): ${txt || res.status}`
+    )
   }
   const payload = (await res.json()) as { secure_url?: string; url?: string }
   const out = payload.secure_url || payload.url
   if (!out) {
+    console.error('[signatures] cloudinary upload missing URL', payload)
     throw new ErreurHttp(CODE_HTTP.ERREUR_INTERNE, 'Upload signature: URL manquante')
   }
   return out

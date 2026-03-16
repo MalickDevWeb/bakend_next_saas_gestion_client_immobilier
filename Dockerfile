@@ -20,6 +20,7 @@ RUN npm prune --omit=dev
 
 FROM base AS production
 ENV NODE_ENV=production
+ENV PORT=10000
 COPY --from=build /app ./
 RUN chmod +x /app/scripts/demarrer-render.sh
 EXPOSE 10000
