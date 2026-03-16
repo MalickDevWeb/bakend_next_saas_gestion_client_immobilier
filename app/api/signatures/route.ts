@@ -35,7 +35,8 @@ async function uploadToCloudinary(buffer: Buffer, mime: string): Promise<string>
 
   // unsigned si preset disponible, sinon signé minimal (si clés)
   const form = new FormData()
-  form.append('file', new Blob([buffer], { type: mime }), `signature-${Date.now()}.png`)
+  const uint = new Uint8Array(buffer)
+  form.append('file', new Blob([uint.buffer], { type: mime }), `signature-${Date.now()}.png`)
   if (uploadPreset) {
     form.append('upload_preset', uploadPreset)
   }
@@ -54,7 +55,7 @@ async function uploadToCloudinary(buffer: Buffer, mime: string): Promise<string>
 }
 
 export const GET = executerAvecGestionErreurs(conteneurDependances.reponseHttp, async () => {
-  const auth = await conteneurDependances.serviceSecurite.lireContexteAuthentification()
+  const auth = await conteneurDependances.serviceContexteAuthentification.lireContexteAuthentification()
   const adminId = auth.adminId || null
   const type = auth.role === 'SUPER_ADMIN' && !adminId ? 'SUPER_ADMIN' : 'ADMIN'
 
@@ -66,7 +67,7 @@ export const GET = executerAvecGestionErreurs(conteneurDependances.reponseHttp, 
 })
 
 export const POST = executerAvecGestionErreurs(conteneurDependances.reponseHttp, async (req: NextRequest) => {
-  const auth = await conteneurDependances.serviceSecurite.lireContexteAuthentification()
+  const auth = await conteneurDependances.serviceContexteAuthentification.lireContexteAuthentification()
   const adminId = auth.adminId || null
   const isSuper = auth.role === 'SUPER_ADMIN' && !adminId
   const body = (await req.json().catch(() => ({}))) as Payload
