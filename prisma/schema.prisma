@@ -78,6 +78,7 @@ model Admin {
   utilisateur                  Utilisateur             @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
   contractTemplates            ContractTemplate[]      @relation("AdminContractTemplates")
   contracts                    Contract[]              @relation("AdminContracts")
+  signatures                   Signature[]             @relation("AdminSignatures")
 
   @@index([statut, creeLe])
   @@index([entrepriseId])
@@ -281,6 +282,8 @@ model Contract {
   payload      Json?
   hashContenu  String?
   signeLe      DateTime?
+  signatureAdminUrl  String?
+  signatureClientUrl String?
   creeLe       DateTime   @default(now())
   misAJourLe   DateTime   @updatedAt
   admin        Admin      @relation("AdminContracts", fields: [adminId], references: [id], onDelete: Cascade)
@@ -291,6 +294,26 @@ model Contract {
   @@index([adminId, clientId, creeLe])
   @@index([statut])
   @@map("contracts")
+}
+
+model Signature {
+  id        String        @id @default(cuid())
+  adminId   String?
+  type      SignatureType @default(ADMIN)
+  imageUrl  String
+  hash      String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  admin     Admin?        @relation("AdminSignatures", fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@map("signatures")
+}
+
+enum SignatureType {
+  ADMIN
+  SUPER_ADMIN
 }
 
 model PaiementMensuel {
