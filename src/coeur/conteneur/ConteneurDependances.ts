@@ -71,12 +71,14 @@ import { DaoAdminMemoire } from '@/src/infrastructure/dao/memoire/administration
 import {
   DaoClientMemoire,
   DaoDocumentMemoire,
+  DaoLocationMemoire,
   DaoPaiementCautionMemoire,
   DaoTransactionPaiementMemoire,
 } from '@/src/infrastructure/dao/memoire/locations'
 import {
   DaoClientPrisma,
   DaoDocumentPrisma,
+  DaoLocationPrisma,
   DaoPaiementCautionPrisma,
   DaoTransactionPaiementPrisma,
 } from '@/src/infrastructure/dao/prisma/locations'
@@ -86,6 +88,8 @@ import {
   DaoItemTravailMemoire,
   DaoJournalAuditMemoire,
   DaoNotificationMemoire,
+  DaoContractMemoire,
+  DaoContractTemplateMemoire,
 } from '@/src/infrastructure/dao/memoire/systeme'
 import {
   DaoExecutionImportPrisma,
@@ -95,6 +99,8 @@ import {
   DaoNotificationPrisma,
   DaoParametreAdminPrisma,
 } from '@/src/infrastructure/dao/prisma/systeme'
+import { DaoContractPrisma } from '@/src/infrastructure/dao/prisma/contrats/DaoContractPrisma'
+import { DaoContractTemplatePrisma } from '@/src/infrastructure/dao/prisma/contrats/DaoContractTemplatePrisma'
 import { creerServiceAdministrationAdminSupervision } from '@/src/coeur/conteneur/FabriqueServiceAdministrationAdminSupervision'
 import { lirePolitiquePlateforme } from '@/src/infrastructure/http/politiquePlateforme'
 
@@ -250,6 +256,9 @@ class ConteneurDependances {
   public daoDocumentMemoire = new DaoDocumentMemoire()
   public daoDocumentPrisma = new DaoDocumentPrisma(this.prisma)
   public daoDocument = this.utiliseMemoire ? this.daoDocumentMemoire : this.daoDocumentPrisma
+  public daoLocationMemoire = new DaoLocationMemoire()
+  public daoLocationPrisma = new DaoLocationPrisma(this.prisma)
+  public daoLocation = this.utiliseMemoire ? this.daoLocationMemoire : this.daoLocationPrisma
   public daoTransactionPaiementMemoire = new DaoTransactionPaiementMemoire()
   public daoTransactionPaiementPrisma = new DaoTransactionPaiementPrisma(this.prisma)
   public daoTransactionPaiement =
@@ -274,6 +283,13 @@ class ConteneurDependances {
   public daoJournalAuditMemoire = new DaoJournalAuditMemoire()
   public daoJournalAuditPrisma = new DaoJournalAuditPrisma(this.prisma)
   public daoJournalAudit = this.utiliseMemoire ? this.daoJournalAuditMemoire : this.daoJournalAuditPrisma
+  public daoContractTemplateMemoire = new DaoContractTemplateMemoire()
+  public daoContractTemplatePrisma = new DaoContractTemplatePrisma(this.prisma)
+  public daoContractTemplate =
+    this.utiliseMemoire ? this.daoContractTemplateMemoire : this.daoContractTemplatePrisma
+  public daoContractMemoire = new DaoContractMemoire()
+  public daoContractPrisma = new DaoContractPrisma(this.prisma)
+  public daoContract = this.utiliseMemoire ? this.daoContractMemoire : this.daoContractPrisma
   public daoPaiementAbonnementAdminMemoire = new DaoPaiementAbonnementAdminMemoire()
   public daoPaiementAbonnementAdminPrisma = new DaoPaiementAbonnementAdminPrisma(this.prisma)
   public daoPaiementAbonnementAdmin =
@@ -291,6 +307,7 @@ class ConteneurDependances {
     serviceAuthentification: this.serviceAuthentification,
     daoClient: this.daoClient,
     daoDocument: this.daoDocument,
+    daoLocation: this.daoLocation,
     daoTransactionPaiement: this.daoTransactionPaiement,
     daoPaiementCaution: this.daoPaiementCaution,
     daoItemTravail: this.daoItemTravail,
@@ -301,6 +318,8 @@ class ConteneurDependances {
     daoPaiementAbonnementAdmin: this.daoPaiementAbonnementAdmin,
     daoStatutAbonnementAdmin: this.daoStatutAbonnementAdmin,
     daoParametreAdmin: this.utiliseMemoire ? undefined : this.daoParametreAdminPrisma,
+    daoContract: this.daoContract,
+    daoContractTemplate: this.daoContractTemplate,
   })
   public serviceAdministrationAdminSupervision = creerServiceAdministrationAdminSupervision({
     utiliseMemoire: this.utiliseMemoire,

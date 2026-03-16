@@ -802,4 +802,81 @@ export class ControleurAdministrationAdmin {
       utilisateurId
     )
   }
+
+  // ---- Contrats & Templates ----
+  public async listerContractTemplates(jetonAcces: string, impersonation: DtoEtatImpersonation) {
+    return this.serviceAdministrationAdmin.listerContractTemplates(jetonAcces, impersonation)
+  }
+
+  public async creerContractTemplate(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdmin.creerContractTemplate(jetonAcces, impersonation, corps)
+  }
+
+  public async mettreAJourContractTemplate(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdmin.mettreAJourContractTemplate(
+      jetonAcces,
+      impersonation,
+      corps
+    )
+  }
+
+  public async supprimerContractTemplate(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdmin.supprimerContractTemplate(jetonAcces, impersonation, corps)
+  }
+
+  public async listerContracts(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    clientId?: string
+  ) {
+    return this.serviceAdministrationAdmin.listerContracts(jetonAcces, impersonation, clientId)
+  }
+
+  public async obtenirContract(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    id: string
+  ) {
+    return this.serviceAdministrationAdmin.obtenirContract(jetonAcces, impersonation, id)
+  }
+
+  public async genererContract(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    clientId: string,
+    payload: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdmin.genererContract(
+      jetonAcces,
+      impersonation,
+      clientId,
+      payload
+    )
+  }
+
+  public async signerContract(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    id: string,
+    signatures: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdmin.signerContract(
+      jetonAcces,
+      impersonation,
+      id,
+      signatures
+    )
+  }
 }

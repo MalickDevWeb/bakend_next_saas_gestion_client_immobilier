@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
     // Avoid file-lock errors in restricted environments when starting dev server.
     lockDistDir: false,
   },
+  // Allow heavy native/server-only packages to stay external (no Turbopack transpile).
+  serverExternalPackages: ["pdfkit", "fontkit", "@swc/helpers"],
 };
 
 export default nextConfig;

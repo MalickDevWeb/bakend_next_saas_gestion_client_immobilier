@@ -24,6 +24,8 @@ const PREFIXES_ROUTES_API = [
   '/blocked_ips',
   '/cloudinary',
   '/sign',
+  '/contract-templates',
+  '/contracts',
 ]
 
 export class MiddlewareGlobal {

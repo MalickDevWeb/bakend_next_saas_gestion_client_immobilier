@@ -76,6 +76,8 @@ model Admin {
   creeLe                       DateTime                @default(now())
   misAJourLe                   DateTime                @updatedAt
   utilisateur                  Utilisateur             @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  contractTemplates            ContractTemplate[]      @relation("AdminContractTemplates")
+  contracts                    Contract[]              @relation("AdminContracts")
 
   @@index([statut, creeLe])
   @@index([entrepriseId])
@@ -208,6 +210,7 @@ model Client {
   creeLe     DateTime   @default(now())
   misAJourLe DateTime   @updatedAt
   locations  Location[]
+  contracts  Contract[] @relation("ClientContracts")
 
   @@index([adminId, creeLe])
   @@index([telephone])
@@ -229,6 +232,7 @@ model Location {
   documents           Document[]
   paiementsMensuels   PaiementMensuel[]
   depots              PaiementCaution[]
+  contracts           Contract[]        @relation("LocationContracts")
 
   @@index([clientId, creeLe])
   @@map("locations")
@@ -248,6 +252,45 @@ model Document {
 
   @@index([locationId, creeLe])
   @@map("documents")
+}
+
+model ContractTemplate {
+  id            String   @id @default(cuid())
+  adminId       String
+  nom           String
+  corps         String   /// contenu avec placeholders moustache-like
+  placeholders  Json?
+  version       Int      @default(1)
+  creeLe        DateTime @default(now())
+  misAJourLe    DateTime @updatedAt
+  admin         Admin    @relation("AdminContractTemplates", fields: [adminId], references: [id], onDelete: Cascade)
+  contrats      Contract[] @relation("TemplateContracts")
+
+  @@index([adminId, misAJourLe])
+  @@map("contract_templates")
+}
+
+model Contract {
+  id           String     @id @default(cuid())
+  adminId      String
+  clientId     String
+  locationId   String?
+  templateId   String?
+  statut       String     @default("pending_signature")
+  pdfUrl       String?
+  payload      Json?
+  hashContenu  String?
+  signeLe      DateTime?
+  creeLe       DateTime   @default(now())
+  misAJourLe   DateTime   @updatedAt
+  admin        Admin      @relation("AdminContracts", fields: [adminId], references: [id], onDelete: Cascade)
+  client       Client     @relation("ClientContracts", fields: [clientId], references: [id], onDelete: Cascade)
+  location     Location?  @relation("LocationContracts", fields: [locationId], references: [id], onDelete: Cascade)
+  template     ContractTemplate? @relation("TemplateContracts", fields: [templateId], references: [id], onDelete: SetNull)
+
+  @@index([adminId, clientId, creeLe])
+  @@index([statut])
+  @@map("contracts")
 }
 
 model PaiementMensuel {

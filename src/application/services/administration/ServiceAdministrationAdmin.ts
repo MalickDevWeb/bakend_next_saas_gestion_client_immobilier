@@ -12,6 +12,8 @@ import { ServiceAdministrationAdminPaiementsDepots } from '@/src/application/ser
 import { ServiceAdministrationAdminSecurite } from '@/src/application/services/administration/commun/ServiceAdministrationAdminSecurite'
 import { ServiceAdministrationAdminTravauxParametresImports } from '@/src/application/services/administration/travaux/ServiceAdministrationAdminTravauxParametresImports'
 import type { TypeDependancesServiceAdministrationAdmin } from '@/src/application/types/administration/TypeDependancesServiceAdministrationAdmin'
+import { ServiceAdministrationAdminContrats } from '@/src/application/services/administration/contrats/ServiceAdministrationAdminContrats'
+import { ServiceRenduContrat } from '@/src/application/services/administration/contrats/ServiceRenduContrat'
 
 type TypeCleMethode<T extends object> = {
   [K in keyof T]: T[K] extends (...args: never[]) => unknown ? K : never
@@ -25,6 +27,7 @@ export class ServiceAdministrationAdmin {
   private readonly serviceNotificationsAnnulation: ServiceAdministrationAdminNotificationsAnnulation
   private readonly servicePaiementsAdmin: ServiceAdministrationAdminPaiementsAdmin
   private readonly serviceAuditIpsCloudinary: ServiceAdministrationAdminAuditIpsCloudinary
+  private readonly serviceContrats: ServiceAdministrationAdminContrats
 
   public readonly listerClients: ServiceAdministrationAdminClientsLocations['listerClients']
   public readonly obtenirClient: ServiceAdministrationAdminClientsLocations['obtenirClient']
@@ -84,6 +87,14 @@ export class ServiceAdministrationAdmin {
   public readonly bloquerIp: ServiceAdministrationAdminAuditIpsCloudinary['bloquerIp']
   public readonly debloquerIp: ServiceAdministrationAdminAuditIpsCloudinary['debloquerIp']
   public readonly ouvrirUrlCloudinary: ServiceAdministrationAdminAuditIpsCloudinary['ouvrirUrlCloudinary']
+  public readonly listerContractTemplates: ServiceAdministrationAdminContrats['listerTemplates']
+  public readonly creerContractTemplate: ServiceAdministrationAdminContrats['creerTemplate']
+  public readonly mettreAJourContractTemplate: ServiceAdministrationAdminContrats['mettreAJourTemplate']
+  public readonly supprimerContractTemplate: ServiceAdministrationAdminContrats['supprimerTemplate']
+  public readonly listerContracts: ServiceAdministrationAdminContrats['listerContrats']
+  public readonly obtenirContract: ServiceAdministrationAdminContrats['obtenirContrat']
+  public readonly genererContract: ServiceAdministrationAdminContrats['genererContrat']
+  public readonly signerContract: ServiceAdministrationAdminContrats['signerContrat']
   constructor(private readonly dependances: TypeDependancesServiceAdministrationAdmin) {
     const statutsPaiement = new Map<string, TypeStatutMouvement>()
     const statutsDepot = new Map<string, TypeStatutMouvement>()
@@ -94,6 +105,7 @@ export class ServiceAdministrationAdmin {
     const annulation = new ServiceAdministrationAdminAnnulation()
     const constructeurLocations = new ServiceAdministrationAdminConstructeursLocations()
     const constructeurSysteme = new ServiceAdministrationAdminConstructeursSysteme()
+    const serviceRenduContrat = new ServiceRenduContrat()
     this.serviceClientsLocations = new ServiceAdministrationAdminClientsLocations({
       securite,
       annulation,
@@ -153,6 +165,14 @@ export class ServiceAdministrationAdmin {
       constructeur: constructeurSysteme,
       mappeur,
     })
+    this.serviceContrats = new ServiceAdministrationAdminContrats(
+      this.dependances.serviceAuthentification,
+      this.dependances.daoContractTemplate,
+      this.dependances.daoContract,
+      this.dependances.daoClient,
+      this.dependances.daoLocation,
+      serviceRenduContrat
+    )
     this.listerClients = this.lierMethode(this.serviceClientsLocations, 'listerClients')
     this.obtenirClient = this.lierMethode(this.serviceClientsLocations, 'obtenirClient')
     this.creerClient = this.lierMethode(this.serviceClientsLocations, 'creerClient')
@@ -214,6 +234,14 @@ export class ServiceAdministrationAdmin {
     this.bloquerIp = this.lierMethode(this.serviceAuditIpsCloudinary, 'bloquerIp')
     this.debloquerIp = this.lierMethode(this.serviceAuditIpsCloudinary, 'debloquerIp')
     this.ouvrirUrlCloudinary = this.lierMethode(this.serviceAuditIpsCloudinary, 'ouvrirUrlCloudinary')
+    this.listerContractTemplates = this.lierMethode(this.serviceContrats, 'listerTemplates')
+    this.creerContractTemplate = this.lierMethode(this.serviceContrats, 'creerTemplate')
+    this.mettreAJourContractTemplate = this.lierMethode(this.serviceContrats, 'mettreAJourTemplate')
+    this.supprimerContractTemplate = this.lierMethode(this.serviceContrats, 'supprimerTemplate')
+    this.listerContracts = this.lierMethode(this.serviceContrats, 'listerContrats')
+    this.obtenirContract = this.lierMethode(this.serviceContrats, 'obtenirContrat')
+    this.genererContract = this.lierMethode(this.serviceContrats, 'genererContrat')
+    this.signerContract = this.lierMethode(this.serviceContrats, 'signerContrat')
   }
   private lierMethode<T extends object, K extends TypeCleMethode<T>>(source: T, nom: K): T[K] {
     const methode = source[nom] as unknown as (...args: never[]) => unknown

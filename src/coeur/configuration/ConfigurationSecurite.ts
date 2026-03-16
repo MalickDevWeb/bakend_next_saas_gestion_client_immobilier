@@ -45,9 +45,11 @@ export class ConfigurationSecurite {
     return environnement === 'production'
   }
 
-  public modeSameSiteCookies(): 'strict' | 'lax' {
+  public modeSameSiteCookies(): 'strict' | 'lax' | 'none' {
     const valeur = String(process.env.AUTH_COOKIE_SAME_SITE || 'strict').toLowerCase()
-    return valeur === 'lax' ? 'lax' : 'strict'
+    if (valeur === 'none') return 'none'
+    if (valeur === 'lax') return 'lax'
+    return 'strict'
   }
 
   public cheminsExemptesCsrf(): string[] {
@@ -68,12 +70,21 @@ export class ConfigurationSecurite {
   }
 
   public originesCorsAutorisees(): string[] {
-    const brute = String(process.env.CORS_ORIGINES_AUTORISEES || '')
-    if (!brute.trim()) return []
-    return brute
-      .split(',')
-      .map((valeur) => valeur.trim())
-      .filter(Boolean)
+    const brute = String(process.env.CORS_ORIGINES_AUTORISEES || '').trim()
+    const liste = brute
+      ? brute
+          .split(',')
+          .map((valeur) => valeur.trim())
+          .filter(Boolean)
+      : []
+
+    // Fallback auto : FRONTEND_ORIGIN ou NEXT_PUBLIC_FRONTEND_URL
+    const fallback = String(process.env.FRONTEND_ORIGIN || process.env.NEXT_PUBLIC_FRONTEND_URL || '').trim()
+    if (fallback && !liste.includes(fallback)) {
+      liste.push(fallback)
+    }
+
+    return liste
   }
 
   public urlWebhookAlertes(): string {

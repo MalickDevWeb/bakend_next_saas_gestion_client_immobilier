@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import {
   BuilderEntiteCaution,
   BuilderEntiteClient,
@@ -7,6 +8,8 @@ import {
   BuilderEntiteIpBloquee,
   BuilderEntiteItemTravail,
   BuilderEntiteJournalAudit,
+  BuilderEntiteContractTemplate,
+  BuilderEntiteContract,
   BuilderEntiteLocation,
   BuilderEntiteNotification,
   BuilderEntitePaiementAbonnementAdmin,
@@ -22,6 +25,8 @@ import {
   EntiteIpBloquee,
   EntiteItemTravail,
   EntiteJournalAudit,
+  EntiteContractTemplate,
+  EntiteContract,
   EntiteLocation,
   EntiteNotification,
   EntitePaiementAbonnementAdmin,
@@ -135,6 +140,12 @@ const normaliserStatutMouvement = (valeur: unknown): TypeStatutMouvement => {
   const v = texte(valeur, 'completed').toLowerCase()
   if (v === 'pending' || v === 'completed' || v === 'failed') return v
   return 'completed'
+}
+
+const normaliserStatutContrat = (valeur: unknown): 'pending_signature' | 'signed' | 'draft' => {
+  const v = texte(valeur, 'pending_signature').toLowerCase()
+  if (v === 'pending_signature' || v === 'signed' || v === 'draft') return v
+  return 'pending_signature'
 }
 
 export type TypeLocationHydratee = {
@@ -682,6 +693,88 @@ export const mapperStatutAbonnementVersPrisma = (entite: EntiteStatutAbonnementA
   modeAbonnement: entite.modeAbonnement,
   montantAttendu: typeof entite.montantAttendu === 'number' ? entite.montantAttendu : null,
   autoriserMontantLibre: entite.autoriserMontantLibre,
+})
+
+export const mapperContractTemplateDepuisPrisma = (row: {
+  id: string
+  adminId: string
+  nom: string
+  corps: string
+  placeholders: unknown
+  version: number
+  creeLe: Date
+  misAJourLe: Date
+}): EntiteContractTemplate => {
+  return new BuilderEntiteContractTemplate()
+    .avecId(row.id)
+    .avecAdminId(row.adminId)
+    .avecNom(row.nom)
+    .avecCorps(row.corps)
+    .avecPlaceholders((row.placeholders as Record<string, unknown> | null) || null)
+    .avecVersion(row.version)
+    .avecCreeLe(row.creeLe)
+    .avecMisAJourLe(row.misAJourLe)
+    .build()
+}
+
+export const mapperContractTemplateVersPrisma = (entite: EntiteContractTemplate) => ({
+  id: entite.id,
+  adminId: entite.adminId,
+  nom: entite.nom,
+  corps: entite.corps,
+  placeholders:
+    entite.placeholders === null
+      ? Prisma.JsonNull
+      : (entite.placeholders as Prisma.InputJsonValue),
+  version: entite.version,
+  creeLe: entite.creeLe,
+  misAJourLe: entite.misAJourLe,
+})
+
+export const mapperContractDepuisPrisma = (row: {
+  id: string
+  adminId: string
+  clientId: string
+  locationId: string | null
+  templateId: string | null
+  statut: string
+  pdfUrl: string | null
+  payload: unknown
+  hashContenu: string | null
+  signeLe: Date | null
+  creeLe: Date
+  misAJourLe: Date
+}): EntiteContract => {
+  return new BuilderEntiteContract()
+    .avecId(row.id)
+    .avecAdminId(row.adminId)
+    .avecClientId(row.clientId)
+    .avecLocationId(row.locationId)
+    .avecTemplateId(row.templateId)
+    .avecStatut(normaliserStatutContrat(row.statut))
+    .avecPdfUrl(row.pdfUrl)
+    .avecPayload((row.payload as Record<string, unknown> | null) || null)
+    .avecHashContenu(row.hashContenu)
+    .avecSigneLe(row.signeLe)
+    .avecCreeLe(row.creeLe)
+    .avecMisAJourLe(row.misAJourLe)
+    .build()
+}
+
+export const mapperContractVersPrisma = (entite: EntiteContract) => ({
+  id: entite.id,
+  adminId: entite.adminId,
+  clientId: entite.clientId,
+  locationId: entite.locationId,
+  templateId: entite.templateId,
+  statut: entite.statut,
+  pdfUrl: entite.pdfUrl,
+  payload:
+    entite.payload === null ? Prisma.JsonNull : (entite.payload as Prisma.InputJsonValue),
+  hashContenu: entite.hashContenu,
+  signeLe: entite.signeLe,
+  creeLe: entite.creeLe,
+  misAJourLe: entite.misAJourLe,
 })
 
 export const parserDonneesBrutesErreur = (texteBrute?: string | null): Record<string, unknown> => {

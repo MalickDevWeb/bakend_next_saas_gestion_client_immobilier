@@ -1,4 +1,5 @@
 export * from './DaoClientPrisma'
 export * from './DaoDocumentPrisma'
+export * from './DaoLocationPrisma'
 export * from './DaoPaiementCautionPrisma'
 export * from './DaoTransactionPaiementPrisma'

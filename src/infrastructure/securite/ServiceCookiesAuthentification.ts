@@ -3,11 +3,25 @@ import { DtoEtatImpersonation } from '@/src/application/dtos/authentification/Dt
 
 type TypeOptionsCookies = {
   modeSecurise: boolean
-  sameSite: 'strict' | 'lax'
+  sameSite: 'strict' | 'lax' | 'none'
 }
 
 export class ServiceCookiesAuthentification {
   constructor(private readonly options: TypeOptionsCookies) {}
+
+  private buildCookieOptions(path: string, maxAge: number, httpOnly: boolean) {
+    // Même si l'env n'est pas "production", on force Secure quand SameSite=None pour
+    // éviter les rejets navigateur et rester cohérent sécurité.
+    const sameSite = this.options.sameSite
+    const secure = this.options.modeSecurise || sameSite === 'none'
+    return {
+      httpOnly,
+      secure,
+      sameSite,
+      path,
+      maxAge,
+    } as const
+  }
 
   public ecrireCookiesConnexion(
     reponse: NextResponse,
@@ -17,29 +31,15 @@ export class ServiceCookiesAuthentification {
     dureeJetonAccesSecondes: number,
     dureeJetonRefreshSecondes: number
   ): void {
-    reponse.cookies.set('kya_access_token', jetonAcces, {
-      httpOnly: true,
-      secure: this.options.modeSecurise,
-      sameSite: this.options.sameSite,
-      path: '/',
-      maxAge: dureeJetonAccesSecondes,
-    })
+    reponse.cookies.set('kya_access_token', jetonAcces, this.buildCookieOptions('/', dureeJetonAccesSecondes, true))
 
-    reponse.cookies.set('kya_refresh_token', jetonRefresh, {
-      httpOnly: true,
-      secure: this.options.modeSecurise,
-      sameSite: this.options.sameSite,
-      path: '/api/authContext/rafraichir',
-      maxAge: dureeJetonRefreshSecondes,
-    })
+    reponse.cookies.set(
+      'kya_refresh_token',
+      jetonRefresh,
+      this.buildCookieOptions('/api/authContext/rafraichir', dureeJetonRefreshSecondes, true)
+    )
 
-    reponse.cookies.set('kya_csrf_token', csrfToken, {
-      httpOnly: false,
-      secure: this.options.modeSecurise,
-      sameSite: this.options.sameSite,
-      path: '/',
-      maxAge: dureeJetonRefreshSecondes,
-    })
+    reponse.cookies.set('kya_csrf_token', csrfToken, this.buildCookieOptions('/', dureeJetonRefreshSecondes, false))
   }
 
   public ecrireCookiesRafraichissement(

@@ -12,6 +12,9 @@ import type {
   InterfaceDaoPaiementCaution,
   InterfaceDaoStatutAbonnementAdmin,
   InterfaceDaoTransactionPaiement,
+  InterfaceDaoLocation,
+  InterfaceDaoContract,
+  InterfaceDaoContractTemplate,
 } from '@/src/domaine/interfaces/dao'
 
 export type TypeDependancesServiceAdministrationAdmin = {
@@ -19,6 +22,7 @@ export type TypeDependancesServiceAdministrationAdmin = {
   daoClient: InterfaceDaoClient
   daoDocument: InterfaceDaoDocument
   daoTransactionPaiement: InterfaceDaoTransactionPaiement
+  daoLocation: InterfaceDaoLocation
   daoPaiementCaution: InterfaceDaoPaiementCaution
   daoItemTravail: InterfaceDaoItemTravail
   daoExecutionImport: InterfaceDaoExecutionImport
@@ -28,4 +32,6 @@ export type TypeDependancesServiceAdministrationAdmin = {
   daoPaiementAbonnementAdmin: InterfaceDaoPaiementAbonnementAdmin
   daoStatutAbonnementAdmin: InterfaceDaoStatutAbonnementAdmin
   daoParametreAdmin?: InterfaceDaoParametreAdmin
+  daoContract: InterfaceDaoContract
+  daoContractTemplate: InterfaceDaoContractTemplate
 }

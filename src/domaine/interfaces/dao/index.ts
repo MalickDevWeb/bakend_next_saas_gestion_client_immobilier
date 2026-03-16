@@ -1,5 +1,6 @@
 export * from '@/src/domaine/interfaces/dao/authentification'
 export * from '@/src/domaine/interfaces/dao/administration'
 export * from '@/src/domaine/interfaces/dao/locations'
+export * from '@/src/domaine/interfaces/dao/contrats'
 export * from '@/src/domaine/interfaces/dao/systeme'
 export * from '@/src/domaine/interfaces/dao/utilisateurs'
