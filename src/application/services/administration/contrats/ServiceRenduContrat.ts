@@ -56,8 +56,35 @@ export class ServiceRenduContrat {
     const cfg = this.lireConfigCloudinary()
     if (!cfg) return null
 
-    const timestamp = Math.floor(Date.now() / 1000)
     const folder = 'contracts'
+    const arrayBuffer = Uint8Array.from(buffer).buffer
+    const fileBlob = new Blob([arrayBuffer], { type: 'application/pdf' })
+
+    // 1) Si un upload_preset est dispo, utiliser l'upload unsigned (même logique que l'upload photo qui marche déjà)
+    const uploadPreset = String(process.env.CLOUDINARY_UPLOAD_PRESET || '').trim()
+    if (uploadPreset) {
+      const form = new FormData()
+      form.append('file', fileBlob, `contract-${uuid()}.pdf`)
+      form.append('upload_preset', uploadPreset)
+      form.append('folder', folder)
+
+      const resUnsigned = await fetch(`https://api.cloudinary.com/v1_1/${cfg.cloudName}/auto/upload`, {
+        method: 'POST',
+        body: form,
+      })
+      if (resUnsigned.ok) {
+        const payload = (await resUnsigned.json().catch(() => ({}))) as {
+          secure_url?: string
+          url?: string
+        }
+        const url = payload.secure_url || payload.url
+        if (url) return url
+      }
+      // Si l'unsigned échoue, on tente le signed juste après
+    }
+
+    // 2) Fallback: upload signé
+    const timestamp = Math.floor(Date.now() / 1000)
     const params: Record<string, string> = { timestamp: String(timestamp), folder }
     const toSign = Object.keys(params)
       .sort()
@@ -66,8 +93,7 @@ export class ServiceRenduContrat {
     const signature = crypto.createHash('sha1').update(`${toSign}${cfg.apiSecret}`).digest('hex')
 
     const form = new FormData()
-    const arrayBuffer = Uint8Array.from(buffer).buffer
-    form.append('file', new Blob([arrayBuffer], { type: 'application/pdf' }), `contract-${uuid()}.pdf`)
+    form.append('file', fileBlob, `contract-${uuid()}.pdf`)
     form.append('api_key', cfg.apiKey)
     form.append('timestamp', String(timestamp))
     form.append('signature', signature)
@@ -88,7 +114,7 @@ export class ServiceRenduContrat {
     const apiKey = String(process.env.CLOUDINARY_API_KEY || envFromUrl?.apiKey || '').trim()
     const apiSecret = String(process.env.CLOUDINARY_API_SECRET || envFromUrl?.apiSecret || '').trim()
     const cloudName = String(process.env.CLOUDINARY_CLOUD_NAME || envFromUrl?.cloudName || '').trim()
-    if (!apiKey || !apiSecret || !cloudName) return null
+    if (!cloudName) return null
     return { apiKey, apiSecret, cloudName }
   }
 
