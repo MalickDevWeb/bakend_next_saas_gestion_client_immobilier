@@ -15,6 +15,7 @@ import type {
   InterfaceDaoLocation,
   InterfaceDaoContract,
   InterfaceDaoContractTemplate,
+  InterfaceDaoInventoryTemplate,
 } from '@/src/domaine/interfaces/dao'
 
 export type TypeDependancesServiceAdministrationAdmin = {
@@ -34,4 +35,5 @@ export type TypeDependancesServiceAdministrationAdmin = {
   daoParametreAdmin?: InterfaceDaoParametreAdmin
   daoContract: InterfaceDaoContract
   daoContractTemplate: InterfaceDaoContractTemplate
+  daoInventoryTemplate: InterfaceDaoInventoryTemplate
 }

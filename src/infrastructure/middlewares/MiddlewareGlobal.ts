@@ -25,6 +25,7 @@ const PREFIXES_ROUTES_API = [
   '/cloudinary',
   '/sign',
   '/contract-templates',
+  '/inventory-templates',
   '/contracts',
 ]
 

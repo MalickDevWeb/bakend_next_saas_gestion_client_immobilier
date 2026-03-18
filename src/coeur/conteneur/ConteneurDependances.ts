@@ -90,6 +90,7 @@ import {
   DaoNotificationMemoire,
   DaoContractMemoire,
   DaoContractTemplateMemoire,
+  DaoInventoryTemplateMemoire,
 } from '@/src/infrastructure/dao/memoire/systeme'
 import {
   DaoExecutionImportPrisma,
@@ -101,6 +102,7 @@ import {
 } from '@/src/infrastructure/dao/prisma/systeme'
 import { DaoContractPrisma } from '@/src/infrastructure/dao/prisma/contrats/DaoContractPrisma'
 import { DaoContractTemplatePrisma } from '@/src/infrastructure/dao/prisma/contrats/DaoContractTemplatePrisma'
+import { DaoInventoryTemplatePrisma } from '@/src/infrastructure/dao/prisma/contrats/DaoInventoryTemplatePrisma'
 import { creerServiceAdministrationAdminSupervision } from '@/src/coeur/conteneur/FabriqueServiceAdministrationAdminSupervision'
 import { lirePolitiquePlateforme } from '@/src/infrastructure/http/politiquePlateforme'
 
@@ -287,6 +289,10 @@ class ConteneurDependances {
   public daoContractTemplatePrisma = new DaoContractTemplatePrisma(this.prisma)
   public daoContractTemplate =
     this.utiliseMemoire ? this.daoContractTemplateMemoire : this.daoContractTemplatePrisma
+  public daoInventoryTemplateMemoire = new DaoInventoryTemplateMemoire()
+  public daoInventoryTemplatePrisma = new DaoInventoryTemplatePrisma(this.prisma)
+  public daoInventoryTemplate =
+    this.utiliseMemoire ? this.daoInventoryTemplateMemoire : this.daoInventoryTemplatePrisma
   public daoContractMemoire = new DaoContractMemoire()
   public daoContractPrisma = new DaoContractPrisma(this.prisma)
   public daoContract = this.utiliseMemoire ? this.daoContractMemoire : this.daoContractPrisma
@@ -320,6 +326,7 @@ class ConteneurDependances {
     daoParametreAdmin: this.utiliseMemoire ? undefined : this.daoParametreAdminPrisma,
     daoContract: this.daoContract,
     daoContractTemplate: this.daoContractTemplate,
+    daoInventoryTemplate: this.daoInventoryTemplate,
   })
   public serviceAdministrationAdminSupervision = creerServiceAdministrationAdminSupervision({
     utiliseMemoire: this.utiliseMemoire,

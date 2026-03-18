@@ -4,6 +4,7 @@ import { ServiceAdministrationAdminUtilitaires } from '@/src/application/service
 import type { TypeDependancesServiceAdministrationAdminAuditIpsCloudinary } from '@/src/application/types/administration/audit/TypeDependancesServiceAdministrationAdminAuditIpsCloudinary'
 import { CODE_HTTP, ERRORS, t } from '@/src/messages'
 import { ErreurHttp } from '@/src/coeur/erreurs/ErreurHttp'
+import { v2 as cloudinary } from 'cloudinary'
 
 export class ServiceAdministrationAdminAuditIpsCloudinary {
   constructor(private readonly dependances: TypeDependancesServiceAdministrationAdminAuditIpsCloudinary) {}
@@ -181,10 +182,40 @@ export class ServiceAdministrationAdminAuditIpsCloudinary {
   ): Promise<{ url: string }> {
     await this.dependances.securite.obtenirContexteAcces(jetonAcces, impersonation, 'cloudinary')
     const cible = String(url || '').trim()
-    if (!cible) {
-      return { url: '' }
+    if (!cible) return { url: '' }
+
+    if (!cible.includes('res.cloudinary.com')) return { url: cible }
+
+    try {
+      const parsed = new URL(cible)
+      const segments = parsed.pathname.split('/').filter(Boolean)
+      if (segments.length < 5) return { url: cible }
+
+      const cloudName = segments[0]
+      const resourceType = (segments[1] || 'raw') as 'image' | 'video' | 'raw' | 'auto'
+      const deliveryType = segments[2] || 'authenticated'
+      const publicIdWithExt = segments.slice(4).join('/')
+      const formatMatch = publicIdWithExt.match(/\.([a-z0-9]+)$/i)
+      const format = formatMatch ? formatMatch[1] : undefined
+      const publicId = publicIdWithExt.replace(/\.[a-z0-9]+$/i, '')
+
+      cloudinary.config({
+        cloud_name: cloudName,
+        api_key: String(process.env.CLOUDINARY_API_KEY || ''),
+        api_secret: String(process.env.CLOUDINARY_API_SECRET || ''),
+        secure: true,
+      })
+
+      const signedUrl = cloudinary.utils.private_download_url(publicId, format, {
+        resource_type: resourceType,
+        type: deliveryType === 'authenticated' ? 'authenticated' : 'authenticated',
+        expires_at: Math.floor(Date.now() / 1000) + 3600, // 1h
+      })
+
+      return { url: signedUrl }
+    } catch (error) {
+      return { url: cible }
     }
-    return { url: cible }
   }
 
   private exigerEntite<T>(entite: T | null | undefined, message: string): asserts entite is T {

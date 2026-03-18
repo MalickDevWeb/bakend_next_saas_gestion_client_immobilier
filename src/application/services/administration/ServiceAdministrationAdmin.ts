@@ -91,6 +91,10 @@ export class ServiceAdministrationAdmin {
   public readonly creerContractTemplate: ServiceAdministrationAdminContrats['creerTemplate']
   public readonly mettreAJourContractTemplate: ServiceAdministrationAdminContrats['mettreAJourTemplate']
   public readonly supprimerContractTemplate: ServiceAdministrationAdminContrats['supprimerTemplate']
+  public readonly listerInventoryTemplates: ServiceAdministrationAdminContrats['listerInventoryTemplates']
+  public readonly creerInventoryTemplate: ServiceAdministrationAdminContrats['creerInventoryTemplate']
+  public readonly mettreAJourInventoryTemplate: ServiceAdministrationAdminContrats['mettreAJourInventoryTemplate']
+  public readonly supprimerInventoryTemplate: ServiceAdministrationAdminContrats['supprimerInventoryTemplate']
   public readonly listerContracts: ServiceAdministrationAdminContrats['listerContrats']
   public readonly obtenirContract: ServiceAdministrationAdminContrats['obtenirContrat']
   public readonly genererContract: ServiceAdministrationAdminContrats['genererContrat']
@@ -168,6 +172,7 @@ export class ServiceAdministrationAdmin {
     this.serviceContrats = new ServiceAdministrationAdminContrats(
       this.dependances.serviceAuthentification,
       this.dependances.daoContractTemplate,
+      this.dependances.daoInventoryTemplate,
       this.dependances.daoContract,
       this.dependances.daoClient,
       this.dependances.daoLocation,
@@ -238,6 +243,10 @@ export class ServiceAdministrationAdmin {
     this.creerContractTemplate = this.lierMethode(this.serviceContrats, 'creerTemplate')
     this.mettreAJourContractTemplate = this.lierMethode(this.serviceContrats, 'mettreAJourTemplate')
     this.supprimerContractTemplate = this.lierMethode(this.serviceContrats, 'supprimerTemplate')
+    this.listerInventoryTemplates = this.lierMethode(this.serviceContrats, 'listerInventoryTemplates')
+    this.creerInventoryTemplate = this.lierMethode(this.serviceContrats, 'creerInventoryTemplate')
+    this.mettreAJourInventoryTemplate = this.lierMethode(this.serviceContrats, 'mettreAJourInventoryTemplate')
+    this.supprimerInventoryTemplate = this.lierMethode(this.serviceContrats, 'supprimerInventoryTemplate')
     this.listerContracts = this.lierMethode(this.serviceContrats, 'listerContrats')
     this.obtenirContract = this.lierMethode(this.serviceContrats, 'obtenirContrat')
     this.genererContract = this.lierMethode(this.serviceContrats, 'genererContrat')

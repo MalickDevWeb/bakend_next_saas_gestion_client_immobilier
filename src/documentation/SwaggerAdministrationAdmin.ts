@@ -16,6 +16,83 @@
  *         description: Liste des clients
  *       403:
  *         description: Permission manquante ou acces hors scope admin
+ *
+ * /inventory-templates:
+ *   get:
+ *     summary: Liste les modèles d'état des lieux (admin scope)
+ *     tags: [Administration Admin]
+ *     security:
+ *       - accessTokenCookie: []
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Liste des modèles
+ *   post:
+ *     summary: Crée un modèle d'état des lieux
+ *     tags: [Administration Admin]
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nom: { type: string }
+ *               corps: { type: string }
+ *               placeholders: { type: object, additionalProperties: true }
+ *               isTable: { type: boolean }
+ *     responses:
+ *       200:
+ *         description: Modèle créé
+ * /inventory-templates/{id}:
+ *   put:
+ *     summary: Met à jour un modèle d'état des lieux
+ *     tags: [Administration Admin]
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nom: { type: string }
+ *               corps: { type: string }
+ *               placeholders: { type: object, additionalProperties: true }
+ *               isTable: { type: boolean }
+ *     responses:
+ *       200:
+ *         description: Modèle mis à jour
+ *   delete:
+ *     summary: Supprime un modèle d'état des lieux
+ *     tags: [Administration Admin]
+ *     security:
+ *       - accessTokenCookie: []
+ *         csrfHeader: []
+ *       - bearerAuth: []
+ *         csrfHeader: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Modèle supprimé
  *   post:
  *     summary: Cree un client admin
  *     tags: [Administration Admin]
@@ -247,7 +324,32 @@
  *       required: true
  *       content:
  *         application/json:
- *           schema: { type: object, additionalProperties: true }
+ *           schema:
+ *             type: object
+ *             properties:
+ *               clientId: { type: string }
+ *               locationId: { type: string }
+ *               nom: { type: string }
+ *               type:
+ *                 type: string
+ *                 enum: [contract, receipt, other, etat_des_lieux]
+ *               url: { type: string }
+ *               estSigne: { type: boolean }
+ *               statut:
+ *                 type: string
+ *                 enum: [draft, pending_signature, signed]
+ *               templateId: { type: string, nullable: true }
+ *               templateName: { type: string, nullable: true }
+ *               items:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     nom: { type: string }
+ *                     etat: { type: string, enum: [neuf, bon, moyen, mauvais] }
+ *                     note: { type: number }
+ *                     commentaire: { type: string }
+ *             required: [nom, type, url]
  *     responses:
  *       200:
  *         description: Document cree
@@ -283,7 +385,29 @@
  *       required: true
  *       content:
  *         application/json:
- *           schema: { type: object, additionalProperties: true }
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nom: { type: string }
+ *               type:
+ *                 type: string
+ *                 enum: [contract, receipt, other, etat_des_lieux]
+ *               url: { type: string }
+ *               estSigne: { type: boolean }
+ *               statut:
+ *                 type: string
+ *                 enum: [draft, pending_signature, signed]
+ *               templateId: { type: string, nullable: true }
+ *               templateName: { type: string, nullable: true }
+ *               items:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     nom: { type: string }
+ *                     etat: { type: string, enum: [neuf, bon, moyen, mauvais] }
+ *                     note: { type: number }
+ *                     commentaire: { type: string }
  *     responses:
  *       200:
  *         description: Document mis a jour

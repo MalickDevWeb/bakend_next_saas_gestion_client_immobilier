@@ -86,9 +86,9 @@ const normaliserStatutClient = (valeur: unknown): 'active' | 'archived' | 'black
   return 'active'
 }
 
-const normaliserTypeDocument = (valeur: unknown): 'contract' | 'receipt' | 'other' => {
+const normaliserTypeDocument = (valeur: unknown): 'contract' | 'receipt' | 'other' | 'etat_des_lieux' => {
   const v = texte(valeur, 'other').toLowerCase()
-  if (v === 'contract' || v === 'receipt' || v === 'other') return v
+  if (v === 'contract' || v === 'receipt' || v === 'other' || v === 'etat_des_lieux') return v
   return 'other'
 }
 
@@ -265,6 +265,10 @@ export const mapperDocumentDepuisPrisma = (ligne: {
   url: string
   dateAjout: Date
   estSigne: boolean
+  templateId?: string | null
+  templateName?: string | null
+  statut?: string | null
+  items?: any | null
 }): EntiteDocument =>
   new BuilderEntiteDocument()
     .avecId(ligne.id)
@@ -273,6 +277,10 @@ export const mapperDocumentDepuisPrisma = (ligne: {
     .avecUrl(ligne.url)
     .avecDateAjout(ligne.dateAjout)
     .avecEstSigne(ligne.estSigne)
+    .avecTemplateId(ligne.templateId ?? null)
+    .avecTemplateName(ligne.templateName ?? null)
+    .avecStatut((ligne.statut as any) ?? null)
+    .avecItems((ligne.items as any) ?? null)
     .construire()
 
 export const mapperTransactionPaiementDepuisPrisma = (ligne: {
@@ -572,6 +580,10 @@ export const mapperDocumentVersPrisma = (entite: EntiteDocument, locationId?: st
   url: entite.url,
   dateAjout: entite.dateAjout,
   estSigne: entite.estSigne,
+  templateId: entite.templateId,
+  templateName: entite.templateName,
+  statut: entite.statut,
+  items: entite.items,
 })
 
 export const mapperPaiementMensuelVersPrisma = (entite: EntitePaiementMensuel) => ({
@@ -726,6 +738,42 @@ export const mapperContractTemplateVersPrisma = (entite: EntiteContractTemplate)
     entite.placeholders === null
       ? Prisma.JsonNull
       : (entite.placeholders as Prisma.InputJsonValue),
+  version: entite.version,
+  creeLe: entite.creeLe,
+  misAJourLe: entite.misAJourLe,
+})
+
+export const mapperInventoryTemplateDepuisPrisma = (row: {
+  id: string
+  adminId: string
+  nom: string
+  corps: string
+  placeholders: unknown
+  isTable: boolean
+  version: number
+  creeLe: Date
+  misAJourLe: Date
+}) =>
+  new BuilderEntiteInventoryTemplate()
+    .avecId(row.id)
+    .avecAdminId(row.adminId)
+    .avecNom(row.nom)
+    .avecCorps(row.corps)
+    .avecPlaceholders((row.placeholders as Record<string, unknown> | null) || null)
+    .avecIsTable(row.isTable)
+    .avecVersion(row.version)
+    .avecCreeLe(row.creeLe)
+    .avecMisAJourLe(row.misAJourLe)
+    .build()
+
+export const mapperInventoryTemplateVersPrisma = (entite: any) => ({
+  id: entite.id,
+  adminId: entite.adminId,
+  nom: entite.nom,
+  corps: entite.corps,
+  placeholders:
+    entite.placeholders === null ? Prisma.JsonNull : (entite.placeholders as Prisma.InputJsonValue),
+  isTable: entite.isTable,
   version: entite.version,
   creeLe: entite.creeLe,
   misAJourLe: entite.misAJourLe,

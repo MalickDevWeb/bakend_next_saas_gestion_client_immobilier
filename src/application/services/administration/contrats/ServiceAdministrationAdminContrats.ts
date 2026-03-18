@@ -1,11 +1,13 @@
 import { v4 as uuid } from 'uuid'
 import { InterfaceDaoContractTemplate } from '@/src/domaine/interfaces/dao/contrats/InterfaceDaoContractTemplate'
+import { InterfaceDaoInventoryTemplate } from '@/src/domaine/interfaces/dao/contrats/InterfaceDaoInventoryTemplate'
 import { InterfaceDaoContract } from '@/src/domaine/interfaces/dao/contrats/InterfaceDaoContract'
 import { InterfaceDaoClient } from '@/src/domaine/interfaces/dao/locations/InterfaceDaoClient'
 import { InterfaceDaoLocation } from '@/src/domaine/interfaces/dao/locations/InterfaceDaoLocation'
 import { ServiceAuthentification } from '@/src/application/services/authentification/ServiceAuthentification'
 import { ServiceRenduContrat } from '@/src/application/services/administration/contrats/ServiceRenduContrat'
 import { BuilderEntiteContractTemplate } from '@/src/domaine/builders/BuilderEntiteContractTemplate'
+import { BuilderEntiteInventoryTemplate } from '@/src/domaine/builders/BuilderEntiteInventoryTemplate'
 import { BuilderEntiteContract } from '@/src/domaine/builders/BuilderEntiteContract'
 
 type TypeContexteAdmin = { adminId: string }
@@ -20,6 +22,7 @@ export class ServiceAdministrationAdminContrats {
   constructor(
     private readonly securite: ServiceAuthentification,
     private readonly daoTemplate: InterfaceDaoContractTemplate,
+    private readonly daoInventoryTemplate: InterfaceDaoInventoryTemplate,
     private readonly daoContract: InterfaceDaoContract,
     private readonly daoClient: InterfaceDaoClient,
     private readonly daoLocation: InterfaceDaoLocation,
@@ -30,6 +33,10 @@ export class ServiceAdministrationAdminContrats {
   public async listerTemplates(jetonAcces: string, impersonation: unknown): Promise<unknown[]> {
     const ctx = await this.validerAdmin(jetonAcces, impersonation)
     return this.daoTemplate.listerParAdmin(ctx.adminId)
+  }
+  public async listerInventoryTemplates(jetonAcces: string, impersonation: unknown) {
+    const ctx = await this.validerAdmin(jetonAcces, impersonation)
+    return this.daoInventoryTemplate.listerParAdmin(ctx.adminId)
   }
 
   public async creerTemplate(jetonAcces: string, impersonation: unknown, entree: any) {
@@ -78,6 +85,52 @@ export class ServiceAdministrationAdminContrats {
       throw new Error('Template introuvable ou non autorisé')
     }
     await this.daoTemplate.supprimerParId(id)
+    return { ok: true }
+  }
+
+  // ---- Templates état des lieux ----
+  public async creerInventoryTemplate(jetonAcces: string, impersonation: unknown, entree: any) {
+    const ctx = await this.validerAdmin(jetonAcces, impersonation)
+    const id = uuid()
+    const entite = new BuilderEntiteInventoryTemplate()
+      .avecId(id)
+      .avecAdminId(ctx.adminId)
+      .avecNom(String(entree?.nom || 'État des lieux'))
+      .avecCorps(String(entree?.corps || ''))
+      .avecPlaceholders((entree?.placeholders as Record<string, unknown>) || null)
+      .avecIsTable(Boolean(entree?.isTable))
+      .avecVersion(1)
+      .build()
+    return this.daoInventoryTemplate.sauvegarder(entite)
+  }
+
+  public async mettreAJourInventoryTemplate(jetonAcces: string, impersonation: unknown, entree: any) {
+    const ctx = await this.validerAdmin(jetonAcces, impersonation)
+    const id = String(entree?.id || '').trim()
+    const existant = await this.daoInventoryTemplate.rechercherParId(id)
+    if (!existant || existant.adminId !== ctx.adminId) throw new Error('Modèle introuvable')
+    const version =
+      existant.corps !== String(entree?.corps || existant.corps) ? existant.version + 1 : existant.version
+    const entite = new BuilderEntiteInventoryTemplate()
+      .avecId(id)
+      .avecAdminId(ctx.adminId)
+      .avecNom(String(entree?.nom || existant.nom))
+      .avecCorps(String(entree?.corps ?? existant.corps))
+      .avecPlaceholders((entree?.placeholders as Record<string, unknown>) ?? existant.placeholders)
+      .avecIsTable(Boolean(entree?.isTable ?? existant.isTable))
+      .avecVersion(version)
+      .avecCreeLe(existant.creeLe)
+      .avecMisAJourLe(new Date())
+      .build()
+    return this.daoInventoryTemplate.sauvegarder(entite)
+  }
+
+  public async supprimerInventoryTemplate(jetonAcces: string, impersonation: unknown, entree: any) {
+    const ctx = await this.validerAdmin(jetonAcces, impersonation)
+    const id = String(entree?.id || '').trim()
+    const existant = await this.daoInventoryTemplate.rechercherParId(id)
+    if (!existant || existant.adminId !== ctx.adminId) throw new Error('Modèle introuvable')
+    await this.daoInventoryTemplate.supprimerParId(id)
     return { ok: true }
   }
 

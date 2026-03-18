@@ -836,6 +836,39 @@ export class ControleurAdministrationAdmin {
     return this.serviceAdministrationAdmin.supprimerContractTemplate(jetonAcces, impersonation, corps)
   }
 
+  // ---- Modèles État des lieux ----
+  public async listerInventoryTemplates(jetonAcces: string, impersonation: DtoEtatImpersonation) {
+    return this.serviceAdministrationAdmin.listerInventoryTemplates(jetonAcces, impersonation)
+  }
+
+  public async creerInventoryTemplate(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdmin.creerInventoryTemplate(jetonAcces, impersonation, corps)
+  }
+
+  public async mettreAJourInventoryTemplate(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdmin.mettreAJourInventoryTemplate(
+      jetonAcces,
+      impersonation,
+      corps
+    )
+  }
+
+  public async supprimerInventoryTemplate(
+    jetonAcces: string,
+    impersonation: DtoEtatImpersonation,
+    corps: Record<string, unknown>
+  ) {
+    return this.serviceAdministrationAdmin.supprimerInventoryTemplate(jetonAcces, impersonation, corps)
+  }
+
   public async listerContracts(
     jetonAcces: string,
     impersonation: DtoEtatImpersonation,

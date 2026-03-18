@@ -93,12 +93,14 @@ export const POST = executerAvecGestionErreurs(
 
     const folder = String(corps?.folder || '').trim()
     const timestamp = Math.floor(Date.now() / 1000)
-    const params: Record<string, string> = { timestamp: String(timestamp) }
-    if (folder) params.folder = folder
+  const params: Record<string, string> = { timestamp: String(timestamp) }
+  if (folder) params.folder = folder
+  // Forcer les ressources en mode authentifié afin d'éviter l'accès public direct
+  params.type = 'authenticated'
 
-    const toSign = Object.keys(params)
-      .sort()
-      .map((key) => `${key}=${params[key]}`)
+  const toSign = Object.keys(params)
+    .sort()
+    .map((key) => `${key}=${params[key]}`)
       .join('&')
     const signature = createHash('sha1').update(`${toSign}${apiSecret}`).digest('hex')
 
