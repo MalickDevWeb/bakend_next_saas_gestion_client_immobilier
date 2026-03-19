@@ -584,7 +584,7 @@ export const mapperDocumentVersPrisma = (entite: EntiteDocument, locationId?: st
   templateId: entite.templateId,
   templateName: entite.templateName,
   statut: entite.statut,
-  items: entite.items,
+  items: entite.items === null ? Prisma.JsonNull : (entite.items as Prisma.InputJsonValue),
 })
 
 export const mapperPaiementMensuelVersPrisma = (entite: EntitePaiementMensuel) => ({
