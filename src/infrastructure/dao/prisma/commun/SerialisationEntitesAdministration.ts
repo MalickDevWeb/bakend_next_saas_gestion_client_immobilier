@@ -9,6 +9,7 @@ import {
   BuilderEntiteItemTravail,
   BuilderEntiteJournalAudit,
   BuilderEntiteContractTemplate,
+  BuilderEntiteInventoryTemplate,
   BuilderEntiteContract,
   BuilderEntiteLocation,
   BuilderEntiteNotification,
