@@ -198,6 +198,7 @@ export class ServiceAdministrationAdminAuditIpsCloudinary {
       const formatMatch = publicIdWithExt.match(/\.([a-z0-9]+)$/i)
       const format = formatMatch ? formatMatch[1] : undefined
       const publicId = publicIdWithExt.replace(/\.[a-z0-9]+$/i, '')
+      const downloadFormat = format ?? 'pdf'
 
       cloudinary.config({
         cloud_name: cloudName,
@@ -206,7 +207,7 @@ export class ServiceAdministrationAdminAuditIpsCloudinary {
         secure: true,
       })
 
-      const signedUrl = cloudinary.utils.private_download_url(publicId, format, {
+      const signedUrl = cloudinary.utils.private_download_url(publicId, downloadFormat, {
         resource_type: resourceType,
         type: deliveryType === 'authenticated' ? 'authenticated' : 'authenticated',
         expires_at: Math.floor(Date.now() / 1000) + 3600, // 1h
