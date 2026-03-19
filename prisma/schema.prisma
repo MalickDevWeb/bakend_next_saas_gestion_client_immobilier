@@ -78,6 +78,7 @@ model Admin {
   utilisateur                  Utilisateur             @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
   contractTemplates            ContractTemplate[]      @relation("AdminContractTemplates")
   contracts                    Contract[]              @relation("AdminContracts")
+  inventoryTemplates           InventoryTemplate[]     @relation("AdminInventoryTemplates")
   signatures                   Signature[]             @relation("AdminSignatures")
 
   @@index([statut, creeLe])
