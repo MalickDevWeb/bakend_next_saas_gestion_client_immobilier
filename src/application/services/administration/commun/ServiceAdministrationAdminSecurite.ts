@@ -1,5 +1,8 @@
 import { ServiceAuthentification } from '@/src/application/services/authentification/ServiceAuthentification'
-import { DtoEtatImpersonation } from '@/src/application/dtos/authentification/DtoAuthentification'
+import {
+  DtoEtatImpersonation,
+  DtoUtilisateurAuthentifie,
+} from '@/src/application/dtos/authentification/DtoAuthentification'
 import { ExceptionAuthentificationAutorisation } from '@/src/application/exceptions'
 import {
   TypeContexteAccesAdministrationAdmin,
@@ -31,7 +34,7 @@ export class ServiceAdministrationAdminSecurite {
     let adminId = ''
 
     if (role === 'SUPER_ADMIN' && ressourceSuperAdminSansImpersonation) {
-      await this.serviceAuthentification.exigerSecondeAuthSuperAdmin(jetonAcces)
+      this.exigerSecondeAuthSuperAdmin(utilisateur)
       adminId = String(impersonation?.adminId || utilisateur.id).trim()
     } else if (role === 'ADMIN') {
       if (ressourceSuperAdminDirecte) {
@@ -41,7 +44,7 @@ export class ServiceAdministrationAdminSecurite {
       }
       adminId = utilisateur.id
     } else if (impersonationActive) {
-      await this.serviceAuthentification.exigerSecondeAuthSuperAdmin(jetonAcces)
+      this.exigerSecondeAuthSuperAdmin(utilisateur)
       adminId = String(impersonation?.adminId || '').trim()
     } else {
       throw new ExceptionAuthentificationAutorisation(
@@ -102,5 +105,19 @@ export class ServiceAdministrationAdminSecurite {
     ressource: TypeRessourceAdministrationAdmin
   ): boolean {
     return RESSOURCES_SUPER_ADMIN_SANS_IMPERSONATION.has(ressource)
+  }
+
+  private exigerSecondeAuthSuperAdmin(utilisateur: DtoUtilisateurAuthentifie): void {
+    if (
+      String(utilisateur.role || '').toUpperCase() === 'SUPER_ADMIN' &&
+      utilisateur.superAdminSecondAuthRequired
+    ) {
+      throw new ExceptionAuthentificationAutorisation(
+        t(ERRORS.AUTH_SECONDE_AUTH_SUPER_ADMIN_REQUISE),
+        {
+          code: 'SUPER_ADMIN_SECOND_AUTH_REQUIRED',
+        }
+      )
+    }
   }
 }

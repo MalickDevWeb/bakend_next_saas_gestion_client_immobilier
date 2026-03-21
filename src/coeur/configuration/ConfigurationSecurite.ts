@@ -24,8 +24,8 @@ export class ConfigurationSecurite {
   }
 
   public dureeSecondeAuthSuperAdminMillisecondes(): number {
-    // 30 minutes par défaut pour éviter une redemande 2FA quasi immédiate à chaque action.
-    return this.nombreEntier(process.env.AUTH_SUPER_ADMIN_2FA_TTL_MS, 30 * 60 * 1000)
+    // 0 = seconde auth valide jusqu'a deconnexion (comportement par defaut).
+    return this.nombreEntierAvecZero(process.env.AUTH_SUPER_ADMIN_2FA_TTL_MS, 0)
   }
 
   public limiteEchecsConnexion(): number {
@@ -182,6 +182,12 @@ export class ConfigurationSecurite {
   private nombreEntier(valeurBrute: string | undefined, valeurParDefaut: number): number {
     const valeur = Number(valeurBrute)
     if (!Number.isFinite(valeur) || valeur <= 0) return valeurParDefaut
+    return Math.floor(valeur)
+  }
+
+  private nombreEntierAvecZero(valeurBrute: string | undefined, valeurParDefaut: number): number {
+    const valeur = Number(valeurBrute)
+    if (!Number.isFinite(valeur) || valeur < 0) return valeurParDefaut
     return Math.floor(valeur)
   }
 

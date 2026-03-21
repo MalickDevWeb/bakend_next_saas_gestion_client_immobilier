@@ -14,7 +14,7 @@ export class MappeurUtilisateurAuthentification {
     const ttl = this.configurationSecurite.dureeSecondeAuthSuperAdminMillisecondes()
     const secondeAuthValide =
       secondeAuthValideeLe instanceof Date &&
-      Date.now() - secondeAuthValideeLe.getTime() <= ttl
+      (ttl <= 0 || Date.now() - secondeAuthValideeLe.getTime() <= ttl)
 
     const secondeAuthRequise = role === 'SUPER_ADMIN' ? !secondeAuthValide : false
 
